@@ -39,8 +39,11 @@ targets:
     deploymentTarget: "17.0"
     sources:
       - path: ColombaCustomer
+        excludes:
+          - Tests
     resources:
       - path: ColombaCustomer/Assets.xcassets
+      - path: ColombaCustomer/PrivacyInfo.xcprivacy
     info:
       path: ColombaCustomer/Info.plist
     settings:
@@ -51,19 +54,25 @@ targets:
         CURRENT_PROJECT_VERSION: "1"
         ENABLE_PREVIEWS: NO
         ENABLE_DEBUG_DYLIB: NO
+        CODE_SIGN_ENTITLEMENTS: ColombaCustomer/ColombaCustomer.entitlements
     dependencies:
       - package: ColombaCore
       - package: ColombaDesign
-      - package: ColombaNetworking
       - package: ColombaAuth
+      - package: ColombaNetworking
       - package: ColombaBilling
-      - package: PlanFeature
-      - package: UsageFeature
-      - package: UpgradeFeature
-      - package: TopUpFeature
-      - package: ScheduledChangeFeature
-      - package: InvoicesFeature
-      - package: AccountFeature
+  ColombaCustomerTests:
+    type: bundle.unit-test
+    platform: iOS
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+    sources:
+      - path: ColombaCustomer/Tests
+    dependencies:
+      - target: ColombaCustomer
+      - package: ColombaNetworking
+      - package: ColombaBilling
 schemes:
   ColombaCustomer:
     build:
@@ -73,3 +82,5 @@ schemes:
       config: Debug
     test:
       config: Debug
+      targets:
+        - ColombaCustomerTests

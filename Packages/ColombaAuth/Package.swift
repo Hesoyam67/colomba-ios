@@ -7,8 +7,14 @@ let package = Package(
     products: [
         .library(name: "ColombaAuth", targets: ["ColombaAuth"])
     ],
+    dependencies: [
+        .package(path: "../ColombaNetworking")
+    ],
     targets: [
-        .target(name: "ColombaAuth"),
+        .target(
+            name: "ColombaAuth",
+            dependencies: ["ColombaNetworking"]
+        ),
         .testTarget(name: "ColombaAuthTests", dependencies: ["ColombaAuth"])
     ]
 )

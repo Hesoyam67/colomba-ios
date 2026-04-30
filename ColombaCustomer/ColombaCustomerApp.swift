@@ -3,8 +3,6 @@ import SwiftUI
 
 @main
 struct ColombaCustomerApp: App {
-    @State private var environment = AppEnvironment()
-
     init() {
         ColdStart.markProcessStarted()
     }
@@ -12,7 +10,6 @@ struct ColombaCustomerApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
-                .environment(environment)
         }
     }
 }

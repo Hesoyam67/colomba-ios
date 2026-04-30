@@ -1,0 +1,11 @@
+{
+  "identifier" : "Colomba",
+  "nonRenewingSubscriptions" : [],
+  "products" : [
+    {"displayPrice":"49.00","familyShareable":false,"internalID":"piccola","localizations":[{"description":"Piccola monthly","displayName":"Piccola","locale":"en_US"}],"productID":"ch.colomba.customer.piccola.monthly","referenceName":"Piccola Monthly","type":"AutoRenewableSubscription"},
+    {"displayPrice":"149.00","familyShareable":false,"internalID":"media","localizations":[{"description":"Media monthly","displayName":"Media","locale":"en_US"}],"productID":"ch.colomba.customer.media.monthly","referenceName":"Media Monthly","type":"AutoRenewableSubscription"},
+    {"displayPrice":"399.00","familyShareable":false,"internalID":"grande","localizations":[{"description":"Grande monthly","displayName":"Grande","locale":"en_US"}],"productID":"ch.colomba.customer.grande.monthly","referenceName":"Grande Monthly","type":"AutoRenewableSubscription"}
+  ],
+  "settings" : {"_applicationInternalID":"colomba","_developerTeamID":"COLMBA1234"},
+  "subscriptionGroups" : []
+}

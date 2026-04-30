@@ -6,24 +6,39 @@ public extension Font {
 }
 
 public struct ColombaTypography {
-    public let display = Font.system(size: 34, weight: .bold, design: .default)
-    public let titleLg = Font.system(size: 28, weight: .bold, design: .default)
-    public let titleMd = Font.system(size: 22, weight: .semibold, design: .default)
-    public let bodyLg = Font.system(size: 17, weight: .regular, design: .default)
-    public let bodyMd = Font.system(size: 15, weight: .regular, design: .default)
-    public let caption = Font.system(size: 13, weight: .medium, design: .default)
-    public let micro = Font.system(size: 11, weight: .semibold, design: .default)
+    public let display = Font.largeTitle.weight(.bold)
+    public let titleLg = Font.title.weight(.bold)
+    public let titleMd = Font.title2.weight(.semibold)
+    public let bodyLg = Font.body
+    public let bodyMd = Font.callout
+    public let caption = Font.caption.weight(.medium)
+    public let micro = Font.caption2.weight(.semibold)
 
     public init() {}
 
-    /// Numeric override for usage and billing figures: SF Mono with tabular digits.
+    /// Numeric override for usage and billing figures: dynamic type, SF Mono, tabular digits.
     public func numeric(size: CGFloat, weight: Font.Weight = .regular) -> Font {
-        Font.system(size: size, weight: weight, design: .monospaced).monospacedDigit()
+        Font.system(dynamicNumericStyle(for: size), design: .monospaced, weight: weight).monospacedDigit()
     }
 
     /// Default billing figure style.
     public var billingFigure: Font {
-        numeric(size: 22, weight: .semibold)
+        Font.system(.title2, design: .monospaced, weight: .semibold).monospacedDigit()
+    }
+
+    private func dynamicNumericStyle(for size: CGFloat) -> Font.TextStyle {
+        switch size {
+        case 28...:
+            .title
+        case 22..<28:
+            .title2
+        case 17..<22:
+            .body
+        case 13..<17:
+            .callout
+        default:
+            .caption
+        }
     }
 }
 

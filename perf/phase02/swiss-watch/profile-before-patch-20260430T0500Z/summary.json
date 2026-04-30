@@ -1,0 +1,138 @@
+{
+  "template": "Time Profiler",
+  "device_udid": "406C439B-38D4-4E8A-B4C7-232C4D3FE788",
+  "runs": [
+    {
+      "run": 1,
+      "trace": "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-01.trace",
+      "record_return": "timeout",
+      "timed_out": true,
+      "launch_return": 0,
+      "launch_output": "ch.colomba.customer: 94274",
+      "export_return": 10,
+      "export_output": "Export failed: Document Missing Template Error",
+      "files": [
+        "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-01.trace/Trace1.run/RunIssues.storedata"
+      ]
+    },
+    {
+      "run": 2,
+      "trace": "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-02.trace",
+      "record_return": "timeout",
+      "timed_out": true,
+      "launch_return": 0,
+      "launch_output": "ch.colomba.customer: 94305",
+      "export_return": 10,
+      "export_output": "Export failed: Document Missing Template Error",
+      "files": [
+        "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-02.trace/Trace1.run/RunIssues.storedata"
+      ]
+    },
+    {
+      "run": 3,
+      "trace": "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-03.trace",
+      "record_return": "timeout",
+      "timed_out": true,
+      "launch_return": 0,
+      "launch_output": "ch.colomba.customer: 94354",
+      "export_return": 10,
+      "export_output": "Export failed: Document Missing Template Error",
+      "files": [
+        "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-03.trace/Trace1.run/RunIssues.storedata"
+      ]
+    },
+    {
+      "run": 4,
+      "trace": "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-04.trace",
+      "record_return": "timeout",
+      "timed_out": true,
+      "launch_return": 0,
+      "launch_output": "ch.colomba.customer: 94390",
+      "export_return": 10,
+      "export_output": "Export failed: Document Missing Template Error",
+      "files": [
+        "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-04.trace/Trace1.run/RunIssues.storedata"
+      ]
+    },
+    {
+      "run": 5,
+      "trace": "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-05.trace",
+      "record_return": "timeout",
+      "timed_out": true,
+      "launch_return": 0,
+      "launch_output": "ch.colomba.customer: 94432",
+      "export_return": 10,
+      "export_output": "Export failed: Document Missing Template Error",
+      "files": [
+        "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-05.trace/Trace1.run/RunIssues.storedata"
+      ]
+    },
+    {
+      "run": 6,
+      "trace": "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-06.trace",
+      "record_return": "timeout",
+      "timed_out": true,
+      "launch_return": 0,
+      "launch_output": "ch.colomba.customer: 94476",
+      "export_return": 10,
+      "export_output": "Export failed: Document Missing Template Error",
+      "files": [
+        "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-06.trace/Trace1.run/RunIssues.storedata"
+      ]
+    },
+    {
+      "run": 7,
+      "trace": "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-07.trace",
+      "record_return": "timeout",
+      "timed_out": true,
+      "launch_return": 0,
+      "launch_output": "ch.colomba.customer: 94514",
+      "export_return": 10,
+      "export_output": "Export failed: Document Missing Template Error",
+      "files": [
+        "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-07.trace/Trace1.run/RunIssues.storedata"
+      ]
+    },
+    {
+      "run": 8,
+      "trace": "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-08.trace",
+      "record_return": "timeout",
+      "timed_out": true,
+      "launch_return": 0,
+      "launch_output": "ch.colomba.customer: 94551",
+      "export_return": 10,
+      "export_output": "Export failed: Document Missing Template Error",
+      "files": [
+        "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-08.trace/Trace1.run/RunIssues.storedata"
+      ]
+    },
+    {
+      "run": 9,
+      "trace": "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-09.trace",
+      "record_return": "timeout",
+      "timed_out": true,
+      "launch_return": 0,
+      "launch_output": "ch.colomba.customer: 94586",
+      "export_return": 10,
+      "export_output": "Export failed: Document Missing Template Error",
+      "files": [
+        "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-09.trace/Trace1.run/RunIssues.storedata"
+      ]
+    },
+    {
+      "run": 10,
+      "trace": "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-10.trace",
+      "record_return": "timeout",
+      "timed_out": true,
+      "launch_return": 0,
+      "launch_output": "ch.colomba.customer: 94627",
+      "export_return": 10,
+      "export_output": "Export failed: Document Missing Template Error",
+      "files": [
+        "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-10.trace/Trace1.run/RunIssues.storedata"
+      ]
+    }
+  ],
+  "valid_export_count": 0,
+  "invalid_export_count": 10
+}

@@ -1,0 +1,13 @@
+{
+  "run": 6,
+  "trace": "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-06.trace",
+  "record_return": "timeout",
+  "timed_out": true,
+  "launch_return": 0,
+  "launch_output": "ch.colomba.customer: 94476",
+  "export_return": 10,
+  "export_output": "Export failed: Document Missing Template Error",
+  "files": [
+    "perf/phase02/swiss-watch/profile-before-patch-20260430T0500Z/time-profiler-run-06.trace/Trace1.run/RunIssues.storedata"
+  ]
+}

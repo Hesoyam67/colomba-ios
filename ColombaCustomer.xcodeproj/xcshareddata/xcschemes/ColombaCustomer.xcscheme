@@ -39,6 +39,17 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6373F55DBFC7462BC39D4731"
+               BuildableName = "ColombaCustomerTests.xctest"
+               BlueprintName = "ColombaCustomerTests"
+               ReferencedContainer = "container:ColombaCustomer.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <CommandLineArguments>
       </CommandLineArguments>
