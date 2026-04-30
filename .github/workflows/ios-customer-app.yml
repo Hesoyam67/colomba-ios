@@ -1,0 +1,57 @@
+name: iOS Customer App
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test-lint:
+    name: Xcode ${{ matrix.xcode }} / iOS 17
+    runs-on: macos-15
+    strategy:
+      fail-fast: false
+      matrix:
+        xcode: ['16']
+        destination: ['platform=iOS Simulator,name=iPhone 12']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode 16
+        run: |
+          if [ -d /Applications/Xcode_16.app ]; then
+            sudo xcode-select -s /Applications/Xcode_16.app/Contents/Developer
+          elif [ -d /Applications/Xcode.app ]; then
+            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+          fi
+          xcodebuild -version
+          swift --version
+
+      - name: Install SwiftLint
+        run: |
+          if ! command -v swiftlint >/dev/null 2>&1; then
+            brew install swiftlint
+          fi
+          swiftlint version
+
+      - name: Swift package tests
+        run: |
+          set -euo pipefail
+          swift test
+          for pkg in Packages/* Packages/Features/*; do
+            if [ -f "$pkg/Package.swift" ]; then
+              echo "== swift test $pkg"
+              (cd "$pkg" && swift test)
+            fi
+          done
+
+      - name: SwiftLint
+        run: swiftlint --strict
+
+      - name: iOS simulator build + cold-start gate
+        run: |
+          xcrun simctl list devices available | grep -E 'iPhone 12|iPhone 15' || true
+          DEVICE_NAME="Colomba Phase1 iPhone 12" scripts/measure-cold-start.sh

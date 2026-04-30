@@ -1,10 +1,12 @@
 # Xcode
 DerivedData/
+.derived/
 build/
 *.xcuserstate
 *.xcworkspace/xcuserdata/
 *.xcodeproj/xcuserdata/
 *.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcscmblueprint
 
 # SwiftPM
 .build/
@@ -14,6 +16,8 @@ Package.resolved
 # macOS
 .DS_Store
 
-# Local
+# Local scratch and secrets/config
+tmp/
 .env
+.env.*
 *.local

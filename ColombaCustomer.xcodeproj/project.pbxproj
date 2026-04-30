@@ -1,0 +1,514 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0BB5D6B7640596C1CDB85941 /* ColombaDesign in Frameworks */ = {isa = PBXBuildFile; productRef = 37CC4DF457DDB92F64295051 /* ColombaDesign */; };
+		0D6C75287EBFCBE50C9E4737 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6261245D60A8DCFB9C16774E /* AppRouter.swift */; };
+		0E7ADF92883B752AEA4493BA /* AccountFeature in Frameworks */ = {isa = PBXBuildFile; productRef = A992E11F48BBABE3BC458DE2 /* AccountFeature */; };
+		1141D2EF9FA7571A54A4D7DB /* ColombaBilling in Frameworks */ = {isa = PBXBuildFile; productRef = 89D8608146065A8BF5DFC08A /* ColombaBilling */; };
+		121BAE4D2C7BAD18023B7E4C /* InvoicesFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 37154F744F3218378549735F /* InvoicesFeature */; };
+		25A1179932F366547B55693F /* ColombaCore in Frameworks */ = {isa = PBXBuildFile; productRef = B768EBF2BC474A93E9CDE877 /* ColombaCore */; };
+		3EB460CEB1FD73DEDFFC4361 /* ColombaCustomerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5C1FBE5E43CF0CE4962F03 /* ColombaCustomerApp.swift */; };
+		3F7CC2FD2900A9DAF2349084 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159C8B476F0E58A50B5CE76E /* RootView.swift */; };
+		596BB3E32D94EFB3FD72DA25 /* ColombaAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 015730E5242C31325C0EC6F2 /* ColombaAuth */; };
+		7E0790D6FFA5C7EB9E2B17E8 /* ColombaNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 6765EBBDF7953544D2ACD496 /* ColombaNetworking */; };
+		7EC2063BD009BE6F9E090A7D /* UpgradeFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 77842B4700AD3BE4A6414492 /* UpgradeFeature */; };
+		BD07D5DE38064365D51B809E /* PlanFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 8E23369D526BCBBF4FC98636 /* PlanFeature */; };
+		E1E5071AEA7D7369691BE52A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2BD4ED171816B1EE6A89B09 /* Assets.xcassets */; };
+		E2037A0A8680517B7D8213F6 /* TopUpFeature in Frameworks */ = {isa = PBXBuildFile; productRef = B48D66839EDFC9EE06B9D614 /* TopUpFeature */; };
+		E70C32AAA59CACA091C25829 /* ScheduledChangeFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 7BCED26CD7F904FDB37FE831 /* ScheduledChangeFeature */; };
+		FD0C266C41B78377F87BCF1E /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD171C2F2513D2747A7DFB1B /* AppEnvironment.swift */; };
+		FF48D86CE254A7B52220462A /* UsageFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 772BF6E3C6E44891161CC18F /* UsageFeature */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		09B0A5ADCC319D8C0432462A /* PlanFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PlanFeature; path = Packages/Features/PlanFeature; sourceTree = SOURCE_ROOT; };
+		130E0989CAB8544F2CF00003 /* ColombaCustomer.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ColombaCustomer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		159C8B476F0E58A50B5CE76E /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		2CBC739524FCF2C0C5B12CDF /* ColombaCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ColombaCore; path = Packages/ColombaCore; sourceTree = SOURCE_ROOT; };
+		3A11F03EF2B262C7CFF81565 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4505C990521429802543EFD6 /* ScheduledChangeFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ScheduledChangeFeature; path = Packages/Features/ScheduledChangeFeature; sourceTree = SOURCE_ROOT; };
+		59F0575575B4E2F2814BED85 /* ColombaDesign */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ColombaDesign; path = Packages/ColombaDesign; sourceTree = SOURCE_ROOT; };
+		61A54F10E39CEA3D4F26B833 /* UsageFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = UsageFeature; path = Packages/Features/UsageFeature; sourceTree = SOURCE_ROOT; };
+		6261245D60A8DCFB9C16774E /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
+		7FE5959A2DF501C3992E988C /* ColombaNetworking */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ColombaNetworking; path = Packages/ColombaNetworking; sourceTree = SOURCE_ROOT; };
+		875FCDDD70BEAE3884A1A600 /* InvoicesFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = InvoicesFeature; path = Packages/Features/InvoicesFeature; sourceTree = SOURCE_ROOT; };
+		A03077D975A760D40153AFBD /* ColombaBilling */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ColombaBilling; path = Packages/ColombaBilling; sourceTree = SOURCE_ROOT; };
+		B2BD4ED171816B1EE6A89B09 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B5D7E8D21CCB32E5A56AF62E /* ColombaAuth */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ColombaAuth; path = Packages/ColombaAuth; sourceTree = SOURCE_ROOT; };
+		BD754C973B08B692898892D4 /* AccountFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AccountFeature; path = Packages/Features/AccountFeature; sourceTree = SOURCE_ROOT; };
+		CD171C2F2513D2747A7DFB1B /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		CF5C1FBE5E43CF0CE4962F03 /* ColombaCustomerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColombaCustomerApp.swift; sourceTree = "<group>"; };
+		E35D74F4BDD745EE0111A7F2 /* TopUpFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TopUpFeature; path = Packages/Features/TopUpFeature; sourceTree = SOURCE_ROOT; };
+		FEB554A480235ADEAB707618 /* UpgradeFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = UpgradeFeature; path = Packages/Features/UpgradeFeature; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6C88787B52586CB2A77E907E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				25A1179932F366547B55693F /* ColombaCore in Frameworks */,
+				0BB5D6B7640596C1CDB85941 /* ColombaDesign in Frameworks */,
+				7E0790D6FFA5C7EB9E2B17E8 /* ColombaNetworking in Frameworks */,
+				596BB3E32D94EFB3FD72DA25 /* ColombaAuth in Frameworks */,
+				1141D2EF9FA7571A54A4D7DB /* ColombaBilling in Frameworks */,
+				BD07D5DE38064365D51B809E /* PlanFeature in Frameworks */,
+				FF48D86CE254A7B52220462A /* UsageFeature in Frameworks */,
+				7EC2063BD009BE6F9E090A7D /* UpgradeFeature in Frameworks */,
+				E2037A0A8680517B7D8213F6 /* TopUpFeature in Frameworks */,
+				E70C32AAA59CACA091C25829 /* ScheduledChangeFeature in Frameworks */,
+				121BAE4D2C7BAD18023B7E4C /* InvoicesFeature in Frameworks */,
+				0E7ADF92883B752AEA4493BA /* AccountFeature in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1E7A3D7DE10C49A2C3F70C57 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				BD754C973B08B692898892D4 /* AccountFeature */,
+				B5D7E8D21CCB32E5A56AF62E /* ColombaAuth */,
+				A03077D975A760D40153AFBD /* ColombaBilling */,
+				2CBC739524FCF2C0C5B12CDF /* ColombaCore */,
+				59F0575575B4E2F2814BED85 /* ColombaDesign */,
+				7FE5959A2DF501C3992E988C /* ColombaNetworking */,
+				875FCDDD70BEAE3884A1A600 /* InvoicesFeature */,
+				09B0A5ADCC319D8C0432462A /* PlanFeature */,
+				4505C990521429802543EFD6 /* ScheduledChangeFeature */,
+				E35D74F4BDD745EE0111A7F2 /* TopUpFeature */,
+				FEB554A480235ADEAB707618 /* UpgradeFeature */,
+				61A54F10E39CEA3D4F26B833 /* UsageFeature */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+		31BE804F6776F9F5FB7E64B0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				130E0989CAB8544F2CF00003 /* ColombaCustomer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BEB9E84B52011E05007E31B9 = {
+			isa = PBXGroup;
+			children = (
+				F8DDE62B3C6A62A24F141186 /* ColombaCustomer */,
+				1E7A3D7DE10C49A2C3F70C57 /* Packages */,
+				31BE804F6776F9F5FB7E64B0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F8DDE62B3C6A62A24F141186 /* ColombaCustomer */ = {
+			isa = PBXGroup;
+			children = (
+				CD171C2F2513D2747A7DFB1B /* AppEnvironment.swift */,
+				6261245D60A8DCFB9C16774E /* AppRouter.swift */,
+				B2BD4ED171816B1EE6A89B09 /* Assets.xcassets */,
+				CF5C1FBE5E43CF0CE4962F03 /* ColombaCustomerApp.swift */,
+				3A11F03EF2B262C7CFF81565 /* Info.plist */,
+				159C8B476F0E58A50B5CE76E /* RootView.swift */,
+			);
+			path = ColombaCustomer;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CF782245BD982363A47A68C3 /* ColombaCustomer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A47DD498AB7B5A1E106565D8 /* Build configuration list for PBXNativeTarget "ColombaCustomer" */;
+			buildPhases = (
+				8EF7AD640D293198F6463FFC /* Sources */,
+				3AC3186FC7BFA4E566F01AEB /* Resources */,
+				6C88787B52586CB2A77E907E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ColombaCustomer;
+			packageProductDependencies = (
+				B768EBF2BC474A93E9CDE877 /* ColombaCore */,
+				37CC4DF457DDB92F64295051 /* ColombaDesign */,
+				6765EBBDF7953544D2ACD496 /* ColombaNetworking */,
+				015730E5242C31325C0EC6F2 /* ColombaAuth */,
+				89D8608146065A8BF5DFC08A /* ColombaBilling */,
+				8E23369D526BCBBF4FC98636 /* PlanFeature */,
+				772BF6E3C6E44891161CC18F /* UsageFeature */,
+				77842B4700AD3BE4A6414492 /* UpgradeFeature */,
+				B48D66839EDFC9EE06B9D614 /* TopUpFeature */,
+				7BCED26CD7F904FDB37FE831 /* ScheduledChangeFeature */,
+				37154F744F3218378549735F /* InvoicesFeature */,
+				A992E11F48BBABE3BC458DE2 /* AccountFeature */,
+			);
+			productName = ColombaCustomer;
+			productReference = 130E0989CAB8544F2CF00003 /* ColombaCustomer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F0B94A94FCB6240A663663A3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = BB1EFBC4DC358F9CFC534AEB /* Build configuration list for PBXProject "ColombaCustomer" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = BEB9E84B52011E05007E31B9;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				76F353BB897CDE0D210962A3 /* XCLocalSwiftPackageReference "Packages/Features/AccountFeature" */,
+				5ED18371A15EB383FB6AB8C4 /* XCLocalSwiftPackageReference "Packages/ColombaAuth" */,
+				7821683CA2B30A770A5F940B /* XCLocalSwiftPackageReference "Packages/ColombaBilling" */,
+				7CC450B77C46569BBF246102 /* XCLocalSwiftPackageReference "Packages/ColombaCore" */,
+				258B2F121878E3675241F4BD /* XCLocalSwiftPackageReference "Packages/ColombaDesign" */,
+				ED4513C685BED5E403560231 /* XCLocalSwiftPackageReference "Packages/ColombaNetworking" */,
+				89AA0965153E9A31AA4EBED8 /* XCLocalSwiftPackageReference "Packages/Features/InvoicesFeature" */,
+				F9A8F09248437D326FCD6817 /* XCLocalSwiftPackageReference "Packages/Features/PlanFeature" */,
+				9002B883F11930426B959709 /* XCLocalSwiftPackageReference "Packages/Features/ScheduledChangeFeature" */,
+				34F8263EFDA0C16D5BC0AB77 /* XCLocalSwiftPackageReference "Packages/Features/TopUpFeature" */,
+				A0D886914C0C118D7112B299 /* XCLocalSwiftPackageReference "Packages/Features/UpgradeFeature" */,
+				D4D979AAA24BE9D5B82A17C9 /* XCLocalSwiftPackageReference "Packages/Features/UsageFeature" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 31BE804F6776F9F5FB7E64B0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CF782245BD982363A47A68C3 /* ColombaCustomer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3AC3186FC7BFA4E566F01AEB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1E5071AEA7D7369691BE52A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8EF7AD640D293198F6463FFC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD0C266C41B78377F87BCF1E /* AppEnvironment.swift in Sources */,
+				0D6C75287EBFCBE50C9E4737 /* AppRouter.swift in Sources */,
+				3EB460CEB1FD73DEDFFC4361 /* ColombaCustomerApp.swift in Sources */,
+				3F7CC2FD2900A9DAF2349084 /* RootView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		5372D2582C9E0DC3287872ED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.10;
+			};
+			name = Debug;
+		};
+		B639531ACD4C000686425686 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = ColombaCustomer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ch.colomba.customer;
+				PRODUCT_NAME = ColombaCustomer;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D3336B9BC2778FB4F3E34366 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = ColombaCustomer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ch.colomba.customer;
+				PRODUCT_NAME = ColombaCustomer;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F7148DBDE02714709F24FA97 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.10;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A47DD498AB7B5A1E106565D8 /* Build configuration list for PBXNativeTarget "ColombaCustomer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3336B9BC2778FB4F3E34366 /* Debug */,
+				B639531ACD4C000686425686 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BB1EFBC4DC358F9CFC534AEB /* Build configuration list for PBXProject "ColombaCustomer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5372D2582C9E0DC3287872ED /* Debug */,
+				F7148DBDE02714709F24FA97 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		258B2F121878E3675241F4BD /* XCLocalSwiftPackageReference "Packages/ColombaDesign" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ColombaDesign;
+		};
+		34F8263EFDA0C16D5BC0AB77 /* XCLocalSwiftPackageReference "Packages/Features/TopUpFeature" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Features/TopUpFeature;
+		};
+		5ED18371A15EB383FB6AB8C4 /* XCLocalSwiftPackageReference "Packages/ColombaAuth" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ColombaAuth;
+		};
+		76F353BB897CDE0D210962A3 /* XCLocalSwiftPackageReference "Packages/Features/AccountFeature" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Features/AccountFeature;
+		};
+		7821683CA2B30A770A5F940B /* XCLocalSwiftPackageReference "Packages/ColombaBilling" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ColombaBilling;
+		};
+		7CC450B77C46569BBF246102 /* XCLocalSwiftPackageReference "Packages/ColombaCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ColombaCore;
+		};
+		89AA0965153E9A31AA4EBED8 /* XCLocalSwiftPackageReference "Packages/Features/InvoicesFeature" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Features/InvoicesFeature;
+		};
+		9002B883F11930426B959709 /* XCLocalSwiftPackageReference "Packages/Features/ScheduledChangeFeature" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Features/ScheduledChangeFeature;
+		};
+		A0D886914C0C118D7112B299 /* XCLocalSwiftPackageReference "Packages/Features/UpgradeFeature" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Features/UpgradeFeature;
+		};
+		D4D979AAA24BE9D5B82A17C9 /* XCLocalSwiftPackageReference "Packages/Features/UsageFeature" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Features/UsageFeature;
+		};
+		ED4513C685BED5E403560231 /* XCLocalSwiftPackageReference "Packages/ColombaNetworking" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ColombaNetworking;
+		};
+		F9A8F09248437D326FCD6817 /* XCLocalSwiftPackageReference "Packages/Features/PlanFeature" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Features/PlanFeature;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		015730E5242C31325C0EC6F2 /* ColombaAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ColombaAuth;
+		};
+		37154F744F3218378549735F /* InvoicesFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = InvoicesFeature;
+		};
+		37CC4DF457DDB92F64295051 /* ColombaDesign */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ColombaDesign;
+		};
+		6765EBBDF7953544D2ACD496 /* ColombaNetworking */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ColombaNetworking;
+		};
+		772BF6E3C6E44891161CC18F /* UsageFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UsageFeature;
+		};
+		77842B4700AD3BE4A6414492 /* UpgradeFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UpgradeFeature;
+		};
+		7BCED26CD7F904FDB37FE831 /* ScheduledChangeFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ScheduledChangeFeature;
+		};
+		89D8608146065A8BF5DFC08A /* ColombaBilling */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ColombaBilling;
+		};
+		8E23369D526BCBBF4FC98636 /* PlanFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PlanFeature;
+		};
+		A992E11F48BBABE3BC458DE2 /* AccountFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AccountFeature;
+		};
+		B48D66839EDFC9EE06B9D614 /* TopUpFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TopUpFeature;
+		};
+		B768EBF2BC474A93E9CDE877 /* ColombaCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ColombaCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = F0B94A94FCB6240A663663A3 /* Project object */;
+}
