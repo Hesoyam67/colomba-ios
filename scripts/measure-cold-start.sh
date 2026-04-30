@@ -19,12 +19,17 @@ mkdir -p "$(dirname "$LOG_PATH")" "$DERIVED_DATA_PATH"
 
 runtime_id="$({
   xcrun simctl list runtimes -j
-} | python3 -c 'import json,sys
+} | IOS_RUNTIME_MAJOR="${IOS_RUNTIME_MAJOR:-}" python3 -c 'import json, os, re, sys
 r=json.load(sys.stdin)["runtimes"]
+major=os.environ.get("IOS_RUNTIME_MAJOR", "")
 ios=[x for x in r if x.get("platform") == "iOS" and x.get("isAvailable")]
+if major:
+    ios=[x for x in ios if str(x.get("version", "")).split(".", 1)[0] == major]
 if not ios:
-    raise SystemExit("no available iOS simulator runtime")
-ios.sort(key=lambda x: x.get("version", ""), reverse=True)
+    raise SystemExit("no matching available iOS simulator runtime")
+def version_key(runtime):
+    return tuple(int(part) for part in re.findall(r"\d+", str(runtime.get("version", ""))))
+ios.sort(key=version_key, reverse=True)
 print(ios[0]["identifier"])')"
 
 udid="$(xcrun simctl list devices -j | DEVICE_NAME="$DEVICE_NAME" python3 -c 'import json,sys,os

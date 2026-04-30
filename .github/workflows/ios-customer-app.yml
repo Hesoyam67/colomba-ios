@@ -57,4 +57,5 @@ jobs:
           xcrun simctl list devices available | grep -E 'iPhone 12|iPhone 15' || true
           DEVICE_NAME="Colomba CI iPhone 15" \
             DEVICE_TYPE="com.apple.CoreSimulator.SimDeviceType.iPhone-15" \
+            IOS_RUNTIME_MAJOR="18" \
             scripts/measure-cold-start.sh
