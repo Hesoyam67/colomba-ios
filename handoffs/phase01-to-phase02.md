@@ -3,6 +3,7 @@
 From session: `agent:main:ios-app:phase01`
 To session: `agent:main:ios-app:phase02`
 Status: **PENDING_XCODE_GATE** — scaffold is staged and source builds pass, but full Phase 1 is blocked until Xcode.app is installed and the iPhone 12 cold-start gate prints a real number under 1.5s.
+Commit: `e5260e2` (`Phase 1 iOS customer app scaffold`).
 
 ## What shipped in Phase 1 source
 - XcodeGen spec at `project.yml` and generated `ColombaCustomer.xcodeproj` / `ColombaCustomer.xcworkspace`.
