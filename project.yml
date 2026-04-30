@@ -49,8 +49,8 @@ targets:
         PRODUCT_NAME: ColombaCustomer
         MARKETING_VERSION: "1.0"
         CURRENT_PROJECT_VERSION: "1"
-        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
-        ENABLE_PREVIEWS: YES
+        ENABLE_PREVIEWS: NO
+        ENABLE_DEBUG_DYLIB: NO
     dependencies:
       - package: ColombaCore
       - package: ColombaDesign

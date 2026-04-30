@@ -2,8 +2,9 @@
 
 From session: `agent:main:ios-app:phase01`
 To session: `agent:main:ios-app:phase02`
-Status: **PENDING_XCODE_GATE** — scaffold is staged and source builds pass, but full Phase 1 is blocked until Xcode.app is installed and the iPhone 12 cold-start gate prints a real number under 1.5s.
-Commit: `e5260e2` (`Phase 1 iOS customer app scaffold`).
+Status: **DONE_PHASE1** — scaffold, package surface, design tokens, Xcode build/lint/tests, and iPhone 12 cold-start gate are green.
+Cold-start result: `COLOMBA_COLD_START_MS=154` (`154ms < 1500ms`).
+Commit base: `e5260e2` (`Phase 1 iOS customer app scaffold`); final gate/docs commit follows this handoff.
 
 ## What shipped in Phase 1 source
 - XcodeGen spec at `project.yml` and generated `ColombaCustomer.xcodeproj` / `ColombaCustomer.xcworkspace`.
@@ -12,7 +13,7 @@ Commit: `e5260e2` (`Phase 1 iOS customer app scaffold`).
   - `AppEnvironment.swift`
   - `AppRouter.swift`
   - `RootView.swift`
-  - `Assets.xcassets/`
+  - `Assets.xcassets/` including generated Phase 1 placeholder `AppIcon.appiconset`
   - `Info.plist`
 - Root aggregate Swift package at `Package.swift` / `Sources/ColombaCustomerWorkspace` with a sentinel test target.
 - Stub packages with public API surfaces:
@@ -45,51 +46,33 @@ Commit: `e5260e2` (`Phase 1 iOS customer app scaffold`).
   - runs `swiftlint --strict`
   - runs simulator build + cold-start script
 
-## Verification already run on Heso
+## Verification run on Heso
 Environment:
 - macOS 26.4.1
-- `xcode-select -p` → `/Library/Developer/CommandLineTools`
-- Xcode.app: **absent**
-- Swift CLI: Apple Swift 6.3.1, package tools pinned to Swift 5.10
+- `xcode-select -p` → `/Applications/Xcode.app/Contents/Developer`
+- Xcode 26.4.1, build 17E202
+- Apple Swift 6.3.1; package manifests pinned to Swift 5.10
+- iOS Simulator runtime iOS 26.4.1 (23E254a)
+- SwiftLint 0.63.2
 
 Passed:
 - `xcodegen generate --spec project.yml`
 - `bash -n scripts/measure-cold-start.sh`
 - root `swift build --disable-sandbox`
 - `swift build --disable-sandbox` for every package under `Packages/*` and `Packages/Features/*`
+- root `swift test`
+- `swift test` for every package under `Packages/*` and `Packages/Features/*`
+- `swiftlint --strict`
+- `scripts/measure-cold-start.sh`
 
-Blocked by missing full Xcode:
-- `swift test` root/per-package: XCTest unavailable under CLT-only toolchain.
-- `swiftlint --strict`: Homebrew SwiftLint install requires Xcode.app.
-- `xcodebuild` / iOS Simulator build.
-- `scripts/measure-cold-start.sh`: exits `PAPU_NEEDED_XCODE` before build/launch.
-
-## Xcode install blocker
-Attempts made:
-- App Store CLI install via `mas install 497799835`.
-- Homebrew SwiftLint install to unblock lint locally.
-
-Observed blocker:
-- `mas install 497799835` requires sudo password / terminal auth.
-- `brew install swiftlint` also refuses under CLT-only setup because it requires full Xcode.
-
-Papu action needed:
-1. Install Xcode 16 in `/Applications/Xcode.app` or provide the Mac password for the install/switch step.
-2. Then run:
-   ```bash
-   cd ~/colomba-build/customer-app
-   sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-   swift test
-   for pkg in Packages/* Packages/Features/*; do [ -f "$pkg/Package.swift" ] && (cd "$pkg" && swift test); done
-   swiftlint --strict
-   scripts/measure-cold-start.sh
-   ```
-3. If `scripts/measure-cold-start.sh` prints `<1500`, Phase 1 can be marked `DONE_PHASE1` and Phase 2 can start.
+Cold-start gate output:
+```text
+COLOMBA_COLD_START_MS=154
+cold-start gate passed: 154ms < 1500ms
+```
 
 ## Phase 2 pickup notes
-Do not start Phase 2 until the Xcode/cold-start gate is closed.
-
-When unblocked, Phase 2 owns auth only:
+Phase 2 can start. It owns auth only:
 - Sign-in-with-Apple flow.
 - Magic-link request/verify flow.
 - Session token storage.

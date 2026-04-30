@@ -1,5 +1,5 @@
-import XCTest
 @testable import ColombaBilling
+import XCTest
 
 final class ColombaBillingTests: XCTestCase {
     func testSentinelIsPublic() {

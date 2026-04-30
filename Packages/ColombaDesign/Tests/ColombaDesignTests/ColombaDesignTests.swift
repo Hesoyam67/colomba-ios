@@ -1,6 +1,6 @@
+@testable import ColombaDesign
 import SwiftUI
 import XCTest
-@testable import ColombaDesign
 
 final class ColombaDesignTests: XCTestCase {
     func testSpacingScaleMatchesLockedTokens() {

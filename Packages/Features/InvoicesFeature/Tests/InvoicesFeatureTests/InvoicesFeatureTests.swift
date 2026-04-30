@@ -1,5 +1,5 @@
-import XCTest
 @testable import InvoicesFeature
+import XCTest
 
 final class InvoicesFeatureTests: XCTestCase {
     func testSentinelIsPublic() {

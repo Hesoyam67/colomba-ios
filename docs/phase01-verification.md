@@ -1,22 +1,36 @@
 # Phase 1 Verification Report
 
-Status: **PENDING_XCODE_GATE**
+Status: **DONE_PHASE1**
 
 ## Reconciliation
 - Build directory: `~/colomba-build/customer-app`
 - Drive canon: `~/colomba-drive/customer-app`
 - Prior Claude Code sub-agents did not provide usable handoffs after reconnect; main session completed/staged their intended Phase 1 work directly.
-- Xcode install log shows `mas install 497799835` reached password-gated sudo and did not produce `/Applications/Xcode.app`.
+- Xcode-dependent gates were completed on 2026-04-30 after `XCODE_READY`.
 
-## Green checks on current machine
+## Environment
+```text
+xcode-select -p                                      /Applications/Xcode.app/Contents/Developer
+xcodebuild -version                                  Xcode 26.4.1 (Build 17E202)
+swift --version                                      Apple Swift 6.3.1, package tools pinned to Swift 5.10
+iOS Simulator runtime                               iOS 26.4.1 (23E254a)
+Phase 1 simulator device                             Colomba Phase1 iPhone 12
+SwiftLint                                            0.63.2
+```
+
+## Green checks
 ```text
 xcodegen generate --spec project.yml                 PASS
 bash -n scripts/measure-cold-start.sh                PASS
 swift build --disable-sandbox                        PASS
 swift build --disable-sandbox per package            PASS
+swift test                                           PASS
+swift test per package                               PASS
+swiftlint --strict                                   PASS
+scripts/measure-cold-start.sh                        PASS
 ```
 
-Packages verified with `swift build --disable-sandbox`:
+Packages verified with `swift test`:
 - `Packages/ColombaAuth`
 - `Packages/ColombaBilling`
 - `Packages/ColombaCore`
@@ -30,30 +44,13 @@ Packages verified with `swift build --disable-sandbox`:
 - `Packages/Features/UpgradeFeature`
 - `Packages/Features/UsageFeature`
 
-## Blocked checks
+## Cold-start gate
 ```text
-swift test root/per package                           BLOCKED: no XCTest under CLT-only toolchain
-swiftlint --strict                                    BLOCKED: Homebrew SwiftLint requires full Xcode.app
-xcodebuild simulator build                            BLOCKED: xcodebuild requires full Xcode.app
-scripts/measure-cold-start.sh                         BLOCKED: full Xcode.app required
+COLOMBA_COLD_START_MS=154
+cold-start gate passed: 154ms < 1500ms
 ```
 
-## Required gate to print DONE_PHASE1
-Run after Xcode 16 is installed and selected:
-
-```bash
-cd ~/colomba-build/customer-app
-sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-swift test
-for pkg in Packages/* Packages/Features/*; do [ -f "$pkg/Package.swift" ] && (cd "$pkg" && swift test); done
-swiftlint --strict
-scripts/measure-cold-start.sh
-```
-
-Acceptance line required:
-
+Acceptance line:
 ```text
-COLOMBA_COLD_START_MS=<number under 1500>
-cold-start gate passed: <number>ms < 1500ms
-DONE_PHASE1 cold_start_ms=<same number>
+DONE_PHASE1 cold_start_ms=154
 ```

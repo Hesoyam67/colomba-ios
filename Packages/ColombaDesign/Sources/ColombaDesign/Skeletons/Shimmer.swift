@@ -1,7 +1,8 @@
 import SwiftUI
 
 public struct ColombaShimmerModifier: ViewModifier {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion)
+    private var reduceMotion
     @State private var phase: CGFloat = -1.0
 
     private let active: Bool
@@ -39,7 +40,13 @@ public struct ColombaShimmerModifier: ViewModifier {
                 }
         } else {
             content
-                .animation(ColombaMotion.respectingReduceMotion(.linear(duration: 0), reduceMotion: reduceMotion), value: active)
+                .animation(
+                    ColombaMotion.respectingReduceMotion(
+                        .linear(duration: 0),
+                        reduceMotion: reduceMotion
+                    ),
+                    value: active
+                )
         }
     }
 }
