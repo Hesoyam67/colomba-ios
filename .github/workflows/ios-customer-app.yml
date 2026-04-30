@@ -51,7 +51,37 @@ jobs:
       - name: SwiftLint
         run: swiftlint --strict
 
+      - name: Resolve iOS Simulator runtime
+        id: ios_runtime
+        run: |
+          set -euo pipefail
+          IOS_VERSION=$(xcrun simctl list runtimes available -j \
+            | jq -r '.runtimes[] | select(.platform == "iOS" and .isAvailable == true) | .version' \
+            | sort -V \
+            | tail -n 1)
+          if [ -z "$IOS_VERSION" ]; then
+            echo "ERROR: no available iOS Simulator runtime found on this runner" >&2
+            xcrun simctl list runtimes >&2
+            exit 1
+          fi
+          echo "Resolved iOS Simulator runtime: $IOS_VERSION"
+          echo "IOS_VERSION=$IOS_VERSION" >> "$GITHUB_ENV"
+
       - name: iOS simulator build + cold-start gate
         run: |
+          set -euo pipefail
+          echo "Using iOS Simulator runtime: ${IOS_VERSION}"
           xcrun simctl list devices available | grep -E 'iPhone 12|iPhone 15' || true
-          DEVICE_NAME="Colomba Phase1 iPhone 12" scripts/measure-cold-start.sh
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path("scripts/measure-cold-start.sh")
+          script = path.read_text()
+          old = '  -destination "id=$udid" ' + '\\' + '\n'
+          new = '  -destination "platform=iOS Simulator,OS=${IOS_VERSION},name=${DEVICE_NAME}" ' + '\\' + '\n'
+          if old not in script:
+              raise SystemExit("destination patch target not found")
+          path.write_text(script.replace(old, new))
+          PY
+          DEVICE_NAME="Colomba CI iPhone 15 ${IOS_VERSION}" \
+            DEVICE_TYPE="com.apple.CoreSimulator.SimDeviceType.iPhone-15" \
+            scripts/measure-cold-start.sh
