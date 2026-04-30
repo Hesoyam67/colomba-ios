@@ -14,11 +14,11 @@ jobs:
       fail-fast: false
       matrix:
         xcode: ['16']
-        destination: ['platform=iOS Simulator,name=iPhone 12']
+        destination: ['platform=iOS Simulator,OS=latest,name=iPhone 15']
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Select Xcode 16
         run: |
@@ -53,5 +53,8 @@ jobs:
 
       - name: iOS simulator build + cold-start gate
         run: |
+          xcrun simctl list runtimes
           xcrun simctl list devices available | grep -E 'iPhone 12|iPhone 15' || true
-          DEVICE_NAME="Colomba Phase1 iPhone 12" scripts/measure-cold-start.sh
+          DEVICE_NAME="Colomba CI iPhone 15" \
+            DEVICE_TYPE="com.apple.CoreSimulator.SimDeviceType.iPhone-15" \
+            scripts/measure-cold-start.sh
