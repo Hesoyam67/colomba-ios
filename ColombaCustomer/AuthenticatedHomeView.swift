@@ -34,6 +34,16 @@ struct AuthenticatedHomeView: View {
                     }
                     .buttonStyle(.bordered)
                     .accessibilityLabel("View usage this month")
+                    NavigationLink("Reserve a table") {
+                        RestaurantListView(
+                            viewModel: ReservationViewModel(
+                                service: ReservationService(),
+                                prefilledName: session.customer.displayName
+                            )
+                        )
+                    }
+                    .buttonStyle(.bordered)
+                    .accessibilityLabel("Reserve a table at a restaurant")
                     StripePortalButton()
                 }
                 HStack(spacing: ColombaSpacing.space3) {
