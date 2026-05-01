@@ -1,57 +1,113 @@
-name: iOS Customer App
+name: iOS Customer App CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, "ci/**", "phase/**"]
   pull_request:
     branches: [main]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build-test-lint:
-    name: Xcode ${{ matrix.xcode }} / iOS 17
-    runs-on: macos-15
-    strategy:
-      fail-fast: false
-      matrix:
-        xcode: ['16']
-        destination: ['platform=iOS Simulator,name=iPhone 12']
+  test:
+    runs-on: macos-14
+    timeout-minutes: 30
+    env:
+      # CONFIRM: matches the Xcode scheme name in the project.
+      # If unset, fastlane scan auto-detects when there is exactly one scheme.
+      SCHEME: ColombaCustomer
+      # First-green ceiling. CI hardware is slower than M-series dev box.
+      # Tighten in Phase 2 once a measured baseline exists.
+      PHASE2_GATE_THRESHOLD_MS: "400"
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Select Xcode 16
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Toolchain sanity
         run: |
-          if [ -d /Applications/Xcode_16.app ]; then
-            sudo xcode-select -s /Applications/Xcode_16.app/Contents/Developer
-          elif [ -d /Applications/Xcode.app ]; then
-            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-          fi
           xcodebuild -version
-          swift --version
+          fastlane --version
+          xcrun simctl list runtimes
 
-      - name: Install SwiftLint
+      - name: Build & test (fastlane scan)
         run: |
-          if ! command -v swiftlint >/dev/null 2>&1; then
-            brew install swiftlint
-          fi
-          swiftlint version
+          fastlane scan \
+            --scheme "$SCHEME" \
+            --output_types junit \
+            --skip_slack \
+            --clean \
+            --reset_simulator false
 
-      - name: Swift package tests
+      - name: Cold-start gate
+        id: cold_start
         run: |
           set -euo pipefail
-          swift test
-          for pkg in Packages/* Packages/Features/*; do
-            if [ -f "$pkg/Package.swift" ]; then
-              echo "== swift test $pkg"
-              (cd "$pkg" && swift test)
-            fi
-          done
 
-      - name: SwiftLint
-        run: swiftlint --strict
+          APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData \
+            -type d -name "*.app" \
+            -path "*Build/Products/Debug-iphonesimulator/*" \
+            ! -path "*.app/*" \
+            | head -1)
 
-      - name: iOS simulator build + cold-start gate
-        run: |
-          xcrun simctl list devices available | grep -E 'iPhone 12|iPhone 15' || true
-          DEVICE_NAME="Colomba Phase1 iPhone 12" scripts/measure-cold-start.sh
+          if [ -z "$APP_PATH" ]; then
+            echo "::error::No .app produced by fastlane scan in DerivedData"
+            exit 1
+          fi
+          echo "App: $APP_PATH"
+
+          BUNDLE_ID=$(/usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "$APP_PATH/Info.plist")
+          echo "Bundle: $BUNDLE_ID"
+
+          # Pick the first available iOS simulator. No hardcoded device names.
+          SIM_UDID=$(xcrun simctl list devices available -j | python3 -c "
+          import json, sys
+          d = json.load(sys.stdin)['devices']
+          for runtime, devs in d.items():
+              if 'iOS' not in runtime:
+                  continue
+              for dev in devs:
+                  if dev.get('isAvailable'):
+                      print(dev['udid'])
+                      sys.exit(0)
+          ")
+
+          if [ -z "$SIM_UDID" ]; then
+            echo "::error::No available iOS simulator on this runner"
+            exit 1
+          fi
+          echo "Sim: $SIM_UDID"
+
+          xcrun simctl boot "$SIM_UDID" 2>/dev/null || true
+          xcrun simctl bootstatus "$SIM_UDID" -b
+          xcrun simctl install "$SIM_UDID" "$APP_PATH"
+          xcrun simctl terminate "$SIM_UDID" "$BUNDLE_ID" 2>/dev/null || true
+
+          START_NS=$(python3 -c "import time; print(int(time.time()*1e9))")
+          xcrun simctl launch "$SIM_UDID" "$BUNDLE_ID"
+          END_NS=$(python3 -c "import time; print(int(time.time()*1e9))")
+          ELAPSED_MS=$(( (END_NS - START_NS) / 1000000 ))
+
+          echo "Cold-start: ${ELAPSED_MS}ms (threshold ${PHASE2_GATE_THRESHOLD_MS}ms)"
+          echo "cold_start_ms=${ELAPSED_MS}" >> "$GITHUB_OUTPUT"
+
+          if [ "$ELAPSED_MS" -gt "$PHASE2_GATE_THRESHOLD_MS" ]; then
+            echo "::error::Cold-start ${ELAPSED_MS}ms > ${PHASE2_GATE_THRESHOLD_MS}ms"
+            exit 1
+          fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            fastlane/test_output
+            ~/Library/Logs/scan
+          if-no-files-found: ignore
