@@ -3,7 +3,7 @@
 Created: 2026-04-30T21:34:00+02:00
 Repo: `/Users/hesoyam/colomba-build/customer-app`
 Branch: `phase3-plans-paywall-heso`
-Protocol: N=30 runs, discard first 3 warmup, `scripts/measure-cold-start.sh`, simulator `Colomba Phase1 iPhone 12`, Debug.
+Protocol: N=30 runs, discard first 3 warmup, `scripts/measure-cold-start.sh`, simulator `iPhone 16`, Debug.
 Binding gate: p50 ≤ 161.7ms; p95 ≤ 1500ms.
 
 ## Baseline
