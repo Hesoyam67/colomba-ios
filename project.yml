@@ -73,6 +73,7 @@ targets:
         GENERATE_INFOPLIST_FILE: YES
     sources:
       - path: ColombaCustomer/Tests
+      - path: ColombaCustomerTests
     dependencies:
       - target: ColombaCustomer
       - package: ColombaNetworking
