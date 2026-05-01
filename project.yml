@@ -8,6 +8,9 @@ settings:
     SWIFT_VERSION: "5.10"
     IPHONEOS_DEPLOYMENT_TARGET: "17.0"
 packages:
+  PhoneNumberKit:
+    url: https://github.com/marmelroy/PhoneNumberKit.git
+    from: 4.0.0
   ColombaCore:
     path: Packages/ColombaCore
   ColombaDesign:
@@ -61,6 +64,7 @@ targets:
       - package: ColombaAuth
       - package: ColombaNetworking
       - package: ColombaBilling
+      - package: PhoneNumberKit
   ColombaCustomerTests:
     type: bundle.unit-test
     platform: iOS
@@ -73,6 +77,7 @@ targets:
       - target: ColombaCustomer
       - package: ColombaNetworking
       - package: ColombaBilling
+      - package: PhoneNumberKit
 schemes:
   ColombaCustomer:
     build:
