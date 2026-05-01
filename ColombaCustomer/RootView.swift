@@ -2,32 +2,52 @@ import ColombaCore
 import SwiftUI
 
 struct RootView: View {
-    @State private var authContent: AnyView?
-
     var body: some View {
-        Group {
-            if let authContent {
-                authContent
-            } else {
-                Text("auth.colomba_brand")
-                    .font(.largeTitle.weight(.bold))
-                    .foregroundStyle(.primary)
-                    .padding(20)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(.background)
-                    .accessibilityLabel("Colomba")
+        TabView {
+            AuthRootHost()
+                .accessibilityElement(children: .contain)
+                .accessibilityLabel(Text("tabs.home"))
+                .tabItem {
+                    Image(systemName: "house.fill")
+                    Text(LocalizedStringKey("tabs.home"))
+                }
+
+            NavigationStack {
+                RestaurantListView(
+                    viewModel: ReservationViewModel(
+                        service: ReservationService(),
+                        prefilledName: ""
+                    )
+                )
             }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(Text("tabs.reservations"))
+            .tabItem {
+                Image(systemName: "calendar")
+                Text(LocalizedStringKey("tabs.reservations"))
+            }
+
+            NavigationStack {
+                PlansListView()
+            }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(Text("tabs.plans"))
+            .tabItem {
+                Image(systemName: "creditcard")
+                Text(LocalizedStringKey("tabs.plans"))
+            }
+
+            SettingsView()
+                .accessibilityElement(children: .contain)
+                .accessibilityLabel(Text("tabs.settings"))
+                .tabItem {
+                    Image(systemName: "gear")
+                    Text(LocalizedStringKey("tabs.settings"))
+                }
         }
         .background(.background)
         .onAppear {
             ColdStart.markRootViewAppeared()
-            guard authContent == nil else {
-                return
-            }
-            Task { @MainActor in
-                await Task.yield()
-                authContent = AnyView(AuthRootHost())
-            }
         }
     }
 }

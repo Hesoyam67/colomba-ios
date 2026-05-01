@@ -38,6 +38,7 @@
 		596BB3E32D94EFB3FD72DA25 /* ColombaNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 6765EBBDF7953544D2ACD496 /* ColombaNetworking */; };
 		5ABE53A5213CD86ED62103F9 /* SignedOutAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFC833D199608357885074F1 /* SignedOutAuthView.swift */; };
 		64061884188F665F901F07E2 /* AuthenticatedHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0CA16AC3A7BE5397AFA97 /* AuthenticatedHomeView.swift */; };
+		65031B855B1E8139B79BFCED /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E086E4C720B650F5EDED5859 /* SettingsView.swift */; };
 		6CB4FE8AAC1057B02DB50671 /* ReservationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D9E44525A8A9D4C502D2BC /* ReservationViewModel.swift */; };
 		6DE43FFA15CE4ECF7372501E /* LanguagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F12A3E12067212E60B5A8B /* LanguagePickerView.swift */; };
 		7070FA5F5719194BF195B1A8 /* ReservationServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9097DC799895321F8586741 /* ReservationServiceProtocol.swift */; };
@@ -151,6 +152,7 @@
 		D9097DC799895321F8586741 /* ReservationServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationServiceProtocol.swift; sourceTree = "<group>"; };
 		DBAFA86210D4DD668E37A24F /* PlansListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansListView.swift; sourceTree = "<group>"; };
 		DCD6452571FC87236B0BE272 /* AuthGateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthGateView.swift; sourceTree = "<group>"; };
+		E086E4C720B650F5EDED5859 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		E09F4E901666727709C945FD /* SMSVerifyServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSVerifyServiceTests.swift; sourceTree = "<group>"; };
 		E35D74F4BDD745EE0111A7F2 /* TopUpFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TopUpFeature; path = Packages/Features/TopUpFeature; sourceTree = SOURCE_ROOT; };
 		E4393AAF93ED78B9E3E97E9F /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
@@ -407,6 +409,7 @@
 				3A11F03EF2B262C7CFF81565 /* Info.plist */,
 				5F41396385C9E8A96C83C8CB /* PrivacyInfo.xcprivacy */,
 				159C8B476F0E58A50B5CE76E /* RootView.swift */,
+				E086E4C720B650F5EDED5859 /* SettingsView.swift */,
 				EFC833D199608357885074F1 /* SignedOutAuthView.swift */,
 				0419F739A5C92B196C01077B /* Features */,
 				56E3937F629EE19DAED1F422 /* Resources */,
@@ -585,6 +588,7 @@
 				3F7CC2FD2900A9DAF2349084 /* RootView.swift in Sources */,
 				955C48E02C7F3EAB3EA0D56C /* SMSVerifyService.swift in Sources */,
 				4C0ECAD0E9D24194C036D167 /* SMSVerifyServiceProtocol.swift in Sources */,
+				65031B855B1E8139B79BFCED /* SettingsView.swift in Sources */,
 				5ABE53A5213CD86ED62103F9 /* SignedOutAuthView.swift in Sources */,
 				A4BEF2B9265BF80A64B24DFA /* StripePortalCoordinator.swift in Sources */,
 				5609700205D89092D3980FC0 /* TwilioSMSVerifyClient.swift in Sources */,
