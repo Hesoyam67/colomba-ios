@@ -118,3 +118,17 @@
 "billing.manage_subscription" = "Manage subscription";
 "billing.portal_unavailable" = "Billing portal is unavailable. Please try again.";
 "billing.portal_hint" = "Opens the Stripe customer portal in Safari";
+
+/* MARK: Tabs */
+"tabs.home" = "Home";
+"tabs.reservations" = "Reservations";
+"tabs.plans" = "Plans";
+"tabs.settings" = "Settings";
+
+/* MARK: Settings */
+"settings.account" = "Account";
+"settings.app" = "App";
+"settings.usage" = "Usage";
+"settings.language" = "Language";
+"settings.about" = "About";
+"settings.sign_out" = "Sign out";

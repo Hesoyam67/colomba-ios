@@ -60,6 +60,7 @@
 		B86248BF956AB23C60D7A279 /* RestaurantListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE65D452BA9FD5EB85CA65 /* RestaurantListView.swift */; };
 		B9FFC3EA638B97A3823F8D0E /* UsageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7A341412350F4E7C5AAD53 /* UsageViewModelTests.swift */; };
 		BD07D5DE38064365D51B809E /* PhoneNumberKit in Frameworks */ = {isa = PBXBuildFile; productRef = F0E15FB09FC1C1C017AD9CBA /* PhoneNumberKit */; };
+		C080E7312A110725AA56D5E7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF5A27AAF4F72FCBEB6813C /* SettingsView.swift */; };
 		CAFBC43F3525DABFB1786F8A /* PlansViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0C6BDFDFE8C2C342F02AE5 /* PlansViewModelTests.swift */; };
 		CC97386D38F95A4723C7072E /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4393AAF93ED78B9E3E97E9F /* WelcomeView.swift */; };
 		D6787A5481A31BF135AAC020 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F9E37749AB067AA99018B4 /* AppLanguage.swift */; };
@@ -105,6 +106,7 @@
 		3A11F03EF2B262C7CFF81565 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3A348C7A72860162F5A05B9B /* PhoneVerifyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerifyViewModel.swift; sourceTree = "<group>"; };
 		3B390C1F276C1FF68703D680 /* UsageSummaryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageSummaryRow.swift; sourceTree = "<group>"; };
+		3EF5A27AAF4F72FCBEB6813C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		3F08485124F3F7569FFE7B98 /* PaywallStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallStateMachine.swift; sourceTree = "<group>"; };
 		41B9A26F11A35B56D7F09E2A /* de-CH */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "de-CH"; path = "de-CH.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		43342F23DEA2C4DB6C90A3C8 /* ReservationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationViewModelTests.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 		7420E9359F0DFBEC530C2EB8 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				3EF5A27AAF4F72FCBEB6813C /* SettingsView.swift */,
 				C42EAC4449E790A102A09571 /* Components */,
 			);
 			path = Settings;
@@ -585,6 +588,7 @@
 				3F7CC2FD2900A9DAF2349084 /* RootView.swift in Sources */,
 				955C48E02C7F3EAB3EA0D56C /* SMSVerifyService.swift in Sources */,
 				4C0ECAD0E9D24194C036D167 /* SMSVerifyServiceProtocol.swift in Sources */,
+				C080E7312A110725AA56D5E7 /* SettingsView.swift in Sources */,
 				5ABE53A5213CD86ED62103F9 /* SignedOutAuthView.swift in Sources */,
 				A4BEF2B9265BF80A64B24DFA /* StripePortalCoordinator.swift in Sources */,
 				5609700205D89092D3980FC0 /* TwilioSMSVerifyClient.swift in Sources */,
