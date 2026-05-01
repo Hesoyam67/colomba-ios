@@ -10,31 +10,31 @@ struct AuthenticatedHomeView: View {
         NavigationStack {
             VStack(alignment: .leading, spacing: ColombaSpacing.space6) {
                 VStack(alignment: .leading, spacing: ColombaSpacing.space3) {
-                    Text("Signed in")
+                    Text("auth.signed_in")
                         .font(.colomba.caption)
                         .foregroundStyle(Color.colomba.success)
                         .accessibilityLabel("Signed in")
-                    Text("Welcome, \(session.customer.displayName)")
+                    Text(welcomeName)
                         .font(.colomba.titleLg)
                         .foregroundStyle(Color.colomba.text.primary)
                         .fixedSize(horizontal: false, vertical: true)
                         .accessibilityLabel("Welcome, \(session.customer.displayName)")
-                    Text("Your secure session is active. Review plan and billing readiness from the dashboard.")
+                    Text("auth.session_copy")
                         .font(.colomba.bodyLg)
                         .foregroundStyle(Color.colomba.text.secondary)
                         .fixedSize(horizontal: false, vertical: true)
                         .accessibilityLabel("Customer session active")
-                    NavigationLink("View plans") {
+                    NavigationLink(String(localized: "auth.view_plans")) {
                         PlansListView()
                     }
                     .buttonStyle(.borderedProminent)
                     .accessibilityLabel("View available Colomba plans")
-                    NavigationLink("View usage") {
+                    NavigationLink(String(localized: "auth.view_usage")) {
                         UsageView()
                     }
                     .buttonStyle(.bordered)
                     .accessibilityLabel("View usage this month")
-                    NavigationLink("Reserve a table") {
+                    NavigationLink(String(localized: "auth.reserve_table")) {
                         RestaurantListView(
                             viewModel: ReservationViewModel(
                                 service: ReservationService(),
@@ -47,14 +47,14 @@ struct AuthenticatedHomeView: View {
                     StripePortalButton()
                 }
                 HStack(spacing: ColombaSpacing.space3) {
-                    Button("Refresh session") {
+                    Button(String(localized: "auth.refresh_session")) {
                         Task {
                             await authController.refreshSession()
                         }
                     }
                     .buttonStyle(.borderedProminent)
                     .accessibilityLabel("Refresh secure session")
-                    Button("Sign out") {
+                    Button(String(localized: "auth.sign_out")) {
                         authController.signOut()
                     }
                     .buttonStyle(.bordered)
@@ -69,5 +69,10 @@ struct AuthenticatedHomeView: View {
             .accessibilityElement(children: .contain)
             .accessibilityLabel("Authenticated Colomba home screen")
         }
+    }
+
+    /// Format: auth.welcome_name_format contains one %@ display name.
+    private var welcomeName: String {
+        String(format: NSLocalizedString("auth.welcome_name_format", comment: ""), session.customer.displayName)
     }
 }

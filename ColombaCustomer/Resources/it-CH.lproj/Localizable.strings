@@ -1,2 +1,120 @@
-"onboarding.welcome.title" = "Welcome to Colomba";
-"onboarding.notifications.cta" = "Continue";
+/* MARK: Onboarding */
+"onboarding.welcome.title" = "TODO_TRANSLATE: Welcome to Colomba";
+"onboarding.notifications.cta" = "TODO_TRANSLATE: Continue";
+
+/* MARK: Auth */
+"auth.colomba_brand" = "TODO_TRANSLATE: Colomba";
+"auth.welcome_title" = "TODO_TRANSLATE: Welcome to Colomba";
+"auth.signin_copy" = "TODO_TRANSLATE: Sign in securely with Apple, or use the email magic link for pilot accounts.";
+"auth.or" = "TODO_TRANSLATE: or";
+"auth.email_magic_link" = "TODO_TRANSLATE: Email magic link";
+"auth.email_placeholder" = "TODO_TRANSLATE: owner@example.ch";
+"auth.send_signin_link" = "TODO_TRANSLATE: Send sign-in link";
+"auth.code_sent_to_format" = "TODO_TRANSLATE: We sent a code to %@.";
+"auth.code_placeholder" = "TODO_TRANSLATE: 482913";
+"auth.verify_code" = "TODO_TRANSLATE: Verify code";
+"auth.sending_link" = "TODO_TRANSLATE: Sending secure link…";
+"auth.verifying_code" = "TODO_TRANSLATE: Verifying code…";
+"auth.checking_apple" = "TODO_TRANSLATE: Checking Apple credential…";
+"auth.signed_in" = "TODO_TRANSLATE: Signed in";
+"auth.welcome_name_format" = "TODO_TRANSLATE: Welcome, %@";
+"auth.session_copy" = "TODO_TRANSLATE: Your secure session is active. Review plan and billing readiness from the dashboard.";
+"auth.view_plans" = "TODO_TRANSLATE: View plans";
+"auth.view_usage" = "TODO_TRANSLATE: View usage";
+"auth.reserve_table" = "TODO_TRANSLATE: Reserve a table";
+"auth.refresh_session" = "TODO_TRANSLATE: Refresh session";
+"auth.sign_out" = "TODO_TRANSLATE: Sign out";
+
+/* MARK: Reservation */
+"reservation.loading_restaurants" = "TODO_TRANSLATE: Loading restaurants";
+"reservation.empty_title" = "TODO_TRANSLATE: No restaurants yet";
+"reservation.empty_desc" = "TODO_TRANSLATE: Reservation partners will appear here.";
+"reservation.nav_title" = "TODO_TRANSLATE: Reserve";
+"reservation.error_title" = "TODO_TRANSLATE: Reservation error";
+"reservation.ok" = "TODO_TRANSLATE: OK";
+"reservation.failed_default" = "TODO_TRANSLATE: Reservation failed";
+"reservation.reserve" = "TODO_TRANSLATE: Reserve";
+"reservation.book_copy" = "TODO_TRANSLATE: Book a confirmed table with Colomba. Availability is checked live before submission.";
+"reservation.available_times" = "TODO_TRANSLATE: Available times";
+"reservation.checking_availability" = "TODO_TRANSLATE: Checking availability";
+"reservation.no_available_times" = "TODO_TRANSLATE: No available times";
+"reservation.when" = "TODO_TRANSLATE: When";
+"reservation.date" = "TODO_TRANSLATE: Date";
+"reservation.time" = "TODO_TRANSLATE: Time";
+"reservation.choose_time" = "TODO_TRANSLATE: Choose a time";
+"reservation.party" = "TODO_TRANSLATE: Party";
+"reservation.guests_format" = "TODO_TRANSLATE: %d guests";
+"reservation.full_name" = "TODO_TRANSLATE: Full name";
+"reservation.counter_format" = "TODO_TRANSLATE: %d/500";
+"reservation.special_requests" = "TODO_TRANSLATE: Special requests";
+"reservation.optional_hint" = "TODO_TRANSLATE: Optional. Keep it under 500 characters.";
+"reservation.confirm" = "TODO_TRANSLATE: Confirm";
+"reservation.nav_title_format" = "TODO_TRANSLATE: Reserve %@";
+"reservation.confirmed" = "TODO_TRANSLATE: Reservation confirmed";
+"reservation.party_of_format" = "TODO_TRANSLATE: Party of %d";
+"reservation.add_to_calendar" = "TODO_TRANSLATE: Add to Calendar";
+"reservation.done" = "TODO_TRANSLATE: Done";
+"reservation.calendar_denied" = "TODO_TRANSLATE: Calendar access denied. Share-sheet fallback is planned.";
+"reservation.calendar_added" = "TODO_TRANSLATE: Added to Calendar.";
+"reservation.calendar_unavailable" = "TODO_TRANSLATE: Calendar export unavailable. Share-sheet fallback is planned.";
+"reservation.calendar_title_format" = "TODO_TRANSLATE: Reservation at %@";
+"reservation.calendar_notes_format" = "TODO_TRANSLATE: Colomba reservation ID: %@";
+
+/* MARK: Phone verify */
+"phone_verify.verifying_progress" = "TODO_TRANSLATE: Verifying code…";
+"phone_verify.verified_title" = "TODO_TRANSLATE: Phone verified";
+"phone_verify.verified_body" = "TODO_TRANSLATE: You can continue onboarding.";
+"phone_verify.paused_title" = "TODO_TRANSLATE: Verification paused";
+"phone_verify.title" = "TODO_TRANSLATE: Verify your phone";
+"phone_verify.body" = "TODO_TRANSLATE: We’ll send a 6-digit SMS code to your Swiss mobile number.";
+"phone_verify.country_code" = "TODO_TRANSLATE: +41";
+"phone_verify.phone_placeholder" = "TODO_TRANSLATE: 79 123 45 67";
+"phone_verify.send_code" = "TODO_TRANSLATE: Send code";
+"phone_verify.attempts_format" = "TODO_TRANSLATE: Attempts remaining: %d";
+"phone_verify.verify_code" = "TODO_TRANSLATE: Verify code";
+"phone_verify.change_number" = "TODO_TRANSLATE: Change number";
+"phone_verify.resend_in_format" = "TODO_TRANSLATE: Resend in %ds";
+"phone_verify.resend_code" = "TODO_TRANSLATE: Resend code";
+
+/* MARK: Paywall */
+"paywall.upgrade_title" = "TODO_TRANSLATE: Upgrade Colomba";
+"paywall.restore_purchases" = "TODO_TRANSLATE: Restore purchases";
+"paywall.loading_products" = "TODO_TRANSLATE: Loading products";
+"paywall.price_format" = "TODO_TRANSLATE: %@ per %@";
+"paywall.buy_accessibility_format" = "TODO_TRANSLATE: Buy %@, %@ per %@";
+"paywall.purchase_hint" = "TODO_TRANSLATE: Starts the App Store purchase flow";
+"paywall.purchasing_format" = "TODO_TRANSLATE: Purchasing %@";
+"paywall.purchased_format" = "TODO_TRANSLATE: Purchased %@";
+
+/* MARK: Plans */
+"plans.loading" = "TODO_TRANSLATE: Loading plans";
+"plans.unavailable" = "TODO_TRANSLATE: Plans unavailable";
+"plans.open_details_format" = "TODO_TRANSLATE: Open %@ plan details";
+"plans.nav_title" = "TODO_TRANSLATE: Plans";
+"plans.price_format" = "TODO_TRANSLATE: %@ %@/month";
+"plans.price_accessibility_format" = "TODO_TRANSLATE: %@ %d per month";
+"plans.included" = "TODO_TRANSLATE: Included";
+"plans.events_format" = "TODO_TRANSLATE: %@ events per month";
+"plans.events_accessibility_format" = "TODO_TRANSLATE: %@ events included per month";
+"plans.included_events_format" = "TODO_TRANSLATE: %@ events included";
+"plans.choose_format" = "TODO_TRANSLATE: Choose %@";
+"plans.choose_accessibility_format" = "TODO_TRANSLATE: Choose %@ plan";
+"plans.upgrade_hint" = "TODO_TRANSLATE: Opens the secure upgrade flow";
+
+/* MARK: Usage */
+"usage.nav_title" = "TODO_TRANSLATE: Usage";
+"usage.loading" = "TODO_TRANSLATE: Loading usage";
+"usage.unavailable" = "TODO_TRANSLATE: Usage is unavailable. Please try again.";
+"usage.updated_from_format" = "TODO_TRANSLATE: Updated from %@";
+"usage.source_cache" = "TODO_TRANSLATE: cache";
+"usage.source_server" = "TODO_TRANSLATE: server";
+"usage.overage_format" = "TODO_TRANSLATE: %@ overage events";
+"usage.this_month" = "TODO_TRANSLATE: Usage this month";
+"usage.summary_format" = "TODO_TRANSLATE: %@ / %@ events";
+"usage.text_format" = "TODO_TRANSLATE: %@ of %@ events used";
+"usage.accessibility_format" = "TODO_TRANSLATE: %@ of %@ events used this month";
+
+/* MARK: Billing */
+"billing.manage_subscription" = "TODO_TRANSLATE: Manage subscription";
+"billing.portal_unavailable" = "TODO_TRANSLATE: Billing portal is unavailable. Please try again.";
+"billing.portal_hint" = "TODO_TRANSLATE: Opens the Stripe customer portal in Safari";

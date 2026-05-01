@@ -34,11 +34,11 @@ struct SignedOutAuthView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: ColombaSpacing.space3) {
-            Text("Welcome to Colomba")
+            Text("auth.welcome_title")
                 .font(.colomba.display)
                 .foregroundStyle(Color.colomba.text.primary)
                 .accessibilityLabel("Welcome to Colomba")
-            Text("Sign in securely with Apple, or use the email magic link for pilot accounts.")
+            Text("auth.signin_copy")
                 .font(.colomba.bodyLg)
                 .foregroundStyle(Color.colomba.text.secondary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -65,7 +65,7 @@ struct SignedOutAuthView: View {
             Rectangle()
                 .fill(Color.colomba.border.hairline)
                 .frame(height: 1)
-            Text("or")
+            Text("auth.or")
                 .font(.colomba.caption)
                 .foregroundStyle(Color.colomba.text.tertiary)
                 .accessibilityHidden(true)
@@ -77,11 +77,11 @@ struct SignedOutAuthView: View {
 
     private var magicLinkForm: some View {
         VStack(alignment: .leading, spacing: ColombaSpacing.space4) {
-            Text("Email magic link")
+            Text("auth.email_magic_link")
                 .font(.colomba.titleMd)
                 .foregroundStyle(Color.colomba.text.primary)
                 .accessibilityLabel("Email magic link")
-            TextField("owner@example.ch", text: $email)
+            TextField(String(localized: "auth.email_placeholder"), text: $email)
                 .textContentType(.emailAddress)
                 .keyboardType(.emailAddress)
                 .textInputAutocapitalization(.never)
@@ -96,7 +96,7 @@ struct SignedOutAuthView: View {
                     await authController.requestMagicLink(email: email)
                 }
             } label: {
-                Text("Send sign-in link")
+                Text("auth.send_signin_link")
                     .font(.colomba.bodyMd.weight(.semibold))
                     .frame(maxWidth: .infinity)
             }
@@ -110,11 +110,11 @@ struct SignedOutAuthView: View {
     @ViewBuilder private var verifyForm: some View {
         if let challenge {
             VStack(alignment: .leading, spacing: ColombaSpacing.space3) {
-                Text("We sent a code to \(challenge.maskedEmail).")
+                Text(codeSentText(for: challenge.maskedEmail))
                     .font(.colomba.bodyMd)
                     .foregroundStyle(Color.colomba.text.secondary)
                     .accessibilityLabel("Magic code sent to \(challenge.maskedEmail)")
-                TextField("482913", text: $code)
+                TextField(String(localized: "auth.code_placeholder"), text: $code)
                     .textContentType(.oneTimeCode)
                     .keyboardType(.numberPad)
                     .padding(ColombaSpacing.space4)
@@ -127,7 +127,7 @@ struct SignedOutAuthView: View {
                         await authController.verifyMagicLink(challenge: challenge, code: code)
                     }
                 } label: {
-                    Text("Verify code")
+                    Text("auth.verify_code")
                         .font(.colomba.bodyMd.weight(.semibold))
                         .frame(maxWidth: .infinity)
                 }
@@ -138,14 +138,19 @@ struct SignedOutAuthView: View {
         }
     }
 
+    /// Format: auth.code_sent_to_format contains one %@ masked email.
+    private func codeSentText(for maskedEmail: String) -> String {
+        String(format: NSLocalizedString("auth.code_sent_to_format", comment: ""), maskedEmail)
+    }
+
     @ViewBuilder private var stateMessage: some View {
         switch state {
         case .requestingMagicLink:
-            loadingMessage("Sending secure link…", label: "Sending secure magic link")
+            loadingMessage(String(localized: "auth.sending_link"), label: String(localized: "auth.sending_link"))
         case .verifyingMagicLink:
-            loadingMessage("Verifying code…", label: "Verifying magic code")
+            loadingMessage(String(localized: "auth.verifying_code"), label: String(localized: "auth.verifying_code"))
         case .authenticatingWithApple:
-            loadingMessage("Checking Apple credential…", label: "Checking Apple credential")
+            loadingMessage(String(localized: "auth.checking_apple"), label: String(localized: "auth.checking_apple"))
         case let .failed(message):
             Text(message)
                 .font(.colomba.caption)

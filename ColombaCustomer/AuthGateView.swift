@@ -30,7 +30,7 @@ struct AuthGateView: View {
             ProgressView()
                 .controlSize(.large)
                 .accessibilityLabel("Restoring Colomba session")
-            Text("Colomba")
+            Text("auth.colomba_brand")
                 .font(.colomba.display)
                 .foregroundStyle(Color.colomba.primary)
                 .accessibilityLabel("Colomba")

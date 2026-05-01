@@ -9,7 +9,7 @@ struct RootView: View {
             if let authContent {
                 authContent
             } else {
-                Text("Colomba")
+                Text("auth.colomba_brand")
                     .font(.largeTitle.weight(.bold))
                     .foregroundStyle(.primary)
                     .padding(20)

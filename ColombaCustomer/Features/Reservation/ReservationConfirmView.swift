@@ -18,13 +18,13 @@ public struct ReservationConfirmView: View {
                 .font(.system(size: 64))
                 .foregroundStyle(.green)
             VStack(spacing: 8) {
-                Text("Reservation confirmed")
+                Text("reservation.confirmed")
                     .font(.title.bold())
                 Text(confirmation.restaurantName)
                     .font(.headline)
                 Text(formattedDate)
                     .foregroundStyle(.secondary)
-                Text("Party of \(confirmation.partySize)")
+                Text(partyText)
                     .foregroundStyle(.secondary)
                 Text(confirmation.reservationId)
                     .font(.system(.body, design: .monospaced))
@@ -36,11 +36,11 @@ public struct ReservationConfirmView: View {
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
             }
-            Button("Add to Calendar") {
+            Button(String(localized: "reservation.add_to_calendar")) {
                 Task { await addToCalendar() }
             }
             .buttonStyle(.borderedProminent)
-            Button("Done") {
+            Button(String(localized: "reservation.done")) {
                 dismiss()
             }
             .buttonStyle(.bordered)
@@ -62,23 +62,38 @@ public struct ReservationConfirmView: View {
         Bundle.main.preferredLocalizations.compactMap(AppLanguage.init(rawValue:)).first ?? .en
     }
 
+    /// Format: reservation.party_of_format contains one integer party size.
+    private var partyText: String {
+        String(format: NSLocalizedString("reservation.party_of_format", comment: ""), confirmation.partySize)
+    }
+
+    /// Format: reservation.calendar_title_format contains one restaurant name.
+    private var calendarTitle: String {
+        String(format: NSLocalizedString("reservation.calendar_title_format", comment: ""), confirmation.restaurantName)
+    }
+
+    /// Format: reservation.calendar_notes_format contains one reservation ID.
+    private var calendarNotes: String {
+        String(format: NSLocalizedString("reservation.calendar_notes_format", comment: ""), confirmation.reservationId)
+    }
+
     private func addToCalendar() async {
         do {
             let granted = try await eventStore.requestFullAccessToEvents()
             guard granted else {
-                calendarMessage = "Calendar access denied. Share-sheet fallback is planned."
+                calendarMessage = String(localized: "reservation.calendar_denied")
                 return
             }
             let event = EKEvent(eventStore: eventStore)
-            event.title = "Reservation at \(confirmation.restaurantName)"
+            event.title = calendarTitle
             event.startDate = confirmation.startsAt
             event.endDate = confirmation.startsAt.addingTimeInterval(90 * 60)
-            event.notes = "Colomba reservation ID: \(confirmation.reservationId)"
+            event.notes = calendarNotes
             event.calendar = eventStore.defaultCalendarForNewEvents
             try eventStore.save(event, span: .thisEvent, commit: true)
-            calendarMessage = "Added to Calendar."
+            calendarMessage = String(localized: "reservation.calendar_added")
         } catch {
-            calendarMessage = "Calendar export unavailable. Share-sheet fallback is planned."
+            calendarMessage = String(localized: "reservation.calendar_unavailable")
         }
     }
 }

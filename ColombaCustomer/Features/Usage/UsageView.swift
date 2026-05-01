@@ -17,7 +17,7 @@ struct UsageView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: ColombaSpacing.space5) {
-                Text("Usage")
+                Text("usage.nav_title")
                     .font(.colomba.display)
                     .foregroundStyle(Color.colomba.text.primary)
                 content
@@ -28,13 +28,13 @@ struct UsageView: View {
         .background(Color.colomba.bg.base)
         .refreshable { await viewModel.refresh() }
         .task { await viewModel.load() }
-        .navigationTitle("Usage")
+        .navigationTitle(String(localized: "usage.nav_title"))
     }
 
     @ViewBuilder private var content: some View {
         switch viewModel.state {
         case .idle, .loading:
-            ProgressView("Loading usage")
+            ProgressView(String(localized: "usage.loading"))
                 .accessibilityLabel("Loading usage")
         case let .loaded(snapshot, source):
             UsagePanel(snapshot: snapshot, source: source, viewModel: viewModel)
@@ -43,6 +43,19 @@ struct UsageView: View {
                 .foregroundStyle(Color.colomba.error)
                 .accessibilityLabel(message)
         }
+    }
+
+    /// Format: usage.updated_from_format contains one source label.
+    private var updatedFromText: String {
+        let sourceText = source == .cache
+            ? String(localized: "usage.source_cache")
+            : String(localized: "usage.source_server")
+        return String(format: NSLocalizedString("usage.updated_from_format", comment: ""), sourceText)
+    }
+
+    /// Format: usage.overage_format contains one formatted event count.
+    private var overageText: String {
+        String(format: NSLocalizedString("usage.overage_format", comment: ""), snapshot.overageEvents.formatted())
     }
 }
 
@@ -59,14 +72,14 @@ struct UsagePanel: View {
                 .accessibilityLabel(viewModel.accessibilityText(for: snapshot))
             ProgressView(value: viewModel.progress(for: snapshot))
                 .accessibilityLabel(viewModel.accessibilityText(for: snapshot))
-            Text("Updated from \(source == .cache ? "cache" : "server")")
+            Text(updatedFromText)
                 .font(.colomba.caption)
                 .foregroundStyle(Color.colomba.text.secondary)
             if snapshot.overageEvents > 0 {
-                Text("\(snapshot.overageEvents.formatted()) overage events")
+                Text(overageText)
                     .font(.colomba.bodyMd)
                     .foregroundStyle(Color.colomba.error)
-                    .accessibilityLabel("\(snapshot.overageEvents.formatted()) overage events")
+                    .accessibilityLabel(overageText)
             }
         }
         .accessibilityElement(children: .contain)

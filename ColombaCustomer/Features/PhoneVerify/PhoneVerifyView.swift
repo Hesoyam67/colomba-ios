@@ -18,7 +18,7 @@ public struct PhoneVerifyView: View {
             case .confirming:
                 confirmingView
             case .verifying:
-                ProgressView("Verifying code…")
+                ProgressView(String(localized: "phone_verify.verifying_progress"))
                     .font(.custom(
                         "Inter",
                         size: 17,
@@ -26,12 +26,16 @@ public struct PhoneVerifyView: View {
                     ))
             case .verified:
                 statusView(
-                    title: "Phone verified",
-                    message: "You can continue onboarding.",
+                    title: String(localized: "phone_verify.verified_title"),
+                    message: String(localized: "phone_verify.verified_body"),
                     color: Color.colomba.success
                 )
             case .failed(let reason):
-                statusView(title: "Verification paused", message: reason, color: Color.colomba.error)
+                statusView(
+                    title: String(localized: "phone_verify.paused_title"),
+                    message: reason,
+                    color: Color.colomba.error
+                )
             }
         }
         .padding(32)
@@ -42,10 +46,10 @@ public struct PhoneVerifyView: View {
 
     private var header: some View {
         VStack(spacing: 10) {
-            Text("Verify your phone")
+            Text("phone_verify.title")
                 .font(.custom("Fraunces", size: 34, relativeTo: .largeTitle).weight(.bold))
                 .foregroundStyle(Color.colomba.text.primary)
-            Text("We’ll send a 6-digit SMS code to your Swiss mobile number.")
+            Text("phone_verify.body")
                 .font(.custom("Inter", size: 17, relativeTo: .body))
                 .foregroundStyle(Color.colomba.text.secondary)
                 .multilineTextAlignment(.center)
@@ -55,13 +59,13 @@ public struct PhoneVerifyView: View {
     private var enteringView: some View {
         VStack(spacing: 18) {
             HStack(spacing: 10) {
-                Text("+41")
+                Text("phone_verify.country_code")
                     .font(.custom("Inter", size: 17, relativeTo: .body).weight(.semibold))
                     .padding(.horizontal, 12)
                     .padding(.vertical, 14)
                     .background(Color.colomba.bg.raised)
                     .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                TextField("79 123 45 67", text: phoneBinding)
+                TextField(String(localized: "phone_verify.phone_placeholder"), text: phoneBinding)
                     .keyboardType(.phonePad)
                     .textContentType(.telephoneNumber)
                     .font(.custom("Inter", size: 17, relativeTo: .body))
@@ -70,7 +74,7 @@ public struct PhoneVerifyView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
             }
 
-            Button("Send code") {
+            Button(String(localized: "phone_verify.send_code")) {
                 Task { await viewModel.sendCode() }
             }
             .buttonStyle(.borderedProminent)
@@ -84,11 +88,11 @@ public struct PhoneVerifyView: View {
             OTPInputView(code: otpBinding) { _ in
                 Task { await viewModel.verifyCode() }
             }
-            Text("Attempts remaining: \(viewModel.attemptsRemaining)")
+            Text(attemptsText)
                 .font(.custom("Inter", size: 15, relativeTo: .body))
                 .foregroundStyle(Color.colomba.text.secondary)
 
-            Button("Verify code") {
+            Button(String(localized: "phone_verify.verify_code")) {
                 Task { await viewModel.verifyCode() }
             }
             .buttonStyle(.borderedProminent)
@@ -100,7 +104,7 @@ public struct PhoneVerifyView: View {
             }
             .disabled(viewModel.resendCooldownSeconds > 0)
 
-            Button("Change number") {
+            Button(String(localized: "phone_verify.change_number")) {
                 viewModel.changeNumber()
             }
         }
@@ -115,12 +119,27 @@ public struct PhoneVerifyView: View {
                 .font(.custom("Inter", size: 17, relativeTo: .body))
                 .foregroundStyle(Color.colomba.text.secondary)
                 .multilineTextAlignment(.center)
-            Button("Change number") { viewModel.changeNumber() }
+            Button(String(localized: "phone_verify.change_number")) { viewModel.changeNumber() }
         }
     }
 
+    /// Format: phone_verify.resend_in_format contains one integer second count.
     private var resendTitle: String {
-        viewModel.resendCooldownSeconds > 0 ? "Resend in \(viewModel.resendCooldownSeconds)s" : "Resend code"
+        if viewModel.resendCooldownSeconds > 0 {
+            return String(
+                format: NSLocalizedString("phone_verify.resend_in_format", comment: ""),
+                viewModel.resendCooldownSeconds
+            )
+        }
+        return String(localized: "phone_verify.resend_code")
+    }
+
+    /// Format: phone_verify.attempts_format contains one integer attempt count.
+    private var attemptsText: String {
+        String(
+            format: NSLocalizedString("phone_verify.attempts_format", comment: ""),
+            viewModel.attemptsRemaining
+        )
     }
 
     private var phoneBinding: Binding<String> {
