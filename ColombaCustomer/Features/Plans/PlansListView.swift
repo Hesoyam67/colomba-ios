@@ -19,11 +19,11 @@ struct PlansListView: View {
             Group {
                 switch viewModel.state {
                 case .idle, .loading:
-                    ProgressView("Loading plans")
+                    ProgressView(String(localized: "plans.loading"))
                         .accessibilityLabel("Loading plans")
                 case let .failed(error):
                     ContentUnavailableView(
-                        "Plans unavailable",
+                        String(localized: "plans.unavailable"),
                         systemImage: "exclamationmark.triangle",
                         description: Text(error.userMessageKey)
                     )
@@ -38,7 +38,7 @@ struct PlansListView: View {
                                     PlanCardView(plan: plan, currency: catalog.currency, viewModel: viewModel)
                                 }
                                 .buttonStyle(.plain)
-                                .accessibilityLabel("Open \(plan.name) plan details")
+                                .accessibilityLabel(openDetailsText(for: plan))
                             }
                         }
                         .padding(ColombaSpacing.Screen.margin)
@@ -46,7 +46,7 @@ struct PlansListView: View {
                     .background(Color.colomba.bg.base)
                 }
             }
-            .navigationTitle("Plans")
+            .navigationTitle(String(localized: "plans.nav_title"))
         }
         .task {
             guard case .idle = viewModel.state else {
@@ -54,6 +54,11 @@ struct PlansListView: View {
             }
             await viewModel.load()
         }
+    }
+
+    /// Format: plans.open_details_format contains one plan name.
+    private func openDetailsText(for plan: Plan) -> String {
+        String(format: NSLocalizedString("plans.open_details_format", comment: ""), plan.name)
     }
 }
 

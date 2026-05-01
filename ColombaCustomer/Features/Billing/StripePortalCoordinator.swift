@@ -35,7 +35,7 @@ final class StripePortalCoordinator: ObservableObject {
         } catch let error as PortalSessionService.PortalSessionError {
             errorMessage = error.userMessage
         } catch {
-            errorMessage = "Billing portal is unavailable. Please try again."
+            errorMessage = String(localized: "billing.portal_unavailable")
         }
     }
 
@@ -63,12 +63,12 @@ struct StripePortalButton: View {
                 if coordinator.isLoading {
                     ProgressView()
                 } else {
-                    Text("Manage subscription")
+                    Text("billing.manage_subscription")
                 }
             }
             .buttonStyle(.bordered)
-            .accessibilityLabel("Manage subscription")
-            .accessibilityHint("Opens the Stripe customer portal in Safari")
+            .accessibilityLabel(String(localized: "billing.manage_subscription"))
+            .accessibilityHint(String(localized: "billing.portal_hint"))
             if let errorMessage = coordinator.errorMessage {
                 Text(errorMessage)
                     .font(.caption)

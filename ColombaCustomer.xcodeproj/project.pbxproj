@@ -41,6 +41,7 @@
 		6CB4FE8AAC1057B02DB50671 /* ReservationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D9E44525A8A9D4C502D2BC /* ReservationViewModel.swift */; };
 		6DE43FFA15CE4ECF7372501E /* LanguagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F12A3E12067212E60B5A8B /* LanguagePickerView.swift */; };
 		7070FA5F5719194BF195B1A8 /* ReservationServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9097DC799895321F8586741 /* ReservationServiceProtocol.swift */; };
+		779D03D2AF6281A113850B3E /* L10nKeysTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782E7FA643C38F23D6B009D /* L10nKeysTests.swift */; };
 		7E0790D6FFA5C7EB9E2B17E8 /* ColombaAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 015730E5242C31325C0EC6F2 /* ColombaAuth */; };
 		8309229D5383B05AB7132503 /* PhoneVerifyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0027DF6ACC24BE3A499F8001 /* PhoneVerifyViewModelTests.swift */; };
 		8710BAEABE6A2B19DD772432 /* PortalSessionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA4B9AA4DA67D0344C60D05 /* PortalSessionServiceTests.swift */; };
@@ -122,6 +123,7 @@
 		61A54F10E39CEA3D4F26B833 /* UsageFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = UsageFeature; path = Packages/Features/UsageFeature; sourceTree = SOURCE_ROOT; };
 		6261245D60A8DCFB9C16774E /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		640D1F885514AA42F5FAF3E1 /* UsageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageView.swift; sourceTree = "<group>"; };
+		6782E7FA643C38F23D6B009D /* L10nKeysTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10nKeysTests.swift; sourceTree = "<group>"; };
 		67CD85AAD7336C8A837A25CD /* ReservationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationServiceTests.swift; sourceTree = "<group>"; };
 		6917566F50ECFA4832D4C36A /* PlansSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansSnapshotTests.swift; sourceTree = "<group>"; };
 		69D9E44525A8A9D4C502D2BC /* ReservationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationViewModel.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 		6EEAB8DAC0B5AC1FF08D8C68 /* ColombaCustomerTests */ = {
 			isa = PBXGroup;
 			children = (
+				6782E7FA643C38F23D6B009D /* L10nKeysTests.swift */,
 				67CD85AAD7336C8A837A25CD /* ReservationServiceTests.swift */,
 				43342F23DEA2C4DB6C90A3C8 /* ReservationViewModelTests.swift */,
 			);
@@ -529,6 +532,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				779D03D2AF6281A113850B3E /* L10nKeysTests.swift in Sources */,
 				3B2F4848F39D5C32F51DD3B0 /* OnboardingViewModelTests.swift in Sources */,
 				8309229D5383B05AB7132503 /* PhoneVerifyViewModelTests.swift in Sources */,
 				0B0C5B29C0F6109AC85CF10E /* PlansSnapshotTests.swift in Sources */,

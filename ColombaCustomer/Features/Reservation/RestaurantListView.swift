@@ -10,12 +10,12 @@ public struct RestaurantListView: View {
     public var body: some View {
         Group {
             if viewModel.phase == .loadingRestaurants, viewModel.restaurants.isEmpty {
-                ProgressView("Loading restaurants")
+                ProgressView(String(localized: "reservation.loading_restaurants"))
             } else if viewModel.restaurants.isEmpty {
                 ContentUnavailableView(
-                    "No restaurants yet",
+                    String(localized: "reservation.empty_title"),
                     systemImage: "fork.knife",
-                    description: Text("Reservation partners will appear here.")
+                    description: Text("reservation.empty_desc")
                 )
             } else {
                 List(viewModel.restaurants) { restaurant in
@@ -28,12 +28,12 @@ public struct RestaurantListView: View {
                 .listStyle(.plain)
             }
         }
-        .navigationTitle("Reserve")
+        .navigationTitle(String(localized: "reservation.nav_title"))
         .task {
             await viewModel.loadRestaurants()
         }
-        .alert("Reservation error", isPresented: failedBinding) {
-            Button("OK", role: .cancel) {}
+        .alert(String(localized: "reservation.error_title"), isPresented: failedBinding) {
+            Button(String(localized: "reservation.ok"), role: .cancel) {}
         } message: {
             Text(errorMessage)
         }
@@ -53,7 +53,7 @@ public struct RestaurantListView: View {
         if case let .failed(reason) = viewModel.phase {
             return reason
         }
-        return "Reservation failed"
+        return String(localized: "reservation.failed_default")
     }
 }
 

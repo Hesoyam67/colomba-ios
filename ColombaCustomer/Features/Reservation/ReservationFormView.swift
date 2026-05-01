@@ -12,35 +12,35 @@ public struct ReservationFormView: View {
 
     public var body: some View {
         Form {
-            Section("When") {
+            Section(String(localized: "reservation.when")) {
                 DatePicker(
-                    "Date",
+                    String(localized: "reservation.date"),
                     selection: $viewModel.selectedDate,
                     displayedComponents: .date
                 )
-                Picker("Time", selection: $viewModel.selectedSlot) {
-                    Text("Choose a time").tag(TimeSlot?.none)
+                Picker(String(localized: "reservation.time"), selection: $viewModel.selectedSlot) {
+                    Text("reservation.choose_time").tag(TimeSlot?.none)
                     ForEach(viewModel.availableSlots) { slot in
                         Text(slot.startsAt, format: .dateTime.hour().minute())
                             .tag(Optional(slot))
                     }
                 }
             }
-            Section("Party") {
-                Stepper("\(viewModel.partySize) guests", value: $viewModel.partySize, in: 1...12)
-                TextField("Full name", text: $viewModel.fullName)
+            Section(String(localized: "reservation.party")) {
+                Stepper(guestsText, value: $viewModel.partySize, in: 1...12)
+                TextField(String(localized: "reservation.full_name"), text: $viewModel.fullName)
                     .textContentType(.name)
             }
             Section {
                 TextEditor(text: $viewModel.specialRequests)
                     .frame(minHeight: 96)
-                Text("\(viewModel.specialRequests.utf8.count)/500")
+                Text(characterCounterText)
                     .font(.caption)
                     .foregroundStyle(viewModel.specialRequests.utf8.count <= 500 ? .secondary : .red)
             } header: {
-                Text("Special requests")
+                Text("reservation.special_requests")
             } footer: {
-                Text("Optional. Keep it under 500 characters.")
+                Text("reservation.optional_hint")
             }
             if case let .failed(reason) = viewModel.phase {
                 Section {
@@ -56,14 +56,14 @@ public struct ReservationFormView: View {
                         ProgressView()
                             .frame(maxWidth: .infinity)
                     } else {
-                        Text("Confirm")
+                        Text("reservation.confirm")
                             .frame(maxWidth: .infinity)
                     }
                 }
                 .disabled(viewModel.canConfirm == false || viewModel.phase == .submitting)
             }
         }
-        .navigationTitle("Reserve \(restaurant.name)")
+        .navigationTitle(navigationTitle)
         .navigationDestination(item: $confirmationRoute) { route in
             ReservationConfirmView(confirmation: route.confirmation)
         }
@@ -78,6 +78,24 @@ public struct ReservationFormView: View {
                 confirmationRoute = ConfirmationRoute(confirmation: confirmation)
             }
         }
+    }
+
+    /// Format: reservation.guests_format contains one integer guest count.
+    private var guestsText: String {
+        String(format: NSLocalizedString("reservation.guests_format", comment: ""), viewModel.partySize)
+    }
+
+    /// Format: reservation.counter_format contains one integer byte count.
+    private var characterCounterText: String {
+        String(
+            format: NSLocalizedString("reservation.counter_format", comment: ""),
+            viewModel.specialRequests.utf8.count
+        )
+    }
+
+    /// Format: reservation.nav_title_format contains one restaurant name.
+    private var navigationTitle: String {
+        String(format: NSLocalizedString("reservation.nav_title_format", comment: ""), restaurant.name)
     }
 }
 

@@ -16,11 +16,11 @@ struct PaywallView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: ColombaSpacing.space5) {
-            Text("Upgrade Colomba")
+            Text("paywall.upgrade_title")
                 .font(.colomba.display)
                 .accessibilityLabel("Upgrade Colomba")
             content
-            Button("Restore purchases") {
+            Button(String(localized: "paywall.restore_purchases")) {
                 Task { await viewModel.restore() }
             }
             .buttonStyle(.bordered)
@@ -39,7 +39,7 @@ struct PaywallView: View {
     @ViewBuilder private var content: some View {
         switch viewModel.state {
         case .idle, .loadingProducts:
-            ProgressView("Loading products")
+            ProgressView(String(localized: "paywall.loading_products"))
                 .accessibilityLabel("Loading products")
         case let .ready(products):
             ForEach(products) { product in
@@ -48,19 +48,19 @@ struct PaywallView: View {
                 } label: {
                     VStack(alignment: .leading, spacing: ColombaSpacing.space2) {
                         Text(product.displayName).font(.colomba.titleMd)
-                        Text("\(product.displayPrice) per \(product.interval)").font(.colomba.billingFigure)
+                        Text(productPriceText(for: product)).font(.colomba.billingFigure)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .buttonStyle(.borderedProminent)
-                .accessibilityLabel("Buy \(product.displayName), \(product.displayPrice) per \(product.interval)")
-                .accessibilityHint("Starts the App Store purchase flow")
+                .accessibilityLabel(productBuyAccessibility(for: product))
+                .accessibilityHint(String(localized: "paywall.purchase_hint"))
             }
         case let .purchasing(productID):
-            ProgressView("Purchasing \(productID)")
+            ProgressView(purchasingText(for: productID))
                 .accessibilityLabel("Purchase in progress")
         case let .purchased(productID):
-            Text("Purchased \(productID)")
+            Text(purchasedText(for: productID))
                 .foregroundStyle(Color.colomba.success)
                 .accessibilityLabel("Purchase complete")
         case .cancelled:
@@ -74,5 +74,34 @@ struct PaywallView: View {
                 .foregroundStyle(Color.colomba.error)
                 .accessibilityLabel(error.userMessage)
         }
+    }
+
+    /// Format: paywall.price_format contains display price and billing interval.
+    private func productPriceText(for product: StoreProduct) -> String {
+        String(
+            format: NSLocalizedString("paywall.price_format", comment: ""),
+            product.displayPrice,
+            product.interval
+        )
+    }
+
+    /// Format: paywall.buy_accessibility_format contains product name, price, and interval.
+    private func productBuyAccessibility(for product: StoreProduct) -> String {
+        String(
+            format: NSLocalizedString("paywall.buy_accessibility_format", comment: ""),
+            product.displayName,
+            product.displayPrice,
+            product.interval
+        )
+    }
+
+    /// Format: paywall.purchasing_format contains one product identifier.
+    private func purchasingText(for productID: String) -> String {
+        String(format: NSLocalizedString("paywall.purchasing_format", comment: ""), productID)
+    }
+
+    /// Format: paywall.purchased_format contains one product identifier.
+    private func purchasedText(for productID: String) -> String {
+        String(format: NSLocalizedString("paywall.purchased_format", comment: ""), productID)
     }
 }

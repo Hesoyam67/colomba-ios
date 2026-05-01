@@ -37,10 +37,17 @@ final class PlansViewModel: ObservableObject {
 
     func priceText(for plan: Plan, currency: String = "CHF") -> String {
         let francs = Decimal(plan.monthlyPriceMinor) / Decimal(100)
-        return "\(currency) \(francs)/month"
+        return String(
+            format: NSLocalizedString("plans.price_format", comment: ""),
+            currency,
+            String(describing: francs)
+        )
     }
 
     func includedEventsText(for plan: Plan) -> String {
-        "\(plan.includedEvents.formatted()) events included"
+        String(
+            format: NSLocalizedString("plans.included_events_format", comment: ""),
+            plan.includedEvents.formatted()
+        )
     }
 }

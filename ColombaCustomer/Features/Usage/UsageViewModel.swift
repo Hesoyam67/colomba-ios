@@ -43,7 +43,7 @@ final class UsageViewModel: ObservableObject {
             try await cache.store(snapshot)
             state = .loaded(snapshot, source: .network)
         } catch {
-            state = .failed("Usage is unavailable. Please try again.")
+            state = .failed(String(localized: "usage.unavailable"))
         }
     }
 
@@ -59,10 +59,18 @@ final class UsageViewModel: ObservableObject {
     }
 
     func usageText(for snapshot: UsageSnapshot) -> String {
-        "\(snapshot.usedEvents.formatted()) of \(snapshot.includedEvents.formatted()) events used"
+        String(
+            format: NSLocalizedString("usage.text_format", comment: ""),
+            snapshot.usedEvents.formatted(),
+            snapshot.includedEvents.formatted()
+        )
     }
 
     func accessibilityText(for snapshot: UsageSnapshot) -> String {
-        "\(snapshot.usedEvents.formatted()) of \(snapshot.includedEvents.formatted()) events used this month"
+        String(
+            format: NSLocalizedString("usage.accessibility_format", comment: ""),
+            snapshot.usedEvents.formatted(),
+            snapshot.includedEvents.formatted()
+        )
     }
 }

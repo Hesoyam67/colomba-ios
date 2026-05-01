@@ -18,7 +18,7 @@ public struct RestaurantDetailView: View {
                 NavigationLink {
                     ReservationFormView(viewModel: viewModel, restaurant: restaurant)
                 } label: {
-                    Text("Reserve")
+                    Text("reservation.reserve")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
@@ -65,19 +65,22 @@ public struct RestaurantDetailView: View {
             Text(restaurant.address)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
-            Text("Book a confirmed table with Colomba. Availability is checked live before submission.")
+            Text("reservation.book_copy")
                 .font(.body)
         }
     }
 
     private var availability: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Available times")
+            Text("reservation.available_times")
                 .font(.headline)
             if viewModel.phase == .loadingAvailability {
-                ProgressView("Checking availability")
+                ProgressView(String(localized: "reservation.checking_availability"))
             } else if viewModel.availableSlots.isEmpty {
-                ContentUnavailableView("No available times", systemImage: "clock.badge.exclamationmark")
+                ContentUnavailableView(
+                    String(localized: "reservation.no_available_times"),
+                    systemImage: "clock.badge.exclamationmark"
+                )
             } else {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 96), spacing: 8)], spacing: 8) {
                     ForEach(viewModel.availableSlots) { slot in
