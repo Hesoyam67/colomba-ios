@@ -14,16 +14,23 @@
 		11E46E940B379448F1943666 /* PaywallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25819DE27A8B0345505253B /* PaywallViewModel.swift */; };
 		16D493523C79473E67B361FC /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A308E03ACA3993B0FD4297 /* PaywallView.swift */; };
 		192234616D23A2A3D7CBF0F5 /* PlansListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAFA86210D4DD668E37A24F /* PlansListView.swift */; };
+		1A7E8E7798747B073B7BFCCC /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CEDC3B58608C93A1799D9E /* OnboardingViewModel.swift */; };
 		21A0A98661B40EFEF8BD04A3 /* UsageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85991E6CD00298AB0B7C0E7 /* UsageCache.swift */; };
 		25A1179932F366547B55693F /* ColombaCore in Frameworks */ = {isa = PBXBuildFile; productRef = B768EBF2BC474A93E9CDE877 /* ColombaCore */; };
+		2F9765F69A199CCFCAF08764 /* NotificationsOptInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD557EB2D06F6EACB96F73E /* NotificationsOptInView.swift */; };
+		3A1E200D6224B03D16E0A286 /* OnboardingCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5375F2AA7B3CFDE561CF573A /* OnboardingCopy.swift */; };
+		3B2F4848F39D5C32F51DD3B0 /* OnboardingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BF1097506CEE75C1F1855B /* OnboardingViewModelTests.swift */; };
 		3CD07E4046AE1DFCE250C957 /* AuthGateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD6452571FC87236B0BE272 /* AuthGateView.swift */; };
 		3EB460CEB1FD73DEDFFC4361 /* ColombaCustomerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5C1FBE5E43CF0CE4962F03 /* ColombaCustomerApp.swift */; };
 		3F7CC2FD2900A9DAF2349084 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159C8B476F0E58A50B5CE76E /* RootView.swift */; };
+		48FE7058FF9CA076E315875E /* OnboardingContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7118839EED2490DD552C3A4 /* OnboardingContainerView.swift */; };
 		4FBF548F4E18D1A041E021D3 /* PortalSessionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7658B7507DB883CB2C3F0550 /* PortalSessionService.swift */; };
+		56197AB5EBAAA001BCE54159 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A06D38D85B360BAE9354B105 /* Localizable.strings */; };
 		58CBB99D5B3AFF2F0DDCF173 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5F41396385C9E8A96C83C8CB /* PrivacyInfo.xcprivacy */; };
 		596BB3E32D94EFB3FD72DA25 /* ColombaNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 6765EBBDF7953544D2ACD496 /* ColombaNetworking */; };
 		5ABE53A5213CD86ED62103F9 /* SignedOutAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFC833D199608357885074F1 /* SignedOutAuthView.swift */; };
 		64061884188F665F901F07E2 /* AuthenticatedHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0CA16AC3A7BE5397AFA97 /* AuthenticatedHomeView.swift */; };
+		6DE43FFA15CE4ECF7372501E /* LanguagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F12A3E12067212E60B5A8B /* LanguagePickerView.swift */; };
 		7E0790D6FFA5C7EB9E2B17E8 /* ColombaAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 015730E5242C31325C0EC6F2 /* ColombaAuth */; };
 		8710BAEABE6A2B19DD772432 /* PortalSessionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA4B9AA4DA67D0344C60D05 /* PortalSessionServiceTests.swift */; };
 		8A001ED13FAB46AFB24CACF8 /* PaywallStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F08485124F3F7569FFE7B98 /* PaywallStateMachine.swift */; };
@@ -36,10 +43,13 @@
 		B6F86DD1FB28FFEDA5E6CF73 /* AuthRootHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266C69860D471188D23A0775 /* AuthRootHost.swift */; };
 		B9FFC3EA638B97A3823F8D0E /* UsageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7A341412350F4E7C5AAD53 /* UsageViewModelTests.swift */; };
 		CAFBC43F3525DABFB1786F8A /* PlansViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0C6BDFDFE8C2C342F02AE5 /* PlansViewModelTests.swift */; };
+		CC97386D38F95A4723C7072E /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4393AAF93ED78B9E3E97E9F /* WelcomeView.swift */; };
+		D6787A5481A31BF135AAC020 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F9E37749AB067AA99018B4 /* AppLanguage.swift */; };
 		D994BE8A4F89233BDE9901CD /* PlansViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50959FBD9108A8E3CCF674B /* PlansViewModel.swift */; };
 		E01E168056492D5A09213698 /* PlansDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612C47FD13E865716138DEA1 /* PlansDetailView.swift */; };
 		E1E5071AEA7D7369691BE52A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2BD4ED171816B1EE6A89B09 /* Assets.xcassets */; };
 		E4CA3336D14BEDAD482E7270 /* ColombaNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 74B77B1C81F3748A3C371D25 /* ColombaNetworking */; };
+		F11B0C531B12C071F068A3FA /* OnboardingStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567F1B3C05822DC1FF6F681E /* OnboardingStep.swift */; };
 		F9DD3114D0FC6D27B90FA45D /* ColombaBilling in Frameworks */ = {isa = PBXBuildFile; productRef = D4D0F5D6BC5827A6ED7A31BA /* ColombaBilling */; };
 /* End PBXBuildFile section */
 
@@ -54,21 +64,30 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0686D2C343EF44037655077A /* it-CH */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "it-CH"; path = "it-CH.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		07AEB8CB3AF60AA3F1410ECE /* ColombaCustomer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ColombaCustomer.entitlements; sourceTree = "<group>"; };
 		09B0A5ADCC319D8C0432462A /* PlanFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PlanFeature; path = Packages/Features/PlanFeature; sourceTree = SOURCE_ROOT; };
 		130E0989CAB8544F2CF00003 /* ColombaCustomer.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ColombaCustomer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		159C8B476F0E58A50B5CE76E /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		1C10C1A05B15F533667B384C /* StripePortalCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripePortalCoordinator.swift; sourceTree = "<group>"; };
 		266C69860D471188D23A0775 /* AuthRootHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRootHost.swift; sourceTree = "<group>"; };
+		28842A549C503A33FE6901B8 /* fr-CH */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-CH"; path = "fr-CH.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		2CBC739524FCF2C0C5B12CDF /* ColombaCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ColombaCore; path = Packages/ColombaCore; sourceTree = SOURCE_ROOT; };
 		30F30CFBB06472E4826E1ED9 /* UsageCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageCacheTests.swift; sourceTree = "<group>"; };
+		30F9E37749AB067AA99018B4 /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 		3A11F03EF2B262C7CFF81565 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3B390C1F276C1FF68703D680 /* UsageSummaryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageSummaryRow.swift; sourceTree = "<group>"; };
 		3F08485124F3F7569FFE7B98 /* PaywallStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallStateMachine.swift; sourceTree = "<group>"; };
+		41B9A26F11A35B56D7F09E2A /* de-CH */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "de-CH"; path = "de-CH.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		4505C990521429802543EFD6 /* ScheduledChangeFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ScheduledChangeFeature; path = Packages/Features/ScheduledChangeFeature; sourceTree = SOURCE_ROOT; };
+		4DAFBA8CB9CB0B208A9DA85D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		519F02BBB3F8CA4DBEA53B6D /* UsageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageViewModel.swift; sourceTree = "<group>"; };
 		51A308E03ACA3993B0FD4297 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		52BF1097506CEE75C1F1855B /* OnboardingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModelTests.swift; sourceTree = "<group>"; };
+		5375F2AA7B3CFDE561CF573A /* OnboardingCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCopy.swift; sourceTree = "<group>"; };
+		567F1B3C05822DC1FF6F681E /* OnboardingStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStep.swift; sourceTree = "<group>"; };
 		59F0575575B4E2F2814BED85 /* ColombaDesign */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ColombaDesign; path = Packages/ColombaDesign; sourceTree = SOURCE_ROOT; };
+		59F12A3E12067212E60B5A8B /* LanguagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguagePickerView.swift; sourceTree = "<group>"; };
 		5F41396385C9E8A96C83C8CB /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		612C47FD13E865716138DEA1 /* PlansDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansDetailView.swift; sourceTree = "<group>"; };
 		61A54F10E39CEA3D4F26B833 /* UsageFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = UsageFeature; path = Packages/Features/UsageFeature; sourceTree = SOURCE_ROOT; };
@@ -81,19 +100,23 @@
 		7FE5959A2DF501C3992E988C /* ColombaNetworking */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ColombaNetworking; path = Packages/ColombaNetworking; sourceTree = SOURCE_ROOT; };
 		875FCDDD70BEAE3884A1A600 /* InvoicesFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = InvoicesFeature; path = Packages/Features/InvoicesFeature; sourceTree = SOURCE_ROOT; };
 		96ED09A41FD3344CEECCD447 /* PlansRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansRepository.swift; sourceTree = "<group>"; };
+		9AD557EB2D06F6EACB96F73E /* NotificationsOptInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsOptInView.swift; sourceTree = "<group>"; };
 		A03077D975A760D40153AFBD /* ColombaBilling */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ColombaBilling; path = Packages/ColombaBilling; sourceTree = SOURCE_ROOT; };
 		B2BD4ED171816B1EE6A89B09 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B5D7E8D21CCB32E5A56AF62E /* ColombaAuth */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ColombaAuth; path = Packages/ColombaAuth; sourceTree = SOURCE_ROOT; };
 		BB7A341412350F4E7C5AAD53 /* UsageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageViewModelTests.swift; sourceTree = "<group>"; };
 		BD754C973B08B692898892D4 /* AccountFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AccountFeature; path = Packages/Features/AccountFeature; sourceTree = SOURCE_ROOT; };
 		C25819DE27A8B0345505253B /* PaywallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallViewModel.swift; sourceTree = "<group>"; };
+		C7CEDC3B58608C93A1799D9E /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		CF5C1FBE5E43CF0CE4962F03 /* ColombaCustomerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColombaCustomerApp.swift; sourceTree = "<group>"; };
 		DBAFA86210D4DD668E37A24F /* PlansListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansListView.swift; sourceTree = "<group>"; };
 		DCD6452571FC87236B0BE272 /* AuthGateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthGateView.swift; sourceTree = "<group>"; };
 		E35D74F4BDD745EE0111A7F2 /* TopUpFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TopUpFeature; path = Packages/Features/TopUpFeature; sourceTree = SOURCE_ROOT; };
+		E4393AAF93ED78B9E3E97E9F /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		E50959FBD9108A8E3CCF674B /* PlansViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansViewModel.swift; sourceTree = "<group>"; };
 		EFC833D199608357885074F1 /* SignedOutAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignedOutAuthView.swift; sourceTree = "<group>"; };
 		EFD0CA16AC3A7BE5397AFA97 /* AuthenticatedHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedHomeView.swift; sourceTree = "<group>"; };
+		F7118839EED2490DD552C3A4 /* OnboardingContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContainerView.swift; sourceTree = "<group>"; };
 		F85991E6CD00298AB0B7C0E7 /* UsageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageCache.swift; sourceTree = "<group>"; };
 		FBA4B9AA4DA67D0344C60D05 /* PortalSessionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalSessionServiceTests.swift; sourceTree = "<group>"; };
 		FEB554A480235ADEAB707618 /* UpgradeFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = UpgradeFeature; path = Packages/Features/UpgradeFeature; sourceTree = SOURCE_ROOT; };
@@ -128,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				7B58B026C802030DC3D1EC36 /* Billing */,
+				AE794112E4802759EBE8C4F2 /* Onboarding */,
 				A564760984AE5064F88C3FDA /* Paywall */,
 				DB223A3D7432A63E27944748 /* Plans */,
 				7420E9359F0DFBEC530C2EB8 /* Settings */,
@@ -162,6 +186,26 @@
 				7DF110F29C4067159262A9CA /* ColombaCustomerTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		56E3937F629EE19DAED1F422 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A06D38D85B360BAE9354B105 /* Localizable.strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		6B637243516121F066FD8475 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				59F12A3E12067212E60B5A8B /* LanguagePickerView.swift */,
+				9AD557EB2D06F6EACB96F73E /* NotificationsOptInView.swift */,
+				F7118839EED2490DD552C3A4 /* OnboardingContainerView.swift */,
+				5375F2AA7B3CFDE561CF573A /* OnboardingCopy.swift */,
+				E4393AAF93ED78B9E3E97E9F /* WelcomeView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		7420E9359F0DFBEC530C2EB8 /* Settings */ = {
@@ -201,6 +245,17 @@
 			path = Paywall;
 			sourceTree = "<group>";
 		};
+		AE794112E4802759EBE8C4F2 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				30F9E37749AB067AA99018B4 /* AppLanguage.swift */,
+				567F1B3C05822DC1FF6F681E /* OnboardingStep.swift */,
+				C7CEDC3B58608C93A1799D9E /* OnboardingViewModel.swift */,
+				6B637243516121F066FD8475 /* Views */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		BEB9E84B52011E05007E31B9 = {
 			isa = PBXGroup;
 			children = (
@@ -222,6 +277,7 @@
 		CED06B04649BDE505214C8D1 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				52BF1097506CEE75C1F1855B /* OnboardingViewModelTests.swift */,
 				6917566F50ECFA4832D4C36A /* PlansSnapshotTests.swift */,
 				7A0C6BDFDFE8C2C342F02AE5 /* PlansViewModelTests.swift */,
 				FBA4B9AA4DA67D0344C60D05 /* PortalSessionServiceTests.swift */,
@@ -258,6 +314,7 @@
 				159C8B476F0E58A50B5CE76E /* RootView.swift */,
 				EFC833D199608357885074F1 /* SignedOutAuthView.swift */,
 				0419F739A5C92B196C01077B /* Features */,
+				56E3937F629EE19DAED1F422 /* Resources */,
 			);
 			path = ColombaCustomer;
 			sourceTree = "<group>";
@@ -326,7 +383,10 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
+				"de-CH",
 				en,
+				"fr-CH",
+				"it-CH",
 			);
 			mainGroup = BEB9E84B52011E05007E31B9;
 			minimizedProjectReferenceProxies = 1;
@@ -361,6 +421,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E1E5071AEA7D7369691BE52A /* Assets.xcassets in Resources */,
+				56197AB5EBAAA001BCE54159 /* Localizable.strings in Resources */,
 				58CBB99D5B3AFF2F0DDCF173 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -372,6 +433,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B2F4848F39D5C32F51DD3B0 /* OnboardingViewModelTests.swift in Sources */,
 				0B0C5B29C0F6109AC85CF10E /* PlansSnapshotTests.swift in Sources */,
 				CAFBC43F3525DABFB1786F8A /* PlansViewModelTests.swift in Sources */,
 				8710BAEABE6A2B19DD772432 /* PortalSessionServiceTests.swift in Sources */,
@@ -384,11 +446,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6787A5481A31BF135AAC020 /* AppLanguage.swift in Sources */,
 				0D6C75287EBFCBE50C9E4737 /* AppRouter.swift in Sources */,
 				3CD07E4046AE1DFCE250C957 /* AuthGateView.swift in Sources */,
 				B6F86DD1FB28FFEDA5E6CF73 /* AuthRootHost.swift in Sources */,
 				64061884188F665F901F07E2 /* AuthenticatedHomeView.swift in Sources */,
 				3EB460CEB1FD73DEDFFC4361 /* ColombaCustomerApp.swift in Sources */,
+				6DE43FFA15CE4ECF7372501E /* LanguagePickerView.swift in Sources */,
+				2F9765F69A199CCFCAF08764 /* NotificationsOptInView.swift in Sources */,
+				48FE7058FF9CA076E315875E /* OnboardingContainerView.swift in Sources */,
+				3A1E200D6224B03D16E0A286 /* OnboardingCopy.swift in Sources */,
+				F11B0C531B12C071F068A3FA /* OnboardingStep.swift in Sources */,
+				1A7E8E7798747B073B7BFCCC /* OnboardingViewModel.swift in Sources */,
 				8A001ED13FAB46AFB24CACF8 /* PaywallStateMachine.swift in Sources */,
 				16D493523C79473E67B361FC /* PaywallView.swift in Sources */,
 				11E46E940B379448F1943666 /* PaywallViewModel.swift in Sources */,
@@ -404,6 +473,7 @@
 				AC5BB2F5FE25E2EC7220EC82 /* UsageSummaryRow.swift in Sources */,
 				A95B9BCA02D76A4E87483425 /* UsageView.swift in Sources */,
 				9630E462FCD3A9FA913A67F7 /* UsageViewModel.swift in Sources */,
+				CC97386D38F95A4723C7072E /* WelcomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,6 +486,20 @@
 			targetProxy = 53D40CAB97B7F7C3CD093C34 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A06D38D85B360BAE9354B105 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				41B9A26F11A35B56D7F09E2A /* de-CH */,
+				4DAFBA8CB9CB0B208A9DA85D /* en */,
+				28842A549C503A33FE6901B8 /* fr-CH */,
+				0686D2C343EF44037655077A /* it-CH */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		17AAF23D7046E40F9D750E43 /* Debug */ = {

@@ -1,50 +1,119 @@
 import Combine
 import Foundation
 
-/// Compile-only Phase 4 onboarding state holder.
-///
-/// The real implementation is expected to be supplied by Coder's container
-/// packet. This stub only exposes enough state for a placeholder container to
-/// compile and preview safely.
-@MainActor
-final class OnboardingViewModel: ObservableObject {
-    @Published var selectedStep: OnboardingStep
-    @Published private(set) var completedSteps: Set<OnboardingStep>
+public protocol OnboardingPersistence {
+    func loadCurrentStep() -> OnboardingStep?
+    func saveCurrentStep(_ step: OnboardingStep)
+    func loadSelectedLanguage() -> AppLanguage?
+    func saveSelectedLanguage(_ language: AppLanguage)
+    func loadNotificationsDecisionMade() -> Bool
+    func saveNotificationsDecision(authorized: Bool)
+    func clear()
+}
 
-    let steps: [OnboardingStep]
-
-    init(
-        selectedStep: OnboardingStep = .welcome,
-        completedSteps: Set<OnboardingStep> = []
-    ) {
-        self.selectedStep = selectedStep
-        self.completedSteps = completedSteps
-        self.steps = OnboardingStep.allCases.sorted { $0.sortOrder < $1.sortOrder }
+public struct UserDefaultsOnboardingPersistence: OnboardingPersistence {
+    private enum Key {
+        static let currentStep = "colomba.onboarding.currentStep"
+        static let selectedLanguage = "colomba.onboarding.selectedLanguage"
+        static let notificationsDecisionMade = "colomba.onboarding.notificationsDecisionMade"
+        static let notificationsAuthorized = "colomba.onboarding.notificationsAuthorized"
+        static let appleLanguages = "AppleLanguages"
     }
 
-    func markCurrentStepComplete() {
-        completedSteps.insert(selectedStep)
+    private let defaults: UserDefaults
+
+    public init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
     }
 
-    func moveToNextStep() {
-        markCurrentStepComplete()
+    public func loadCurrentStep() -> OnboardingStep? {
+        defaults.string(forKey: Key.currentStep).flatMap(OnboardingStep.init(rawValue:))
+    }
 
-        guard let currentIndex = steps.firstIndex(of: selectedStep) else {
-            selectedStep = .welcome
+    public func saveCurrentStep(_ step: OnboardingStep) {
+        defaults.set(step.rawValue, forKey: Key.currentStep)
+    }
+
+    public func loadSelectedLanguage() -> AppLanguage? {
+        defaults.string(forKey: Key.selectedLanguage).flatMap(AppLanguage.init(rawValue:))
+    }
+
+    public func saveSelectedLanguage(_ language: AppLanguage) {
+        defaults.set(language.rawValue, forKey: Key.selectedLanguage)
+        defaults.set([language.bundleIdentifier], forKey: Key.appleLanguages)
+    }
+
+    public func loadNotificationsDecisionMade() -> Bool {
+        defaults.bool(forKey: Key.notificationsDecisionMade)
+    }
+
+    public func saveNotificationsDecision(authorized: Bool) {
+        defaults.set(true, forKey: Key.notificationsDecisionMade)
+        defaults.set(authorized, forKey: Key.notificationsAuthorized)
+    }
+
+    public func clear() {
+        defaults.removeObject(forKey: Key.currentStep)
+        defaults.removeObject(forKey: Key.selectedLanguage)
+        defaults.removeObject(forKey: Key.notificationsDecisionMade)
+        defaults.removeObject(forKey: Key.notificationsAuthorized)
+        defaults.removeObject(forKey: Key.appleLanguages)
+    }
+}
+
+public final class OnboardingViewModel: ObservableObject {
+    @Published public private(set) var currentStep: OnboardingStep
+    @Published public private(set) var selectedLanguage: AppLanguage?
+    @Published public private(set) var notificationsDecisionMade: Bool
+
+    private let persistence: OnboardingPersistence
+
+    public var isComplete: Bool {
+        currentStep == .notificationsOptIn && notificationsDecisionMade
+    }
+
+    public init(persistence: OnboardingPersistence = UserDefaultsOnboardingPersistence()) {
+        self.persistence = persistence
+        self.currentStep = persistence.loadCurrentStep() ?? .welcome
+        self.selectedLanguage = persistence.loadSelectedLanguage()
+        self.notificationsDecisionMade = persistence.loadNotificationsDecisionMade()
+    }
+
+    public func advance() {
+        guard let next = currentStep.next else {
+            persistence.saveCurrentStep(currentStep)
             return
         }
 
-        let nextIndex = steps.index(after: currentIndex)
-        guard steps.indices.contains(nextIndex) else {
-            // swiftlint:disable:next todo
-            // TODO PHASE4: Route to the authenticated app shell when complete.
+        currentStep = next
+        persistence.saveCurrentStep(next)
+    }
+
+    public func back() {
+        guard let previous = currentStep.previous else {
+            persistence.saveCurrentStep(currentStep)
             return
         }
 
-        selectedStep = steps[nextIndex]
+        currentStep = previous
+        persistence.saveCurrentStep(previous)
     }
 
-    // swiftlint:disable:next todo
-    // TODO PHASE4: Inject real services for locale selection, notification
-    // permission handling, persistence, and completion analytics.
+    public func selectLanguage(_ lang: AppLanguage) {
+        selectedLanguage = lang
+        persistence.saveSelectedLanguage(lang)
+    }
+
+    public func recordNotificationsDecision(authorized: Bool) {
+        notificationsDecisionMade = true
+        persistence.saveNotificationsDecision(authorized: authorized)
+        persistence.saveCurrentStep(currentStep)
+    }
+
+    public func reset() {
+        persistence.clear()
+        currentStep = .welcome
+        selectedLanguage = nil
+        notificationsDecisionMade = false
+    }
 }
