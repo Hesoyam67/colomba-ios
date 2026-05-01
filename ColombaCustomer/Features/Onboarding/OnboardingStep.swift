@@ -1,46 +1,29 @@
 import Foundation
 
-/// Compile-only Phase 4 onboarding step model.
-///
-/// This intentionally stays small until Coder's container packet lands.
-/// The cases here define the minimum sequence needed by the scaffolded
-/// `OnboardingContainerView` without committing to final copy, routing, or
-/// persistence behavior.
-enum OnboardingStep: String, CaseIterable, Identifiable, Hashable {
+public enum OnboardingStep: String, CaseIterable, Codable, Equatable, Sendable {
     case welcome
-    case language
-    case notifications
+    case languagePicker
+    case notificationsOptIn
 
-    var id: String {
-        rawValue
-    }
-
-    var sortOrder: Int {
+    public var next: Self? {
         switch self {
         case .welcome:
-            0
-        case .language:
-            1
-        case .notifications:
-            2
+            .languagePicker
+        case .languagePicker:
+            .notificationsOptIn
+        case .notificationsOptIn:
+            nil
         }
     }
 
-    var accessibilityIdentifier: String {
-        "onboarding.step.\(rawValue)"
-    }
-
-    // swiftlint:disable:next todo
-    // TODO PHASE4: Replace placeholder titles with packet-backed localization
-    // and analytics metadata once the onboarding container contract arrives.
-    var placeholderTitleKey: String {
+    public var previous: Self? {
         switch self {
         case .welcome:
-            "onboarding.welcome.title"
-        case .language:
-            "onboarding.language.title"
-        case .notifications:
-            "onboarding.notifications.cta"
+            nil
+        case .languagePicker:
+            .welcome
+        case .notificationsOptIn:
+            .languagePicker
         }
     }
 }
