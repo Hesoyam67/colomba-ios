@@ -91,14 +91,34 @@ jobs:
           path.write_text(script.replace(old, new))
           PY
           echo "::group::CHECKPOINT_02 post-build artifact discovery"
-          trap 'rc=$?; echo "::group::CHECKPOINT_02 post-build artifact discovery"; find "${RUNNER_WORKSPACE:-.}" -maxdepth 6 -name "*.app" -type d 2>&1 | head -20 || true; echo "::endgroup::"; echo "::group::CHECKPOINT_03 simulator state"; xcrun simctl list devices booted 2>&1 || true; echo "::endgroup::"; echo "::error file=ios-customer-app.yml::Step exited rc=$rc at bash LINENO=$LINENO. Last command before exit shown above this line."; exit $rc' ERR
+          trap 'rc=$?; echo "::group::CHECKPOINT_02 post-build artifact discovery"; find "${RUNNER_WORKSPACE:-.}" -maxdepth 6 -name "*.app" -type d 2>&1 | head -20 || true; echo "::endgroup::"; echo "::group::CHECKPOINT_03 boot simulator"; xcrun simctl list devices booted 2>&1 || true; echo "::endgroup::"; echo "::error file=ios-customer-app.yml::Step exited rc=$rc at bash LINENO=$LINENO. Last command before exit shown above this line."; exit $rc' ERR
+          echo "::group::CHECKPOINT_03 boot simulator"
+          RUNTIME_ID="com.apple.CoreSimulator.SimRuntime.iOS-${IOS_VERSION//./-}"
+          echo "Looking up iPhone 15 on runtime: $RUNTIME_ID"
+          DEVICE_UDID=$(xcrun simctl list devices --json \
+            | jq -r --arg rt "$RUNTIME_ID" '
+                .devices[$rt] // [] |
+                map(select(.name == "iPhone 15" and .isAvailable == true)) |
+                first |
+                .udid // ""
+              ')
+          if [ -z "$DEVICE_UDID" ] || [ "$DEVICE_UDID" = "null" ]; then
+            echo "::error::No available iPhone 15 device on $RUNTIME_ID"
+            echo "--- All available devices for diagnosis ---"
+            xcrun simctl list devices --json | jq '.devices | to_entries[] | {runtime: .key, devices: [.value[] | select(.isAvailable == true) | .name]}'
+            exit 1
+          fi
+          echo "Selected device: iPhone 15 ($DEVICE_UDID)"
+          xcrun simctl boot "$DEVICE_UDID" || true
+          xcrun simctl bootstatus "$DEVICE_UDID" -b
+          echo "Simulator booted and ready."
+          echo "--- Booted devices verification ---"
+          xcrun simctl list devices booted
+          echo "::endgroup::"
           DEVICE_NAME="Colomba CI iPhone 15 ${IOS_VERSION}" \
             DEVICE_TYPE="com.apple.CoreSimulator.SimDeviceType.iPhone-15" \
             scripts/measure-cold-start.sh
           find "${RUNNER_WORKSPACE:-.}" -maxdepth 6 -name "*.app" -type d 2>&1 | head -20 || true
-          echo "::endgroup::"
-          echo "::group::CHECKPOINT_03 simulator state"
-          xcrun simctl list devices booted 2>&1 || true
           echo "::endgroup::"
 
       - name: Upload CI step logs (diagnostic)
