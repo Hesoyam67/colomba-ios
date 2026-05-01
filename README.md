@@ -1,29 +1,39 @@
-# Colomba Customer iOS App
+# Colomba iOS
 
-Phase 1 scaffold for the Colomba B2B customer iOS app.
-
-Canon lives in Drive, not this repo:
-- `~/colomba-drive/customer-app/CUSTOMER-APP-SPEC-v0.md`
-- `~/colomba-drive/customer-app/CUSTOMER-APP-PLAN-v0.md`
-- `~/colomba-drive/customer-app/design-tokens-v0.md`
-- `~/colomba-drive/customer-app/handoffs/phase00-to-phase01.md`
-
-Code lives here: `~/colomba-build/customer-app/`.
+Colomba iOS is the native iOS client for Colomba, a Swiss Voice-AI receptionist B2B SaaS for restaurants.
 
 ## Requirements
 
-- Xcode 16
-- Swift 5.10
-- iOS 17 minimum
-- SwiftLint
+- Xcode 16 or newer
+- Swift 5.10 or newer
+- iOS 17 minimum deployment target
+- SwiftLint for local style checks
 
-## Local checks
+## Build
+
+Open the project in Xcode and select an available iOS 17+ simulator or connected device.
+
+For command-line builds, detect installed simulator destinations instead of hard-coding a device/OS pair:
 
 ```bash
-swift build
-for pkg in Packages/* Packages/Features/*; do [ -f "$pkg/Package.swift" ] && (cd "$pkg" && swift build); done
-for pkg in Packages/* Packages/Features/*; do [ -f "$pkg/Package.swift" ] && (cd "$pkg" && swift test); done
-scripts/measure-cold-start.sh
+xcrun simctl list devices available --json | jq
 ```
 
-`swift test`, `xcodebuild`, and cold-start measurement require a full Xcode install. Command Line Tools alone can build the package sources but cannot provide XCTest or iOS Simulator.
+Then use an available destination from that output for local build and test commands.
+
+## Test
+
+```bash
+swiftlint
+# Run the app test plan from Xcode or CI using an available iOS 17+ destination.
+```
+
+Do not merge PRs while CI is red or pending.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
+
+## Contact
+
+For product or engineering questions, open a GitHub issue or contact the Colomba maintainers.

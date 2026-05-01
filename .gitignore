@@ -21,3 +21,11 @@ tmp/
 .env
 .env.*
 *.local
+xcuserdata/
+Packages/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+Pods/
+Carthage/Build/
