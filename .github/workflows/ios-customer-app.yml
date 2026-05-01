@@ -72,8 +72,13 @@ jobs:
 
       - name: iOS simulator build + cold-start gate
         run: |
-          set -euo pipefail
+          set -euxo pipefail
+          trap 'rc=$?; echo "::error file=ios-customer-app.yml::Step exited rc=$rc at bash LINENO=$LINENO. Last command before exit shown above this line."; exit $rc' ERR
           echo "Using iOS Simulator runtime: ${IOS_VERSION}"
+          echo "::group::CHECKPOINT_01 environment"
+          echo "IOS_VERSION=${IOS_VERSION:-unset}"
+          xcrun simctl list runtimes available | head -20
+          echo "::endgroup::"
           xcrun simctl list devices available | grep -E 'iPhone 12|iPhone 15' || true
           python3 - <<'PY'
           from pathlib import Path
@@ -85,6 +90,24 @@ jobs:
               raise SystemExit("destination patch target not found")
           path.write_text(script.replace(old, new))
           PY
+          echo "::group::CHECKPOINT_02 post-build artifact discovery"
+          trap 'rc=$?; echo "::group::CHECKPOINT_02 post-build artifact discovery"; find "${RUNNER_WORKSPACE:-.}" -maxdepth 6 -name "*.app" -type d 2>&1 | head -20 || true; echo "::endgroup::"; echo "::group::CHECKPOINT_03 simulator state"; xcrun simctl list devices booted 2>&1 || true; echo "::endgroup::"; echo "::error file=ios-customer-app.yml::Step exited rc=$rc at bash LINENO=$LINENO. Last command before exit shown above this line."; exit $rc' ERR
           DEVICE_NAME="Colomba CI iPhone 15 ${IOS_VERSION}" \
             DEVICE_TYPE="com.apple.CoreSimulator.SimDeviceType.iPhone-15" \
             scripts/measure-cold-start.sh
+          find "${RUNNER_WORKSPACE:-.}" -maxdepth 6 -name "*.app" -type d 2>&1 | head -20 || true
+          echo "::endgroup::"
+          echo "::group::CHECKPOINT_03 simulator state"
+          xcrun simctl list devices booted 2>&1 || true
+          echo "::endgroup::"
+
+      - name: Upload CI step logs (diagnostic)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.workspace }}/**/*.log
+            ${{ runner.temp }}/**/*.log
+          if-no-files-found: ignore
+          retention-days: 7
