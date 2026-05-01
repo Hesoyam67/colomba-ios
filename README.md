@@ -14,7 +14,7 @@ Code lives here: `~/colomba-build/customer-app/`.
 
 - Xcode 16
 - Swift 5.10
-- iOS 17 minimum
+- iOS 18.5 minimum
 - SwiftLint
 
 ## Local checks

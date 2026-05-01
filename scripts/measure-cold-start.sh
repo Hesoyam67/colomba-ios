@@ -4,8 +4,8 @@ set -euo pipefail
 WORKSPACE="${WORKSPACE:-ColombaCustomer.xcworkspace}"
 SCHEME="${SCHEME:-ColombaCustomer}"
 BUNDLE_ID="${BUNDLE_ID:-ch.colomba.customer}"
-DEVICE_NAME="${DEVICE_NAME:-Colomba Phase1 iPhone 12}"
-DEVICE_TYPE="${DEVICE_TYPE:-com.apple.CoreSimulator.SimDeviceType.iPhone-12}"
+DEVICE_NAME="${DEVICE_NAME:-iPhone 16}"
+DEVICE_TYPE="${DEVICE_TYPE:-com.apple.CoreSimulator.SimDeviceType.iPhone-16}"
 DERIVED_DATA_PATH="${DERIVED_DATA_PATH:-.derived/phase01-cold-start}"
 LOG_PATH="${LOG_PATH:-tmp/cold-start.log}"
 THRESHOLD_MS="${THRESHOLD_MS:-1500}"
@@ -43,6 +43,12 @@ fi
 
 xcrun simctl boot "$udid" >/dev/null 2>&1 || true
 xcrun simctl bootstatus "$udid" -b
+
+# Set Swiss locale via simctl/defaults to avoid shell-quoting issues in xcodebuild/fastlane arg forwarding.
+xcrun simctl spawn "$udid" defaults write -g AppleLocale -string de_CH
+xcrun simctl spawn "$udid" defaults write -g AppleLanguages -array de-CH
+echo "AppleLocale: $(xcrun simctl spawn "$udid" defaults read -g AppleLocale 2>/dev/null || echo unset)"
+echo "AppleLanguages: $(xcrun simctl spawn "$udid" defaults read -g AppleLanguages 2>/dev/null || echo unset)"
 
 xcodebuild \
   -workspace "$WORKSPACE" \
