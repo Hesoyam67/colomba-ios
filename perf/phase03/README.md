@@ -1,6 +1,6 @@
 # Phase 3 cold-start measurements
 
-Protocol: N=30, discard first 3 warmup, `scripts/measure-cold-start.sh`, simulator `Colomba Phase1 iPhone 12`, Debug.
+Protocol: N=30, discard first 3 warmup, `scripts/measure-cold-start.sh`, simulator `iPhone 16`, Debug.
 
 | run | p50 | p95 | result |
 |---|---:|---:|---|
