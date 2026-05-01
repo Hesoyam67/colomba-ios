@@ -28,4 +28,28 @@ final class APIErrorTests: XCTestCase {
 
         XCTAssertEqual(error, .unknownUnexpected)
     }
+
+    func testBillingPaymentRequiredIsNotRetryable() {
+        XCTAssertFalse(APIError.billingPaymentRequired.isRetryable)
+    }
+
+    func testNetworkTimeoutIsRetryable() {
+        XCTAssertTrue(APIError.networkTimeout.isRetryable)
+    }
+
+    func testUserMessageKeyPrefixesRawValue() {
+        XCTAssertEqual(APIError.aiRateLimited.userMessageKey, "error.ai.rate_limited")
+    }
+
+    func testKnownErrorResponseMapsToCatalogCase() {
+        let error = APIError(errorResponse: ErrorResponse(code: "server.maintenance", message: "Down"))
+
+        XCTAssertEqual(error, .serverMaintenance)
+    }
+
+    func testErrorResponseKeepsRetryAfterSeconds() {
+        let response = ErrorResponse(code: "network.timeout", message: "Slow", retryAfterSeconds: 30)
+
+        XCTAssertEqual(response.retryAfterSeconds, 30)
+    }
 }
