@@ -118,3 +118,17 @@
 "billing.manage_subscription" = "TODO_TRANSLATE: Manage subscription";
 "billing.portal_unavailable" = "TODO_TRANSLATE: Billing portal is unavailable. Please try again.";
 "billing.portal_hint" = "TODO_TRANSLATE: Opens the Stripe customer portal in Safari";
+
+/* MARK: Tabs */
+"tabs.home" = "TODO_TRANSLATE: Home";
+"tabs.reservations" = "TODO_TRANSLATE: Reservations";
+"tabs.plans" = "TODO_TRANSLATE: Plans";
+"tabs.settings" = "TODO_TRANSLATE: Settings";
+
+/* MARK: Settings */
+"settings.account" = "TODO_TRANSLATE: Account";
+"settings.app" = "TODO_TRANSLATE: App";
+"settings.usage" = "TODO_TRANSLATE: Usage";
+"settings.language" = "TODO_TRANSLATE: Language";
+"settings.about" = "TODO_TRANSLATE: About";
+"settings.sign_out" = "TODO_TRANSLATE: Sign out";

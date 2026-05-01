@@ -46,20 +46,13 @@ struct AuthenticatedHomeView: View {
                     .accessibilityLabel("Reserve a table at a restaurant")
                     StripePortalButton()
                 }
-                HStack(spacing: ColombaSpacing.space3) {
-                    Button(String(localized: "auth.refresh_session")) {
-                        Task {
-                            await authController.refreshSession()
-                        }
+                Button(String(localized: "auth.refresh_session")) {
+                    Task {
+                        await authController.refreshSession()
                     }
-                    .buttonStyle(.borderedProminent)
-                    .accessibilityLabel("Refresh secure session")
-                    Button(String(localized: "auth.sign_out")) {
-                        authController.signOut()
-                    }
-                    .buttonStyle(.bordered)
-                    .accessibilityLabel("Sign out of Colomba")
                 }
+                .buttonStyle(.borderedProminent)
+                .accessibilityLabel("Refresh secure session")
                 Spacer(minLength: ColombaSpacing.space4)
             }
             .padding(ColombaSpacing.Screen.margin)
