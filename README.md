@@ -1,4 +1,9 @@
 # Colomba Customer iOS App
+![CI](https://github.com/Hesoyam67/colomba-ios/actions/workflows/ios.yml/badge.svg) ![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Swift](https://img.shields.io/badge/swift-5.9-orange.svg) ![iOS](https://img.shields.io/badge/iOS-17%2B-blue.svg)
+
+## Status
+
+This repository tracks app health through CI, license, Swift, and iOS target badges above.
 
 Phase 1 scaffold for the Colomba B2B customer iOS app.
 
