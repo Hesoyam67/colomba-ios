@@ -43,7 +43,8 @@ jobs:
             --output_types junit \
             --skip_slack \
             --clean \
-            --reset_simulator false
+            --reset_simulator false \
+            --xcargs "-AppleLocale de_CH -AppleLanguages (de-CH)"
 
       - name: Cold-start gate
         id: cold_start
