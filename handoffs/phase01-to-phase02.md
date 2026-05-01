@@ -2,7 +2,7 @@
 
 From session: `agent:main:ios-app:phase01`
 To session: `agent:main:ios-app:phase02`
-Status: **DONE_PHASE1** — scaffold, package surface, design tokens, Xcode build/lint/tests, and iPhone 12 cold-start gate are green.
+Status: **DONE_PHASE1** — scaffold, package surface, design tokens, Xcode build/lint/tests, and iPhone 16 cold-start gate are green.
 Cold-start result: `COLOMBA_COLD_START_MS=154` (`154ms < 1500ms`).
 Commit base: `e5260e2` (`Phase 1 iOS customer app scaffold`); final gate/docs commit follows this handoff.
 
@@ -38,7 +38,7 @@ Commit base: `e5260e2` (`Phase 1 iOS customer app scaffold`); final gate/docs co
 - Cold-start instrumentation:
   - `ColombaCustomerApp.init()` calls `ColdStart.markProcessStarted()`.
   - `RootView.onAppear` calls `ColdStart.markRootViewAppeared()`.
-  - `scripts/measure-cold-start.sh` builds, installs, launches on an iPhone 12 simulator, extracts `COLOMBA_COLD_START_MS=<ms>`, and fails at `>=1500` ms.
+  - `scripts/measure-cold-start.sh` builds, installs, launches on an iPhone 16 simulator, extracts `COLOMBA_COLD_START_MS=<ms>`, and fails at `>=1500` ms.
 - CI workflow at `.github/workflows/ios-customer-app.yml`:
   - selects Xcode 16
   - installs SwiftLint

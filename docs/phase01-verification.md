@@ -14,7 +14,7 @@ xcode-select -p                                      /Applications/Xcode.app/Con
 xcodebuild -version                                  Xcode 26.4.1 (Build 17E202)
 swift --version                                      Apple Swift 6.3.1, package tools pinned to Swift 5.10
 iOS Simulator runtime                               iOS 26.4.1 (23E254a)
-Phase 1 simulator device                             Colomba Phase1 iPhone 12
+Phase 1 simulator device                             iPhone 16
 SwiftLint                                            0.63.2
 ```
 
