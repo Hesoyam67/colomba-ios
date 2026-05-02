@@ -1,21 +1,55 @@
-# Colomba Customer iOS App
+# Colomba iOS Customer App
 
-Phase 1 scaffold for the Colomba B2B customer iOS app.
+SwiftUI customer app for [colomba-swiss.ch](https://colomba-swiss.ch), the Swiss telephone-reception and reservation assistant platform.
 
-Canon lives in Drive, not this repo:
-- `~/colomba-drive/customer-app/CUSTOMER-APP-SPEC-v0.md`
-- `~/colomba-drive/customer-app/CUSTOMER-APP-PLAN-v0.md`
-- `~/colomba-drive/customer-app/design-tokens-v0.md`
-- `~/colomba-drive/customer-app/handoffs/phase00-to-phase01.md`
+[![iOS CI](https://github.com/Hesoyam67/colomba-ios/actions/workflows/ios.yml/badge.svg)](https://github.com/Hesoyam67/colomba-ios/actions/workflows/ios.yml)
+![Swift 5.10](https://img.shields.io/badge/Swift-5.10-orange.svg)
+![iOS 17+](https://img.shields.io/badge/iOS-17%2B-blue.svg)
+![License: Proprietary](https://img.shields.io/badge/license-Proprietary-lightgrey.svg)
 
-Code lives here: `~/colomba-build/customer-app/`.
+## What this is
 
-## Requirements
+Colomba Customer is the SwiftUI iOS app that pairs with Colomba's telephone-reception backend. It covers the customer-facing surfaces for onboarding, SMS verification, reservations, plans, usage, and settings.
 
-- Xcode 16
-- Swift 5.10
-- iOS 18.5 minimum
-- SwiftLint
+## Tech stack
+
+- SwiftUI
+- PhoneNumberKit
+- Twilio Verify
+- n8n webhook integration
+- StoreKit 2 + Stripe
+- SwiftLint strict mode
+
+## Project layout
+
+```text
+.
+├── ColombaCustomer/              # iOS app target and feature UI
+│   ├── Features/                 # App feature screens and flows
+│   ├── Resources/                # Localized strings and assets
+│   └── RootView.swift            # Root navigation/container
+├── Packages/                     # Local Swift packages
+│   ├── ColombaAuth/              # Authentication and verification logic
+│   └── Features/                 # Feature modules
+├── scripts/                      # Local validation and measurement scripts
+└── .github/workflows/ios.yml     # GitHub Actions CI workflow
+```
+
+## Localization
+
+The app targets English plus Swiss German, French, and Italian locales: `en`, `de-CH`, `fr-CH`, and `it-CH`. Some strings may still carry `TODO_TRANSLATE` while copy is pending final review.
+
+## Build & run
+
+- Xcode 16.4
+- Scheme: `ColombaCustomer`
+- Recommended simulator: iPhone 16 / iOS 18.5
+
+Open the project in Xcode, select the `ColombaCustomer` scheme, choose an iPhone 16 simulator running iOS 18.5, then build and run.
+
+## CI
+
+GitHub Actions CI is defined in `.github/workflows/ios.yml` and runs the iOS validation lane for this repository.
 
 ## Local checks
 
@@ -27,3 +61,7 @@ scripts/measure-cold-start.sh
 ```
 
 `swift test`, `xcodebuild`, and cold-start measurement require a full Xcode install. Command Line Tools alone can build the package sources but cannot provide XCTest or iOS Simulator.
+
+## License
+
+Proprietary. All rights reserved.
