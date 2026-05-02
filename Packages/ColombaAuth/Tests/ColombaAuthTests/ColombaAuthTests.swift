@@ -91,6 +91,19 @@ final class ColombaAuthTests: XCTestCase {
         XCTAssertNil(try store.load())
     }
 
+    func testUpdateDisplayNamePersistsSession() async throws {
+        let store = InMemoryAuthSessionStore(session: Self.sampleSession(accessToken: "existing"))
+        let controller = makeController(store: store)
+
+        await controller.restoreSession()
+        let updated = try await controller.updateDisplayName("  Bistro Owner  ")
+
+        XCTAssertEqual(updated.customer.displayName, "Bistro Owner")
+        XCTAssertEqual(controller.state.session?.customer.displayName, "Bistro Owner")
+        XCTAssertEqual(try store.load()?.tokens.accessToken, "existing")
+        XCTAssertEqual(try store.load()?.customer.displayName, "Bistro Owner")
+    }
+
     func testSnapshotDescriptorsCoverAuthStates() {
         let challenge = MagicLinkChallenge(
             challengeId: "mch_snapshot",

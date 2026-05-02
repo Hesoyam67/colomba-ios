@@ -1,0 +1,14 @@
+/* MARK: Profile */
+"profile.edit" = "Edit profile";
+"profile.title" = "Profile";
+"profile.display_name" = "Display name";
+"profile.email" = "Email";
+"profile.phone_number" = "Phone number";
+"profile.cancel" = "Cancel";
+"profile.save" = "Save";
+"profile.summary_format" = "%@, email %@";
+"profile.error_generic" = "Could not update profile. Please try again.";
+"profile.not_provided" = "Not provided";
+"profile.read_only_contact" = "Email and phone are read-only for this release.";
+"profile.character_count_format" = "%d/60";
+"profile.error_validation_format" = "Please choose a name between 1 and 60 characters.";
