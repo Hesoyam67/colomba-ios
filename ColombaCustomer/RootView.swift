@@ -74,7 +74,7 @@ private struct RootTabShell: View {
                 Text(LocalizedStringKey("tabs.plans"))
             }
 
-            SettingsView(authController: authController, welcomeName: session.customer.displayName)
+            SettingsView(authController: authController, customer: session.customer)
                 .accessibilityElement(children: .contain)
                 .accessibilityLabel(Text("tabs.settings"))
                 .tabItem {

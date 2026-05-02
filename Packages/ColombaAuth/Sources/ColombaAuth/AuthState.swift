@@ -21,6 +21,7 @@ public enum AuthState: Equatable, Sendable {
 public enum AuthFailure: Error, Equatable, LocalizedError, Sendable {
     case missingAppleCredential
     case invalidEmail
+    case invalidDisplayName
     case invalidMagicCode
     case storageFailed(String)
     case backendRejected(String)
@@ -31,6 +32,8 @@ public enum AuthFailure: Error, Equatable, LocalizedError, Sendable {
             "Apple did not return a usable credential."
         case .invalidEmail:
             "Enter a valid email address."
+        case .invalidDisplayName:
+            "Enter a display name."
         case .invalidMagicCode:
             "Enter the code from your Colomba sign-in email."
         case let .storageFailed(message):

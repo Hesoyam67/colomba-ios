@@ -1,0 +1,14 @@
+/* MARK: Profile */
+"profile.edit" = "TODO_TRANSLATE: Edit profile";
+"profile.title" = "TODO_TRANSLATE: Profile";
+"profile.display_name" = "TODO_TRANSLATE: Display name";
+"profile.email" = "TODO_TRANSLATE: Email";
+"profile.phone_number" = "TODO_TRANSLATE: Phone number";
+"profile.cancel" = "TODO_TRANSLATE: Cancel";
+"profile.save" = "TODO_TRANSLATE: Save";
+"profile.summary_format" = "TODO_TRANSLATE: %@, email %@";
+"profile.error_generic" = "TODO_TRANSLATE: Could not update profile. Please try again.";
+"profile.not_provided" = "TODO_TRANSLATE: Not provided";
+"profile.read_only_contact" = "TODO_TRANSLATE: Email and phone are read-only for this release.";
+"profile.character_count_format" = "TODO_TRANSLATE: %d/60";
+"profile.error_validation_format" = "TODO_TRANSLATE: Please choose a name between 1 and 60 characters.";

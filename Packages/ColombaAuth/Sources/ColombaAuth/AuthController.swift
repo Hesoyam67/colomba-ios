@@ -118,6 +118,43 @@ public final class AuthController {
         }
     }
 
+    @discardableResult
+    public func updateDisplayName(_ newName: String) async throws -> AuthSession {
+        guard let session = state.session else {
+            state = .signedOut
+            throw AuthFailure.storageFailed("No authenticated session is available.")
+        }
+
+        let trimmedName = newName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedName.isEmpty, trimmedName.count <= 60 else {
+            state = .failed(message: AuthFailure.invalidDisplayName.localizedDescription)
+            throw AuthFailure.invalidDisplayName
+        }
+
+        let updatedCustomer = Customer(
+            id: session.customer.id,
+            displayName: trimmedName,
+            email: session.customer.email,
+            phoneNumber: session.customer.phoneNumber,
+            billingEmail: session.customer.billingEmail,
+            locale: session.customer.locale
+        )
+        let updatedSession = AuthSession(
+            customer: updatedCustomer,
+            tokens: session.tokens,
+            onboardingRequired: session.onboardingRequired
+        )
+
+        do {
+            try sessionStore.save(updatedSession)
+            state = .authenticated(updatedSession)
+            return updatedSession
+        } catch {
+            state = .failed(message: error.localizedDescription)
+            throw error
+        }
+    }
+
     public func signOut() {
         do {
             try sessionStore.clear()

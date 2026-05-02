@@ -22,13 +22,24 @@ public struct DeviceInfo: Codable, Equatable, Sendable {
 public struct Customer: Codable, Equatable, Sendable {
     public let id: String
     public let displayName: String
+    public let email: String?
+    public let phoneNumber: String?
     public let billingEmail: String
     public let locale: AuthLocale
 
-    public init(id: String, displayName: String, billingEmail: String, locale: AuthLocale) {
+    public init(
+        id: String,
+        displayName: String,
+        email: String? = nil,
+        phoneNumber: String? = nil,
+        billingEmail: String? = nil,
+        locale: AuthLocale
+    ) {
         self.id = id
         self.displayName = displayName
-        self.billingEmail = billingEmail
+        self.email = email ?? billingEmail
+        self.phoneNumber = phoneNumber
+        self.billingEmail = billingEmail ?? email ?? ""
         self.locale = locale
     }
 }
