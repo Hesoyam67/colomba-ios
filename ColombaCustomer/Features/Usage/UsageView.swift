@@ -45,18 +45,6 @@ struct UsageView: View {
         }
     }
 
-    /// Format: usage.updated_from_format contains one source label.
-    private var updatedFromText: String {
-        let sourceText = source == .cache
-            ? String(localized: "usage.source_cache")
-            : String(localized: "usage.source_server")
-        return String(format: NSLocalizedString("usage.updated_from_format", comment: ""), sourceText)
-    }
-
-    /// Format: usage.overage_format contains one formatted event count.
-    private var overageText: String {
-        String(format: NSLocalizedString("usage.overage_format", comment: ""), snapshot.overageEvents.formatted())
-    }
 }
 
 struct UsagePanel: View {
@@ -84,4 +72,18 @@ struct UsagePanel: View {
         }
         .accessibilityElement(children: .contain)
     }
+
+    /// Format: usage.updated_from_format contains one source label.
+    private var updatedFromText: String {
+        let sourceText = source == .cache
+            ? String(localized: "usage.source_cache")
+            : String(localized: "usage.source_server")
+        return String(format: NSLocalizedString("usage.updated_from_format", comment: ""), sourceText)
+    }
+
+    /// Format: usage.overage_format contains one formatted event count.
+    private var overageText: String {
+        String(format: NSLocalizedString("usage.overage_format", comment: ""), snapshot.overageEvents.formatted())
+    }
+
 }

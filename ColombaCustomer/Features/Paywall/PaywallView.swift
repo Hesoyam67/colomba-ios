@@ -77,7 +77,7 @@ struct PaywallView: View {
     }
 
     /// Format: paywall.price_format contains display price and billing interval.
-    private func productPriceText(for product: StoreProduct) -> String {
+    private func productPriceText(for product: ColombaProduct) -> String {
         String(
             format: NSLocalizedString("paywall.price_format", comment: ""),
             product.displayPrice,
@@ -86,7 +86,7 @@ struct PaywallView: View {
     }
 
     /// Format: paywall.buy_accessibility_format contains product name, price, and interval.
-    private func productBuyAccessibility(for product: StoreProduct) -> String {
+    private func productBuyAccessibility(for product: ColombaProduct) -> String {
         String(
             format: NSLocalizedString("paywall.buy_accessibility_format", comment: ""),
             product.displayName,

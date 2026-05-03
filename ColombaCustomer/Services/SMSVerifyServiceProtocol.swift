@@ -5,7 +5,7 @@ public protocol SMSVerifyServiceProtocol: Sendable {
     func verifyCode(challengeId: String, code: String) async throws -> SMSVerifyResult
 }
 
-public struct SMSChallenge: Sendable, Equatable {
+public struct SMSChallenge: Sendable, Equatable, Decodable {
     public let challengeId: String
     public let expiresAt: Date
 
@@ -15,7 +15,7 @@ public struct SMSChallenge: Sendable, Equatable {
     }
 }
 
-public struct SMSVerifyResult: Sendable, Equatable {
+public struct SMSVerifyResult: Sendable, Equatable, Decodable {
     public let verified: Bool
     public let refreshToken: String?
 

@@ -123,7 +123,7 @@ private struct ProfileEditView: View {
                     if let errorMessage {
                         Text(errorMessage)
                             .font(.colomba.caption)
-                            .foregroundStyle(Color.colomba.danger)
+                            .foregroundStyle(Color.colomba.error)
                             .accessibilityLabel(Text(errorMessage))
                     }
                 }

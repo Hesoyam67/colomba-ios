@@ -6,7 +6,7 @@ public protocol SMSVerifyClientProtocol: Sendable {
 }
 
 public struct TwilioSMSVerifyClient: SMSVerifyClientProtocol, Sendable {
-    private static let defaultBaseURL: URL = {
+    public static let defaultBaseURL: URL = {
         guard let url = URL(string: "https://example.invalid/webhook") else {
             fatalError("invalid Twilio URL literal")
         }
