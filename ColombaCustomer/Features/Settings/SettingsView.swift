@@ -5,10 +5,24 @@ import SwiftUI
 struct SettingsView: View {
     let authController: AuthController
     let customer: Customer
+    let reservationService: ReservationServiceProtocol
+    let prefilledName: String
     @AppStorage(
         "colomba.onboarding.selectedLanguage"
     )
     private var selectedLanguageRaw = AppLanguage.deCH.rawValue
+
+    init(
+        authController: AuthController,
+        customer: Customer,
+        reservationService: ReservationServiceProtocol = ReservationService(),
+        prefilledName: String? = nil
+    ) {
+        self.authController = authController
+        self.customer = customer
+        self.reservationService = reservationService
+        self.prefilledName = prefilledName ?? customer.displayName
+    }
 
     var body: some View {
         NavigationStack {
@@ -59,7 +73,11 @@ struct SettingsView: View {
                     .accessibilityLabel(Text("settings.manage_plan"))
 
                     NavigationLink {
-                        MyReservationsView(viewModel: MyReservationsViewModel(service: ReservationService()))
+                        MyReservationsView(
+                            viewModel: MyReservationsViewModel(service: reservationService),
+                            reservationService: reservationService,
+                            prefilledName: prefilledName
+                        )
                     } label: {
                         Text("settings.reservations")
                     }

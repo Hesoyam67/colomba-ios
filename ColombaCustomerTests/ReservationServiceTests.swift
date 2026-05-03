@@ -52,6 +52,16 @@ final class ReservationServiceTests: XCTestCase {
         }
     }
 
+
+    func test_serviceUsesInjectedSessionRefreshTokenWhenKeychainEmpty() async throws {
+        let client = CapturingReservationHTTPClient()
+        let service = ReservationService(client: client, keychain: MockKeychain(), refreshToken: "session-refresh-token")
+
+        _ = try await service.listMyReservations()
+
+        XCTAssertEqual(client.tokens, ["session-refresh-token"])
+    }
+
     func test_availability_decodesSlots() async throws {
         let baseURL = try Self.makeURL("https://n8n.test/webhook")
         MockURLProtocol.requestHandler = { request in
@@ -301,6 +311,58 @@ private final class MockURLProtocol: URLProtocol {
     }
 
     override func stopLoading() {}
+}
+
+private final class CapturingReservationHTTPClient: ReservationHTTPClientProtocol, @unchecked Sendable {
+    private(set) var tokens: [String] = []
+
+    func listRestaurants(refreshToken: String) async throws -> [Restaurant] {
+        tokens.append(refreshToken)
+        return []
+    }
+
+    func availability(restaurantId: String, date: Date, refreshToken: String) async throws -> [TimeSlot] {
+        tokens.append(refreshToken)
+        return []
+    }
+
+    func createReservation(
+        _ request: ReservationRequest,
+        refreshToken: String
+    ) async throws -> ReservationConfirmation {
+        tokens.append(refreshToken)
+        return ReservationConfirmation(
+            reservationId: "reservation-1",
+            restaurantName: "Colomba Bistro",
+            startsAt: Date(timeIntervalSince1970: 0),
+            partySize: request.partySize
+        )
+    }
+
+    func listMyReservations(refreshToken: String) async throws -> [Reservation] {
+        tokens.append(refreshToken)
+        return []
+    }
+
+    func cancelReservation(id: String, refreshToken: String) async throws {
+        tokens.append(refreshToken)
+    }
+
+    func modifyReservation(
+        id: String,
+        slotId: String,
+        partySize: Int,
+        specialRequests: String?,
+        refreshToken: String
+    ) async throws -> ReservationConfirmation {
+        tokens.append(refreshToken)
+        return ReservationConfirmation(
+            reservationId: id,
+            restaurantName: "Colomba Bistro",
+            startsAt: Date(timeIntervalSince1970: 0),
+            partySize: partySize
+        )
+    }
 }
 
 private struct UnusedReservationHTTPClient: ReservationHTTPClientProtocol {

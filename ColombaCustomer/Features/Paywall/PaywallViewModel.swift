@@ -36,10 +36,11 @@ final class PaywallViewModel: ObservableObject {
     func purchase(product: ColombaProduct) async {
         state = machine.reduce(state: state, event: .purchase(product.id))
         do {
-            state = machine.reduce(
-                state: state,
-                event: .purchaseCompleted(try await purchaseService.purchase(product: product))
-            )
+            let outcome = try await purchaseService.purchase(product: product)
+            if case let .purchased(productID) = outcome {
+                PlanEntitlements.grantPaidPlan(forProductID: productID)
+            }
+            state = machine.reduce(state: state, event: .purchaseCompleted(outcome))
         } catch {
             state = machine.reduce(state: state, event: .failed(.purchaseFailed))
         }
@@ -47,7 +48,11 @@ final class PaywallViewModel: ObservableObject {
 
     func restore() async {
         do {
-            state = machine.reduce(state: state, event: .purchaseCompleted(try await purchaseService.restore()))
+            let outcome = try await purchaseService.restore()
+            if case let .restored(productIDs) = outcome, let productID = productIDs.first {
+                PlanEntitlements.grantPaidPlan(forProductID: productID)
+            }
+            state = machine.reduce(state: state, event: .purchaseCompleted(outcome))
         } catch {
             state = machine.reduce(state: state, event: .failed(.restoreFailed))
         }

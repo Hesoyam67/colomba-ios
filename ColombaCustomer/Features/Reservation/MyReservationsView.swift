@@ -2,9 +2,17 @@ import SwiftUI
 
 public struct MyReservationsView: View {
     @StateObject private var viewModel: MyReservationsViewModel
+    private let reservationService: ReservationServiceProtocol
+    private let prefilledName: String
 
-    public init(viewModel: MyReservationsViewModel) {
+    public init(
+        viewModel: MyReservationsViewModel,
+        reservationService: ReservationServiceProtocol = ReservationService(),
+        prefilledName: String = ""
+    ) {
         _viewModel = StateObject(wrappedValue: viewModel)
+        self.reservationService = reservationService
+        self.prefilledName = prefilledName
     }
 
     public var body: some View {
@@ -26,7 +34,7 @@ public struct MyReservationsView: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                     NavigationLink {
                         RestaurantListView(
-                            viewModel: ReservationViewModel(service: ReservationService(), prefilledName: "")
+                            viewModel: ReservationViewModel(service: reservationService, prefilledName: prefilledName)
                         )
                     } label: {
                         Label(String(localized: "reservation.list.book.cta"), systemImage: "plus.circle.fill")
@@ -38,7 +46,12 @@ public struct MyReservationsView: View {
             } else {
                 ForEach(viewModel.filteredReservations) { reservation in
                     NavigationLink {
-                        MyReservationDetailView(viewModel: viewModel, reservation: reservation)
+                        MyReservationDetailView(
+                            viewModel: viewModel,
+                            reservation: reservation,
+                            reservationService: reservationService,
+                            prefilledName: prefilledName
+                        )
                     } label: {
                         ReservationRow(reservation: reservation)
                     }
@@ -50,7 +63,7 @@ public struct MyReservationsView: View {
             ToolbarItem(placement: .primaryAction) {
                 NavigationLink {
                     RestaurantListView(
-                        viewModel: ReservationViewModel(service: ReservationService(), prefilledName: "")
+                        viewModel: ReservationViewModel(service: reservationService, prefilledName: prefilledName)
                     )
                 } label: {
                     Label(String(localized: "reservation.list.book.cta"), systemImage: "plus")
