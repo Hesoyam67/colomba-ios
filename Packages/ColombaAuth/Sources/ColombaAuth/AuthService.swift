@@ -57,7 +57,7 @@ public final class MockAuthService: AuthService {
         guard !challengeId.isEmpty, code.count >= 6, !device.deviceId.isEmpty else {
             throw AuthFailure.invalidMagicCode
         }
-        return makeSession(email: "pilot@colomba.local", name: "Colomba Pilot")
+        return makeSession(email: "pilot@colomba.local", name: "Colomba Pilot", authProvider: .magicLink)
     }
 
     public func exchangeAppleCredential(
@@ -71,7 +71,11 @@ public final class MockAuthService: AuthService {
               !device.deviceId.isEmpty else {
             throw AuthFailure.missingAppleCredential
         }
-        return makeSession(email: credential.email ?? "apple@colomba.local", name: credential.fullName ?? "Colomba Owner")
+        return makeSession(
+            email: credential.email ?? "apple@colomba.local",
+            name: credential.fullName ?? "Colomba Owner",
+            authProvider: .apple
+        )
     }
 
     public func refreshSession(_ session: AuthSession, device: DeviceInfo) async throws -> AuthSession {
@@ -90,13 +94,14 @@ public final class MockAuthService: AuthService {
         )
     }
 
-    private func makeSession(email: String, name: String) -> AuthSession {
+    private func makeSession(email: String, name: String, authProvider: AuthProvider) -> AuthSession {
         AuthSession(
             customer: Customer(
                 id: "cus_mock_phase2",
                 displayName: name,
                 billingEmail: email,
-                locale: .germanSwitzerland
+                locale: .germanSwitzerland,
+                authProvider: authProvider
             ),
             tokens: AuthTokens(
                 accessToken: "mock_access_phase2",

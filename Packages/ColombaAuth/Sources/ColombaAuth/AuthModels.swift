@@ -19,6 +19,12 @@ public struct DeviceInfo: Codable, Equatable, Sendable {
     }
 }
 
+public enum AuthProvider: String, Codable, Equatable, Sendable {
+    case apple
+    case google
+    case magicLink
+}
+
 public struct Customer: Codable, Equatable, Sendable {
     public let id: String
     public let displayName: String
@@ -26,6 +32,7 @@ public struct Customer: Codable, Equatable, Sendable {
     public let phoneNumber: String?
     public let billingEmail: String
     public let locale: AuthLocale
+    public let authProvider: AuthProvider
 
     public init(
         id: String,
@@ -33,7 +40,8 @@ public struct Customer: Codable, Equatable, Sendable {
         email: String? = nil,
         phoneNumber: String? = nil,
         billingEmail: String? = nil,
-        locale: AuthLocale
+        locale: AuthLocale,
+        authProvider: AuthProvider = .magicLink
     ) {
         self.id = id
         self.displayName = displayName
@@ -41,8 +49,11 @@ public struct Customer: Codable, Equatable, Sendable {
         self.phoneNumber = phoneNumber
         self.billingEmail = billingEmail ?? email ?? ""
         self.locale = locale
+        self.authProvider = authProvider
     }
 }
+
+public typealias User = Customer
 
 public struct AuthTokens: Codable, Equatable, Sendable {
     public let accessToken: String

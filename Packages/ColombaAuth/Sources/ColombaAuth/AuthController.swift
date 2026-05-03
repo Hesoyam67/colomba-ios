@@ -137,7 +137,8 @@ public final class AuthController {
             email: session.customer.email,
             phoneNumber: session.customer.phoneNumber,
             billingEmail: session.customer.billingEmail,
-            locale: session.customer.locale
+            locale: session.customer.locale,
+            authProvider: session.customer.authProvider
         )
         let updatedSession = AuthSession(
             customer: updatedCustomer,
