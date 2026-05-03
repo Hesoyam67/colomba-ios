@@ -112,7 +112,7 @@ private struct ConfirmationRoute: Identifiable, Equatable, Hashable {
         self.confirmation = confirmation
     }
 
-    static func == (lhs: ConfirmationRoute, rhs: ConfirmationRoute) -> Bool {
+    static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.id == rhs.id
     }
 
