@@ -26,10 +26,15 @@ struct BookingConfirmationCard: View {
                     .font(.caption)
                     .foregroundStyle(Color.colomba.text.secondary)
             }
-            Button(LocalizedStringKey("heidi.confirmation.view_booking")) {
-                // Deep-link placeholder for mock scaffold.
-            }
-            .buttonStyle(.bordered)
+            Label(
+                LocalizedStringKey("heidi.confirmation.saved_in_reservations"),
+                systemImage: "calendar.badge.checkmark"
+            )
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(Color.colomba.text.secondary)
+            Text(confirmation.id)
+                .font(.caption2.monospaced())
+                .foregroundStyle(Color.colomba.text.secondary)
         }
         .padding(12)
         .background(Color.colomba.success.opacity(0.12))

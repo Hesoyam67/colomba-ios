@@ -71,6 +71,14 @@ public final class HeidiChatViewModel: ObservableObject {
         }
     }
 
+    public func checkAvailability(for card: HeidiRestaurantCard) async {
+        await send(Self.availabilityPrompt(for: card))
+    }
+
+    public static func availabilityPrompt(for card: HeidiRestaurantCard) -> String {
+        "Check availability for \(card.name) (restaurant id: \(card.id)) around \(card.nextAvailableTime)."
+    }
+
     public func reset() {
         phase = .idle
         draft = ""

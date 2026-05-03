@@ -3,6 +3,12 @@ import SwiftUI
 
 struct RestaurantCardInChat: View {
     let card: HeidiRestaurantCard
+    let onCheckAvailability: () -> Void
+
+    init(card: HeidiRestaurantCard, onCheckAvailability: @escaping () -> Void = {}) {
+        self.card = card
+        self.onCheckAvailability = onCheckAvailability
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -22,9 +28,7 @@ struct RestaurantCardInChat: View {
             Text(card.shortDescription)
                 .font(.subheadline)
                 .foregroundStyle(Color.colomba.text.secondary)
-            Button {
-                // Mock-only scaffold: live booking action will route through Heidi backend in Lane 2.
-            } label: {
+            Button(action: onCheckAvailability) {
                 Label(LocalizedStringKey("heidi.card.check_availability"), systemImage: "clock")
             }
             .buttonStyle(.borderedProminent)

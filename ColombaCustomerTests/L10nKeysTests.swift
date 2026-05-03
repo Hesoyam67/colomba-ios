@@ -39,6 +39,7 @@ final class L10nKeysTests: XCTestCase {
         "heidi.card.check_availability",
         "heidi.confirmation.book.title",
         "heidi.confirmation.details_format",
+        "heidi.confirmation.saved_in_reservations",
         "heidi.confirmation.view_booking",
         "heidi.error.network",
         "heidi.input.placeholder",

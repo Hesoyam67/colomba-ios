@@ -19,8 +19,13 @@ struct HeidiChatView: View {
                 ScrollView {
                     LazyVStack(spacing: 12) {
                         ForEach(viewModel.messages) { message in
-                            MessageBubble(message: message)
-                                .id(message.id)
+                            MessageBubble(
+                                message: message,
+                                onRestaurantAction: { card in
+                                    Task { await viewModel.checkAvailability(for: card) }
+                                }
+                            )
+                            .id(message.id)
                         }
                         if viewModel.phase == .sending {
                             HStack {

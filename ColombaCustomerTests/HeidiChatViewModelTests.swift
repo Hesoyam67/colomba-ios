@@ -62,6 +62,16 @@ final class HeidiChatViewModelTests: XCTestCase {
         XCTAssertEqual(model.messages.last?.bookingConfirmation, Self.confirmation)
     }
 
+    func test_restaurantCardActionSendsStructuredAvailabilityPrompt() async {
+        let service = CapturingHeidiService(responses: [.text("Checking"), .done])
+        let model = HeidiChatViewModel(service: service)
+        await model.checkAvailability(for: Self.card)
+        XCTAssertEqual(service.sentMessages, [
+            "Check availability for Bellini (restaurant id: one) around 19:30."
+        ])
+        XCTAssertEqual(model.messages[1].text, service.sentMessages.first)
+    }
+
     func test_modifyIntentReturnsAssistantText() async {
         let model = HeidiChatViewModel(service: HeidiService())
         await model.send("change my booking to 8")
@@ -279,6 +289,29 @@ private final class HeidiMockURLProtocol: URLProtocol {
     }
 
     override func stopLoading() {}
+}
+
+private final class CapturingHeidiService: HeidiServiceProtocol, @unchecked Sendable {
+    private let responses: [HeidiResponse]
+    private(set) var sentMessages: [String] = []
+
+    init(responses: [HeidiResponse]) {
+        self.responses = responses
+    }
+
+    func sendMessage(
+        _ text: String,
+        history: [HeidiChatMessage]
+    ) async throws -> AsyncThrowingStream<HeidiResponse, Error> {
+        sentMessages.append(text)
+        let responses = responses
+        return AsyncThrowingStream { continuation in
+            for response in responses {
+                continuation.yield(response)
+            }
+            continuation.finish()
+        }
+    }
 }
 
 private struct StubHeidiService: HeidiServiceProtocol {

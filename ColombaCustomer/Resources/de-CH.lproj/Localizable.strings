@@ -186,5 +186,6 @@
 "heidi.card.check_availability" = "Verfügbarkeit prüfen";
 "heidi.confirmation.book.title" = "Buchung bestätigt";
 "heidi.confirmation.details_format" = "%@ um %@ für %d Gäste";
+"heidi.confirmation.saved_in_reservations" = "In Reservationen gespeichert";
 "heidi.confirmation.view_booking" = "Buchung ansehen";
 "tabs.heidi" = "Heidi";

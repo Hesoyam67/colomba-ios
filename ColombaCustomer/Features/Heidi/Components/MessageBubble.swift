@@ -3,6 +3,15 @@ import SwiftUI
 
 struct MessageBubble: View {
     let message: HeidiChatMessage
+    let onRestaurantAction: (HeidiRestaurantCard) -> Void
+
+    init(
+        message: HeidiChatMessage,
+        onRestaurantAction: @escaping (HeidiRestaurantCard) -> Void = { _ in }
+    ) {
+        self.message = message
+        self.onRestaurantAction = onRestaurantAction
+    }
 
     var body: some View {
         HStack {
@@ -14,7 +23,9 @@ struct MessageBubble: View {
                         .foregroundStyle(message.role == .user ? .white : Color.colomba.text.primary)
                 }
                 ForEach(message.restaurantCards) { card in
-                    RestaurantCardInChat(card: card)
+                    RestaurantCardInChat(card: card) {
+                        onRestaurantAction(card)
+                    }
                 }
                 if let confirmation = message.bookingConfirmation {
                     BookingConfirmationCard(confirmation: confirmation)

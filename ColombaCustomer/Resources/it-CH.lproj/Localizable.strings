@@ -186,5 +186,6 @@
 "heidi.card.check_availability" = "Check availability"; // TODO_TRANSLATE
 "heidi.confirmation.book.title" = "Booking confirmed"; // TODO_TRANSLATE
 "heidi.confirmation.details_format" = "%@ at %@ for %d guests"; // TODO_TRANSLATE
+"heidi.confirmation.saved_in_reservations" = "Saved in Reservations"; // TODO_TRANSLATE
 "heidi.confirmation.view_booking" = "View booking"; // TODO_TRANSLATE
 "tabs.heidi" = "Heidi"; // TODO_TRANSLATE
