@@ -1,4 +1,5 @@
 @testable import ColombaCustomer
+import Foundation
 import ColombaAuth
 import XCTest
 
@@ -58,6 +59,64 @@ final class GoogleIntegrationTests: XCTestCase {
         XCTAssertEqual(result.updatedRange, "Bookings!A2:D2")
     }
 
+    func testGoogleCalendarHTTPClientPostsCalendarEvent() async throws {
+        GoogleIntegrationURLProtocol.requestHandler = { request in
+            XCTAssertEqual(request.url?.path, "/calendar/v3/calendars/primary/events")
+            XCTAssertEqual(request.httpMethod, "POST")
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Bearer live-token")
+            let body = Self.bodyString(from: request)
+            XCTAssertTrue(body.contains("Dinner at Bellini"))
+            XCTAssertTrue(body.contains("Vegetarian options"))
+            return (
+                try Self.response(status: 200, url: request.url),
+                Data(#"{"id":"calendar-live-event-1"}"#.utf8)
+            )
+        }
+        defer { GoogleIntegrationURLProtocol.requestHandler = nil }
+
+        let client = GoogleCalendarHTTPClient(
+            baseURL: try Self.makeURL("https://google.test"),
+            urlSession: Self.urlSession()
+        )
+
+        let id = try await client.upsertEvent(
+            Self.event,
+            user: Self.user(provider: .google),
+            token: GoogleOAuthToken(accessToken: "live-token", scopes: GoogleCalendarService.requiredScopes)
+        )
+
+        XCTAssertEqual(id, "calendar-live-event-1")
+    }
+
+    func testGoogleSheetsHTTPClientAppendsRow() async throws {
+        GoogleIntegrationURLProtocol.requestHandler = { request in
+            XCTAssertEqual(request.url?.path, "/v4/spreadsheets/sheet-123/values/Bookings!A:D/append")
+            XCTAssertEqual(request.url?.query, "valueInputOption=USER_ENTERED")
+            XCTAssertEqual(request.httpMethod, "POST")
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Bearer sheet-token")
+            let body = Self.bodyString(from: request)
+            XCTAssertTrue(body.contains("Bellini"))
+            XCTAssertTrue(body.contains("19:30"))
+            return (
+                try Self.response(status: 200, url: request.url),
+                Data(#"{"updates":{"updatedRange":"Bookings!A2:D2","updatedRows":1}}"#.utf8)
+            )
+        }
+        defer { GoogleIntegrationURLProtocol.requestHandler = nil }
+
+        let client = GoogleSheetsHTTPClient(
+            baseURL: try Self.makeURL("https://sheets.test"),
+            urlSession: Self.urlSession()
+        )
+
+        let result = try await client.appendRow(
+            SheetRowDraft(spreadsheetID: "sheet-123", range: "Bookings!A:D", values: ["Bellini", "19:30"]),
+            token: GoogleOAuthToken(accessToken: "sheet-token", scopes: GoogleSheetsService.requiredScopes)
+        )
+
+        XCTAssertEqual(result, SheetAppendResult(updatedRange: "Bookings!A2:D2", updatedRows: 1))
+    }
+
     func testDispatcherRoutesGoogleUsersToGoogleCalendarService() async throws {
         let google = RecordingCalendarSync(result: CalendarSyncResult(provider: .google, externalID: "google-evt"))
         let apple = RecordingCalendarSync(result: CalendarSyncResult(provider: .apple, externalID: "apple-evt"))
@@ -88,6 +147,37 @@ final class GoogleIntegrationTests: XCTestCase {
         notes: "Vegetarian options"
     )
 
+    private static func urlSession() -> URLSession {
+        let config = URLSessionConfiguration.ephemeral
+        config.protocolClasses = [GoogleIntegrationURLProtocol.self]
+        return URLSession(configuration: config)
+    }
+
+    private static func makeURL(_ rawValue: String) throws -> URL {
+        guard let url = URL(string: rawValue) else { throw GoogleIntegrationTestError.invalidURL }
+        return url
+    }
+
+    private static func response(status: Int, url: URL?) throws -> HTTPURLResponse {
+        guard let url,
+              let response = HTTPURLResponse(url: url, statusCode: status, httpVersion: nil, headerFields: nil) else {
+            throw GoogleIntegrationTestError.invalidResponse
+        }
+        return response
+    }
+
+    private static func bodyString(from request: URLRequest) -> String {
+        let data: Data
+        if let httpBody = request.httpBody {
+            data = httpBody
+        } else if let stream = request.httpBodyStream {
+            data = GoogleIntegrationURLProtocol.data(from: stream)
+        } else {
+            data = Data()
+        }
+        return String(decoding: data, as: UTF8.self)
+    }
+
     private static func user(provider: AuthProvider) -> User {
         User(
             id: "cus-google-test",
@@ -110,5 +200,54 @@ private final class RecordingCalendarSync: CalendarSyncing, @unchecked Sendable 
     func sync(event: CalendarEventDraft, for user: User) async throws -> CalendarSyncResult {
         callCount += 1
         return result
+    }
+}
+
+private enum GoogleIntegrationTestError: Error {
+    case invalidURL
+    case invalidResponse
+}
+
+private final class GoogleIntegrationURLProtocol: URLProtocol {
+    static var requestHandler: ((URLRequest) throws -> (HTTPURLResponse, Data))?
+
+    override static func canInit(with request: URLRequest) -> Bool { true }
+    override static func canonicalRequest(for request: URLRequest) -> URLRequest { request }
+
+    override func startLoading() {
+        guard let requestHandler = Self.requestHandler else {
+            client?.urlProtocol(self, didFailWithError: GoogleIntegrationTestError.invalidResponse)
+            return
+        }
+
+        do {
+            var requestWithBody = request
+            if requestWithBody.httpBody == nil, let stream = request.httpBodyStream {
+                requestWithBody.httpBody = Self.data(from: stream)
+            }
+            let (response, data) = try requestHandler(requestWithBody)
+            client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+            client?.urlProtocol(self, didLoad: data)
+            client?.urlProtocolDidFinishLoading(self)
+        } catch {
+            client?.urlProtocol(self, didFailWithError: error)
+        }
+    }
+
+    override func stopLoading() {}
+
+    static func data(from stream: InputStream) -> Data {
+        stream.open()
+        defer { stream.close() }
+        var data = Data()
+        let bufferSize = 1_024
+        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
+        defer { buffer.deallocate() }
+        while stream.hasBytesAvailable {
+            let read = stream.read(buffer, maxLength: bufferSize)
+            guard read > 0 else { break }
+            data.append(buffer, count: read)
+        }
+        return data
     }
 }
