@@ -59,7 +59,7 @@ struct HeidiChatView: View {
                     }
                     .padding()
                 }
-                .onChange(of: viewModel.messages.count) { _, _ in
+                .onChange(of: viewModel.messages) { _, _ in
                     scrollToBottom(proxy: proxy)
                 }
             }
