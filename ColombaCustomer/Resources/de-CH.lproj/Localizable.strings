@@ -173,3 +173,18 @@
 "reservation.error.alreadyCancelled" = "Diese Reservierung wurde bereits storniert.";
 "reservation.error.slotNoLongerAvailable" = "Dieses Zeitfenster ist nicht mehr verfügbar.";
 "reservation.error.modifyDeadlinePassed" = "Reservierungen können nur vor Beginn geändert werden.";
+
+/* MARK: Heidi */
+"heidi.nav_title" = "Heidi";
+"heidi.welcome" = "Hoi! Ich bin Heidi. Frag mich alles zu Restaurants oder Buchungen.";
+"heidi.thinking" = "Heidi denkt nach…";
+"heidi.error.network" = "Ich konnte die Küche nicht erreichen. Versuch es nochmals?";
+"heidi.input.placeholder" = "Frag Heidi nach Restaurants oder Buchungen";
+"heidi.input.voice" = "Spracheingabe";
+"heidi.input.send" = "Nachricht senden";
+"heidi.reset" = "Zurücksetzen";
+"heidi.card.check_availability" = "Verfügbarkeit prüfen";
+"heidi.confirmation.book.title" = "Buchung bestätigt";
+"heidi.confirmation.details_format" = "%@ um %@ für %d Gäste";
+"heidi.confirmation.view_booking" = "Buchung ansehen";
+"tabs.heidi" = "Heidi";

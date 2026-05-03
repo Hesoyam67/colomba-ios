@@ -71,6 +71,16 @@ private struct RootTabShell: View {
                 Text(LocalizedStringKey("tabs.plans"))
             }
 
+            NavigationStack {
+                HeidiChatView()
+            }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(Text("tabs.heidi"))
+            .tabItem {
+                Image(systemName: "sparkles")
+                Text(LocalizedStringKey("tabs.heidi"))
+            }
+
             SettingsView(authController: authController, customer: session.customer)
                 .accessibilityElement(children: .contain)
                 .accessibilityLabel(Text("tabs.settings"))
