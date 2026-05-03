@@ -69,7 +69,9 @@ final class AccountDeletionViewModelTests: XCTestCase {
 
     func testFinishDeletedFlowSignsOutOnlyAfterSuccess() async {
         var signOutCount = 0
-        let viewModel = AccountDeletionViewModel(service: MockAccountService(), accessToken: "token") { signOutCount += 1 }
+        let viewModel = AccountDeletionViewModel(service: MockAccountService(), accessToken: "token") {
+            signOutCount += 1
+        }
         viewModel.finishDeletedFlow()
         XCTAssertEqual(signOutCount, 0)
         viewModel.confirmationText = "DELETE"

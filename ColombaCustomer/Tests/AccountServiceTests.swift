@@ -53,10 +53,13 @@ final class AccountServiceTests: XCTestCase {
         AccountDeletionURLProtocol.requestHandler = { request in
             (
                 try Self.response(status: 409, url: request.url),
-                Data("{\"error\":\"subscription_active\",\"stripeCustomerPortalUrl\":\"\(expected.absoluteString)\"}".utf8)
+                Self.subscriptionActiveBody(portalURL: expected)
             )
         }
-        let client = HTTPAccountClient(baseURL: try Self.makeURL("https://n8n.test/webhook"), urlSession: Self.urlSession())
+        let client = HTTPAccountClient(
+            baseURL: try Self.makeURL("https://n8n.test/webhook"),
+            urlSession: Self.urlSession()
+        )
         do {
             try await client.requestDeletion(reauth: .apple(identityToken: "jwt"), accessToken: "access")
             XCTFail("Expected subscriptionActive")
@@ -67,9 +70,15 @@ final class AccountServiceTests: XCTestCase {
 
     func testHTTPMapsReauthInvalid() async throws {
         AccountDeletionURLProtocol.requestHandler = { request in
-            (try Self.response(status: 422, url: request.url), Data("{\"error\":\"reauth_invalid\"}".utf8))
+            (
+                try Self.response(status: 422, url: request.url),
+                Data("{\"error\":\"reauth_invalid\"}".utf8)
+            )
         }
-        let client = HTTPAccountClient(baseURL: try Self.makeURL("https://n8n.test/webhook"), urlSession: Self.urlSession())
+        let client = HTTPAccountClient(
+            baseURL: try Self.makeURL("https://n8n.test/webhook"),
+            urlSession: Self.urlSession()
+        )
         do {
             try await client.requestDeletion(reauth: .apple(identityToken: "jwt"), accessToken: "access")
             XCTFail("Expected reauthInvalid")
@@ -80,9 +89,15 @@ final class AccountServiceTests: XCTestCase {
 
     func testHTTPMapsMaintenance() async throws {
         AccountDeletionURLProtocol.requestHandler = { request in
-            (try Self.response(status: 503, url: request.url), Data("{\"error\":\"server_maintenance\"}".utf8))
+            (
+                try Self.response(status: 503, url: request.url),
+                Data("{\"error\":\"server_maintenance\"}".utf8)
+            )
         }
-        let client = HTTPAccountClient(baseURL: try Self.makeURL("https://n8n.test/webhook"), urlSession: Self.urlSession())
+        let client = HTTPAccountClient(
+            baseURL: try Self.makeURL("https://n8n.test/webhook"),
+            urlSession: Self.urlSession()
+        )
         do {
             try await client.requestDeletion(reauth: .apple(identityToken: "jwt"), accessToken: "access")
             XCTFail("Expected maintenance")
@@ -94,6 +109,11 @@ final class AccountServiceTests: XCTestCase {
     override func tearDown() {
         AccountDeletionURLProtocol.requestHandler = nil
         super.tearDown()
+    }
+
+    private static func subscriptionActiveBody(portalURL: URL) -> Data {
+        let json = "{\"error\":\"subscription_active\",\"stripeCustomerPortalUrl\":\"\(portalURL.absoluteString)\"}"
+        return Data(json.utf8)
     }
 
     private static func urlSession() -> URLSession {
@@ -108,7 +128,13 @@ final class AccountServiceTests: XCTestCase {
     }
 
     private static func response(status: Int, url: URL?) throws -> HTTPURLResponse {
-        guard let url, let response = HTTPURLResponse(url: url, statusCode: status, httpVersion: nil, headerFields: nil) else {
+        guard let url,
+              let response = HTTPURLResponse(
+                  url: url,
+                  statusCode: status,
+                  httpVersion: nil,
+                  headerFields: nil
+              ) else {
             throw AccountDeletionTestError.invalidResponse
         }
         return response
@@ -152,8 +178,8 @@ private enum AccountDeletionTestError: Error {
 private final class AccountDeletionURLProtocol: URLProtocol {
     static var requestHandler: ((URLRequest) throws -> (HTTPURLResponse, Data))?
 
-    override class func canInit(with request: URLRequest) -> Bool { true }
-    override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
+    override static func canInit(with request: URLRequest) -> Bool { true }
+    override static func canonicalRequest(for request: URLRequest) -> URLRequest { request }
 
     override func startLoading() {
         guard let requestHandler = Self.requestHandler else {

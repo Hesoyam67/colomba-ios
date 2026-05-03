@@ -3,7 +3,8 @@ import ColombaDesign
 import SwiftUI
 
 struct AccountDeletionView: View {
-    @Environment(\.openURL) private var openURL
+    @Environment(\.openURL)
+    private var openURL
     @State private var viewModel: AccountDeletionViewModel
 
     init(authController: AuthController) {
