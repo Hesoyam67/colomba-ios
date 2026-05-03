@@ -72,6 +72,10 @@ public final class OnboardingViewModel: ObservableObject {
         currentStep == .notificationsOptIn && notificationsDecisionMade
     }
 
+    public var interfaceLocale: Locale {
+        Locale(identifier: (selectedLanguage ?? .deCH).bundleIdentifier)
+    }
+
     public init(persistence: OnboardingPersistence = UserDefaultsOnboardingPersistence()) {
         self.persistence = persistence
         self.currentStep = persistence.loadCurrentStep() ?? .welcome

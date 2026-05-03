@@ -11,11 +11,14 @@ struct ColombaCustomerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if onboardingViewModel.isComplete {
-                RootView()
-            } else {
-                OnboardingContainerView(viewModel: onboardingViewModel)
+            Group {
+                if onboardingViewModel.isComplete {
+                    RootView()
+                } else {
+                    OnboardingContainerView(viewModel: onboardingViewModel)
+                }
             }
+            .environment(\.locale, onboardingViewModel.interfaceLocale)
         }
     }
 }

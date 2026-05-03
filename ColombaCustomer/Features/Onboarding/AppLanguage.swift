@@ -9,7 +9,7 @@ public enum AppLanguage: String, CaseIterable, Codable, Equatable, Sendable {
     public var displayName: String {
         switch self {
         case .deCH:
-            "Schweizerdeutsch"
+            "Deutsch (Schweiz)"
         case .frCH:
             "Français"
         case .itCH:
