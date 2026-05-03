@@ -5,6 +5,8 @@ import SwiftUI
 struct PlansDetailView: View {
     let plan: Plan
     let currency: String
+    @Binding var selectedPlanId: String
+    @State private var showPaywall = false
 
     var body: some View {
         ScrollView {
@@ -21,27 +23,39 @@ struct PlansDetailView: View {
                 VStack(alignment: .leading, spacing: ColombaSpacing.space3) {
                     Text("plans.included")
                         .font(.colomba.titleMd)
-                    Text(eventsText)
+                    Text(minutesText)
                         .font(.colomba.bodyLg)
-                        .accessibilityLabel(eventsAccessibilityText)
+                        .accessibilityLabel(minutesAccessibilityText)
                     ForEach(plan.features, id: \.self) { feature in
-                        Label(feature, systemImage: "checkmark.circle.fill")
+                        Label(LocalizedStringKey(feature), systemImage: "checkmark.circle.fill")
                             .font(.colomba.bodyMd)
                             .foregroundStyle(Color.colomba.text.secondary)
-                            .accessibilityLabel(feature)
+                            .accessibilityLabel(Text(LocalizedStringKey(feature)))
                     }
                 }
                 UsageSummaryRow(snapshot: .fixtureCurrentMonth)
-                Button(chooseText) {}
-                    .buttonStyle(.borderedProminent)
-                    .accessibilityLabel(chooseAccessibilityText)
-                    .accessibilityHint(String(localized: "plans.upgrade_hint"))
+                if isSelected {
+                    Label(selectedText, systemImage: "checkmark.circle.fill")
+                        .font(.colomba.bodyMd)
+                        .foregroundStyle(Color.colomba.primary)
+                        .accessibilityLabel(selectedText)
+                }
+                Button(chooseText) {
+                    selectedPlanId = plan.id
+                    showPaywall = true
+                }
+                .buttonStyle(.borderedProminent)
+                .accessibilityLabel(chooseAccessibilityText)
+                .accessibilityHint(String(localized: "plans.upgrade_hint"))
             }
             .padding(ColombaSpacing.Screen.margin)
             .frame(maxWidth: 620, alignment: .leading)
         }
         .background(Color.colomba.bg.base)
         .navigationTitle(plan.name)
+        .navigationDestination(isPresented: $showPaywall) {
+            PaywallView()
+        }
     }
 
     /// Format: plans.price_format contains currency and formatted amount.
@@ -59,17 +73,21 @@ struct PlansDetailView: View {
         )
     }
 
-    /// Format: plans.events_format contains one formatted event count.
-    private var eventsText: String {
-        String(format: NSLocalizedString("plans.events_format", comment: ""), plan.includedEvents.formatted())
+    /// Format: plans.minutes_format contains one formatted minute count.
+    private var minutesText: String {
+        String(format: NSLocalizedString("plans.minutes_format", comment: ""), plan.includedMinutes.formatted())
     }
 
-    /// Format: plans.events_accessibility_format contains one formatted event count.
-    private var eventsAccessibilityText: String {
+    /// Format: plans.minutes_accessibility_format contains one formatted minute count.
+    private var minutesAccessibilityText: String {
         String(
-            format: NSLocalizedString("plans.events_accessibility_format", comment: ""),
-            plan.includedEvents.formatted()
+            format: NSLocalizedString("plans.minutes_accessibility_format", comment: ""),
+            plan.includedMinutes.formatted()
         )
+    }
+
+    private var isSelected: Bool {
+        selectedPlanId == plan.id
     }
 
     /// Format: plans.choose_format contains one plan name.
@@ -81,6 +99,11 @@ struct PlansDetailView: View {
     private var chooseAccessibilityText: String {
         String(format: NSLocalizedString("plans.choose_accessibility_format", comment: ""), plan.name)
     }
+
+    /// Format: plans.selected_format contains one plan name.
+    private var selectedText: String {
+        String(format: NSLocalizedString("plans.selected_format", comment: ""), plan.name)
+    }
 }
 
 #Preview {
@@ -90,9 +113,10 @@ struct PlansDetailView: View {
             name: "Piccola",
             tier: .starter,
             monthlyPriceMinor: 4_900,
-            includedEvents: 1_000,
-            features: ["Reservation capture", "Basic analytics"]
+            includedMinutes: 1_000,
+            features: ["plans.feature.reservation_capture", "plans.feature.basic_analytics"]
         ),
-        currency: "CHF"
+        currency: "CHF",
+        selectedPlanId: .constant("")
     )
 }

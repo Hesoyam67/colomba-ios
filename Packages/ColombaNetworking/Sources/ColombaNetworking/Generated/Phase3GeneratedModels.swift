@@ -28,11 +28,22 @@ public struct Plan: Codable, Equatable, Sendable {
         case topUp = "top_up"
     }
 
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case tier
+        case monthlyPriceMinor
+        case includedMinutes
+        case includedEvents
+        case features
+        case recommendedForPersona
+    }
+
     public let id: String
     public let name: String
     public let tier: Tier
     public let monthlyPriceMinor: Int
-    public let includedEvents: Int
+    public let includedMinutes: Int
     public let features: [String]
     public let recommendedForPersona: String?
 
@@ -41,7 +52,7 @@ public struct Plan: Codable, Equatable, Sendable {
         name: String,
         tier: Tier,
         monthlyPriceMinor: Int,
-        includedEvents: Int,
+        includedMinutes: Int,
         features: [String],
         recommendedForPersona: String? = nil
     ) {
@@ -49,9 +60,32 @@ public struct Plan: Codable, Equatable, Sendable {
         self.name = name
         self.tier = tier
         self.monthlyPriceMinor = monthlyPriceMinor
-        self.includedEvents = includedEvents
+        self.includedMinutes = includedMinutes
         self.features = features
         self.recommendedForPersona = recommendedForPersona
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        tier = try container.decode(Tier.self, forKey: .tier)
+        monthlyPriceMinor = try container.decode(Int.self, forKey: .monthlyPriceMinor)
+        includedMinutes = try container.decodeIfPresent(Int.self, forKey: .includedMinutes)
+            ?? container.decode(Int.self, forKey: .includedEvents)
+        features = try container.decode([String].self, forKey: .features)
+        recommendedForPersona = try container.decodeIfPresent(String.self, forKey: .recommendedForPersona)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(name, forKey: .name)
+        try container.encode(tier, forKey: .tier)
+        try container.encode(monthlyPriceMinor, forKey: .monthlyPriceMinor)
+        try container.encode(includedMinutes, forKey: .includedMinutes)
+        try container.encode(features, forKey: .features)
+        try container.encodeIfPresent(recommendedForPersona, forKey: .recommendedForPersona)
     }
 }
 
@@ -61,27 +95,62 @@ public enum UsagePeriod: String, Codable, Equatable, Sendable {
 }
 
 public struct UsageSnapshot: Codable, Equatable, Sendable {
+    private enum CodingKeys: String, CodingKey {
+        case period
+        case usedMinutes
+        case includedMinutes
+        case overageMinutes
+        case usedEvents
+        case includedEvents
+        case overageEvents
+        case planId
+        case updatedAt
+    }
+
     public let period: String
-    public let usedEvents: Int
-    public let includedEvents: Int
-    public let overageEvents: Int
+    public let usedMinutes: Int
+    public let includedMinutes: Int
+    public let overageMinutes: Int
     public let planId: String?
     public let updatedAt: Date
 
     public init(
         period: String,
-        usedEvents: Int,
-        includedEvents: Int,
-        overageEvents: Int,
+        usedMinutes: Int,
+        includedMinutes: Int,
+        overageMinutes: Int,
         planId: String? = nil,
         updatedAt: Date
     ) {
         self.period = period
-        self.usedEvents = usedEvents
-        self.includedEvents = includedEvents
-        self.overageEvents = overageEvents
+        self.usedMinutes = usedMinutes
+        self.includedMinutes = includedMinutes
+        self.overageMinutes = overageMinutes
         self.planId = planId
         self.updatedAt = updatedAt
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        period = try container.decode(String.self, forKey: .period)
+        usedMinutes = try container.decodeIfPresent(Int.self, forKey: .usedMinutes)
+            ?? container.decode(Int.self, forKey: .usedEvents)
+        includedMinutes = try container.decodeIfPresent(Int.self, forKey: .includedMinutes)
+            ?? container.decode(Int.self, forKey: .includedEvents)
+        overageMinutes = try container.decodeIfPresent(Int.self, forKey: .overageMinutes)
+            ?? container.decode(Int.self, forKey: .overageEvents)
+        planId = try container.decodeIfPresent(String.self, forKey: .planId)
+        updatedAt = try container.decode(Date.self, forKey: .updatedAt)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(period, forKey: .period)
+        try container.encode(usedMinutes, forKey: .usedMinutes)
+        try container.encode(includedMinutes, forKey: .includedMinutes)
+        try container.encode(overageMinutes, forKey: .overageMinutes)
+        try container.encodeIfPresent(planId, forKey: .planId)
+        try container.encode(updatedAt, forKey: .updatedAt)
     }
 }
 

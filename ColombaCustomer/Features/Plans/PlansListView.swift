@@ -5,6 +5,10 @@ import SwiftUI
 @MainActor
 struct PlansListView: View {
     @StateObject private var viewModel: PlansViewModel
+    @AppStorage(
+        "colomba.plans.selectedPlanId"
+    )
+    private var selectedPlanId = ""
 
     init() {
         _viewModel = StateObject(wrappedValue: PlansViewModel())
@@ -33,9 +37,18 @@ struct PlansListView: View {
                         LazyVStack(spacing: ColombaSpacing.space4) {
                             ForEach(catalog.plans, id: \.id) { plan in
                                 NavigationLink {
-                                    PlansDetailView(plan: plan, currency: catalog.currency)
+                                    PlansDetailView(
+                                        plan: plan,
+                                        currency: catalog.currency,
+                                        selectedPlanId: $selectedPlanId
+                                    )
                                 } label: {
-                                    PlanCardView(plan: plan, currency: catalog.currency, viewModel: viewModel)
+                                    PlanCardView(
+                                        plan: plan,
+                                        currency: catalog.currency,
+                                        viewModel: viewModel,
+                                        isSelected: selectedPlanId == plan.id
+                                    )
                                 }
                                 .buttonStyle(.plain)
                                 .accessibilityLabel(openDetailsText(for: plan))
@@ -66,10 +79,19 @@ private struct PlanCardView: View {
     let plan: Plan
     let currency: String
     let viewModel: PlansViewModel
+    let isSelected: Bool
 
     private var accessibilitySummary: String {
-        [plan.name, viewModel.priceText(for: plan, currency: currency), viewModel.includedEventsText(for: plan)]
-            .joined(separator: ", ")
+        [
+            plan.name,
+            viewModel.priceText(for: plan, currency: currency),
+            viewModel.includedMinutesText(for: plan),
+            featuresSummary
+        ].joined(separator: ", ")
+    }
+
+    private var featuresSummary: String {
+        plan.features.map { NSLocalizedString($0, comment: "") }.joined(separator: ", ")
     }
 
     var body: some View {
@@ -79,14 +101,23 @@ private struct PlanCardView: View {
                     .font(.colomba.titleMd)
                     .foregroundStyle(Color.colomba.text.primary)
                 Spacer()
+                if isSelected {
+                    Text("plans.selected_badge")
+                        .font(.colomba.caption)
+                        .foregroundStyle(Color.colomba.primary)
+                        .padding(.horizontal, ColombaSpacing.space2)
+                        .padding(.vertical, ColombaSpacing.space1)
+                        .background(Color.colomba.primary.opacity(0.12))
+                        .clipShape(Capsule())
+                }
                 Text(viewModel.priceText(for: plan, currency: currency))
                     .font(.colomba.billingFigure)
                     .foregroundStyle(Color.colomba.primary)
             }
-            Text(viewModel.includedEventsText(for: plan))
+            Text(viewModel.includedMinutesText(for: plan))
                 .font(.colomba.bodyMd)
                 .foregroundStyle(Color.colomba.text.secondary)
-            Text(plan.features.joined(separator: ", "))
+            Text(featuresSummary)
                 .font(.colomba.caption)
                 .foregroundStyle(Color.colomba.text.tertiary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -96,7 +127,10 @@ private struct PlanCardView: View {
         .clipShape(RoundedRectangle(cornerRadius: ColombaRadii.Component.card, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: ColombaRadii.Component.card, style: .continuous)
-                .stroke(Color.colomba.border.hairline, lineWidth: 1)
+                .stroke(
+                    isSelected ? Color.colomba.primary : Color.colomba.border.hairline,
+                    lineWidth: isSelected ? 2 : 1
+                )
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilitySummary)

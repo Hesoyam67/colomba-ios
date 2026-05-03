@@ -20,9 +20,21 @@ public struct MyReservationsView: View {
                 ProgressView()
                     .frame(maxWidth: .infinity)
             } else if viewModel.filteredReservations.isEmpty {
-                Text(emptyText)
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .center)
+                VStack(spacing: 12) {
+                    Text(emptyText)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    NavigationLink {
+                        RestaurantListView(
+                            viewModel: ReservationViewModel(service: ReservationService(), prefilledName: "")
+                        )
+                    } label: {
+                        Label(String(localized: "reservation.list.book.cta"), systemImage: "plus.circle.fill")
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+                .listRowSeparator(.hidden)
             } else {
                 ForEach(viewModel.filteredReservations) { reservation in
                     NavigationLink {
@@ -34,6 +46,18 @@ public struct MyReservationsView: View {
             }
         }
         .navigationTitle(Text("reservation.list.title"))
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                NavigationLink {
+                    RestaurantListView(
+                        viewModel: ReservationViewModel(service: ReservationService(), prefilledName: "")
+                    )
+                } label: {
+                    Label(String(localized: "reservation.list.book.cta"), systemImage: "plus")
+                }
+                .accessibilityLabel(Text("reservation.list.book.cta"))
+            }
+        }
         .refreshable { await viewModel.refresh() }
         .task {
             if viewModel.phase == .idle {

@@ -18,9 +18,9 @@ public struct FixtureUsageClient: UsageClient {
     public func getUsage(period: UsagePeriod = .currentMonth) async throws -> UsageSnapshot {
         UsageSnapshot(
             period: period.rawValue,
-            usedEvents: snapshot.usedEvents,
-            includedEvents: snapshot.includedEvents,
-            overageEvents: snapshot.overageEvents,
+            usedMinutes: snapshot.usedMinutes,
+            includedMinutes: snapshot.includedMinutes,
+            overageMinutes: snapshot.overageMinutes,
             planId: snapshot.planId,
             updatedAt: snapshot.updatedAt
         )
@@ -30,9 +30,9 @@ public struct FixtureUsageClient: UsageClient {
 public extension UsageSnapshot {
     static let fixtureCurrentMonth = UsageSnapshot(
         period: UsagePeriod.currentMonth.rawValue,
-        usedEvents: 9_200,
-        includedEvents: 10_000,
-        overageEvents: 0,
+        usedMinutes: 9_200,
+        includedMinutes: 10_000,
+        overageMinutes: 0,
         planId: "plan_growth_chf_monthly",
         updatedAt: Date(timeIntervalSince1970: 1_777_520_000)
     )

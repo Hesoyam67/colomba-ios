@@ -14,7 +14,7 @@ final class UsageCacheTests: XCTestCase {
             let start = Date()
             let snapshot = await cache.load()
             samples.append(Date().timeIntervalSince(start) * 1_000)
-            XCTAssertEqual(snapshot?.usedEvents, 9_200)
+            XCTAssertEqual(snapshot?.usedMinutes, 9_200)
         }
 
         let median = samples.sorted()[samples.count / 2]

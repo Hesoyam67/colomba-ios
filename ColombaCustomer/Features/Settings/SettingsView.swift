@@ -5,6 +5,10 @@ import SwiftUI
 struct SettingsView: View {
     let authController: AuthController
     let customer: Customer
+    @AppStorage(
+        "colomba.onboarding.selectedLanguage"
+    )
+    private var selectedLanguageRaw = AppLanguage.deCH.rawValue
 
     var body: some View {
         NavigationStack {
@@ -46,17 +50,46 @@ struct SettingsView: View {
                     .accessibilityLabel(Text("settings.sign_out"))
                 }
 
-                Section(String(localized: "settings.app")) {
+                Section(String(localized: "settings.plan_billing")) {
+                    NavigationLink {
+                        PlansListView()
+                    } label: {
+                        Text("settings.manage_plan")
+                    }
+                    .accessibilityLabel(Text("settings.manage_plan"))
+
+                    NavigationLink {
+                        MyReservationsView(viewModel: MyReservationsViewModel(service: ReservationService()))
+                    } label: {
+                        Text("settings.reservations")
+                    }
+                    .accessibilityLabel(Text("settings.reservations"))
+                }
+
+                Section(String(localized: "settings.usage_minutes")) {
                     NavigationLink {
                         UsageView()
                     } label: {
-                        Text("settings.usage")
+                        Text("settings.usage_minutes")
                     }
-                    .accessibilityLabel(Text("settings.usage"))
+                    .accessibilityLabel(Text("settings.usage_minutes"))
 
-                    Text("settings.language")
+                    Text("settings.usage_minutes_note")
+                        .font(.colomba.caption)
                         .foregroundStyle(Color.colomba.text.secondary)
-                        .accessibilityLabel(Text("settings.language"))
+                }
+
+                Section(String(localized: "settings.app")) {
+                    Picker(String(localized: "settings.language"), selection: $selectedLanguageRaw) {
+                        ForEach(AppLanguage.allCases, id: \.rawValue) { language in
+                            Text(language.displayName).tag(language.rawValue)
+                        }
+                    }
+                    .onChange(of: selectedLanguageRaw) { _, newValue in
+                        UserDefaults.standard.set([newValue], forKey: "AppleLanguages")
+                    }
+                    .accessibilityLabel(Text("settings.language"))
+
                     Text("settings.about")
                         .foregroundStyle(Color.colomba.text.secondary)
                         .accessibilityLabel(Text("settings.about"))
