@@ -38,6 +38,9 @@ public enum GoogleIntegrationError: Error, Equatable, Sendable {
     case missingPresentingViewController
     case unsupportedAuthProvider(AuthProvider)
     case missingAppleCalendarAdapter
+    case invalidGoogleResponse
+    case googleHTTP(status: Int)
+    case invalidSpreadsheetID
 }
 
 public final class MockGoogleOAuthClient: GoogleOAuthAuthorizing, @unchecked Sendable {
@@ -219,13 +222,89 @@ public final class MockGoogleCalendarClient: GoogleCalendarClient, @unchecked Se
     }
 }
 
+public struct GoogleCalendarHTTPClient: GoogleCalendarClient {
+    private struct EventDateTime: Encodable {
+        let dateTime: String
+    }
+
+    private struct EventRequest: Encodable {
+        let summary: String
+        let description: String?
+        let start: EventDateTime
+        let end: EventDateTime
+    }
+
+    private struct EventResponse: Decodable {
+        let id: String
+    }
+
+    private let baseURL: URL
+    private let urlSession: URLSession
+    private let encoder: JSONEncoder
+    private let decoder: JSONDecoder
+
+    public static let defaultBaseURL: URL = {
+        guard let url = URL(string: "https://www.googleapis.com") else {
+            fatalError("Invalid Google Calendar base URL")
+        }
+        return url
+    }()
+
+    public init(
+        baseURL: URL = Self.defaultBaseURL,
+        urlSession: URLSession = .shared
+    ) {
+        self.baseURL = baseURL
+        self.urlSession = urlSession
+        self.encoder = JSONEncoder()
+        self.decoder = JSONDecoder()
+    }
+
+    public func upsertEvent(_ event: CalendarEventDraft, user: User, token: GoogleOAuthToken) async throws -> String {
+        let url = baseURL
+            .appending(path: "calendar")
+            .appending(path: "v3")
+            .appending(path: "calendars")
+            .appending(path: "primary")
+            .appending(path: "events")
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token.accessToken)", forHTTPHeaderField: "Authorization")
+        request.httpBody = try encoder.encode(
+            EventRequest(
+                summary: event.title,
+                description: event.notes,
+                start: EventDateTime(dateTime: Self.iso8601Formatter.string(from: event.startsAt)),
+                end: EventDateTime(dateTime: Self.iso8601Formatter.string(from: event.endsAt))
+            )
+        )
+
+        let (data, response) = try await urlSession.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw GoogleIntegrationError.invalidGoogleResponse
+        }
+        guard 200..<300 ~= httpResponse.statusCode else {
+            throw GoogleIntegrationError.googleHTTP(status: httpResponse.statusCode)
+        }
+        return try decoder.decode(EventResponse.self, from: data).id
+    }
+
+    private static let iso8601Formatter: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime]
+        return formatter
+    }()
+}
+
 public final class GoogleCalendarService: CalendarSyncing, @unchecked Sendable {
     public static let requiredScopes: Set<String> = ["https://www.googleapis.com/auth/calendar.events"]
 
     private let oauth: GoogleOAuthAuthorizing
     private let client: GoogleCalendarClient
 
-    public init(oauth: GoogleOAuthAuthorizing, client: GoogleCalendarClient = MockGoogleCalendarClient()) {
+    public init(oauth: GoogleOAuthAuthorizing, client: GoogleCalendarClient = GoogleCalendarHTTPClient()) {
         self.oauth = oauth
         self.client = client
     }
@@ -304,13 +383,80 @@ public final class MockGoogleSheetsClient: GoogleSheetsClient, @unchecked Sendab
     }
 }
 
+public struct GoogleSheetsHTTPClient: GoogleSheetsClient {
+    private struct AppendRequest: Encodable {
+        let values: [[String]]
+    }
+
+    private struct AppendUpdates: Decodable {
+        let updatedRange: String
+        let updatedRows: Int
+    }
+
+    private struct AppendResponse: Decodable {
+        let updates: AppendUpdates
+    }
+
+    private let baseURL: URL
+    private let urlSession: URLSession
+    private let encoder: JSONEncoder
+    private let decoder: JSONDecoder
+
+    public static let defaultBaseURL: URL = {
+        guard let url = URL(string: "https://sheets.googleapis.com") else {
+            fatalError("Invalid Google Sheets base URL")
+        }
+        return url
+    }()
+
+    public init(
+        baseURL: URL = Self.defaultBaseURL,
+        urlSession: URLSession = .shared
+    ) {
+        self.baseURL = baseURL
+        self.urlSession = urlSession
+        self.encoder = JSONEncoder()
+        self.decoder = JSONDecoder()
+    }
+
+    public func appendRow(_ row: SheetRowDraft, token: GoogleOAuthToken) async throws -> SheetAppendResult {
+        guard row.spreadsheetID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false else {
+            throw GoogleIntegrationError.invalidSpreadsheetID
+        }
+        var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)
+        components?.path = "/v4/spreadsheets/\(row.spreadsheetID)/values/\(row.range)/append"
+        components?.queryItems = [URLQueryItem(name: "valueInputOption", value: "USER_ENTERED")]
+        guard let url = components?.url else { throw GoogleIntegrationError.invalidGoogleResponse }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token.accessToken)", forHTTPHeaderField: "Authorization")
+        request.httpBody = try encoder.encode(AppendRequest(values: [row.values]))
+
+        let (data, response) = try await urlSession.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw GoogleIntegrationError.invalidGoogleResponse
+        }
+        guard 200..<300 ~= httpResponse.statusCode else {
+            throw GoogleIntegrationError.googleHTTP(status: httpResponse.statusCode)
+        }
+        let responseBody = try decoder.decode(AppendResponse.self, from: data)
+        return SheetAppendResult(
+            updatedRange: responseBody.updates.updatedRange,
+            updatedRows: responseBody.updates.updatedRows
+        )
+    }
+}
+
 public final class GoogleSheetsService: @unchecked Sendable {
     public static let requiredScopes: Set<String> = ["https://www.googleapis.com/auth/spreadsheets"]
 
     private let oauth: GoogleOAuthAuthorizing
     private let client: GoogleSheetsClient
 
-    public init(oauth: GoogleOAuthAuthorizing, client: GoogleSheetsClient = MockGoogleSheetsClient()) {
+    public init(oauth: GoogleOAuthAuthorizing, client: GoogleSheetsClient = GoogleSheetsHTTPClient()) {
         self.oauth = oauth
         self.client = client
     }
