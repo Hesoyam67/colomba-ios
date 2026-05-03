@@ -60,7 +60,7 @@ struct AuthenticatedHomeView: View {
         VStack(spacing: ColombaSpacing.space4) {
             ForEach($workspaceStore.workspaces) { $workspace in
                 NavigationLink {
-                    WorkspaceDashboardView(workspace: $workspace)
+                    WorkspaceDashboardView(workspace: $workspace, reservationService: reservationService)
                 } label: {
                     WorkspaceCard(workspace: workspace)
                 }
@@ -155,12 +155,17 @@ private struct WorkspaceCard: View {
 
 private struct WorkspaceDashboardView: View {
     @Binding var workspace: Workspace
+    let reservationService: ReservationServiceProtocol
+
+    @State private var reservationSyncMessage = "Live reservation sync has not run yet."
+    @State private var isRefreshingReservations = false
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: ColombaSpacing.space6) {
                 header
                 todayGuestsButton
+                reservationSyncStatus
                 workspaceSetupLinks
                 WorkspaceFloorPlanView(workspace: workspace)
             }
@@ -171,6 +176,9 @@ private struct WorkspaceDashboardView: View {
         .background(Color.colomba.bg.base)
         .navigationTitle(workspace.name)
         .navigationBarTitleDisplayMode(.inline)
+        .task(id: workspace.id) {
+            await refreshTodayReservations()
+        }
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Workspace dashboard for \(workspace.name)")
     }
@@ -189,6 +197,40 @@ private struct WorkspaceDashboardView: View {
         }
     }
 
+    private var reservationSyncStatus: some View {
+        HStack(alignment: .top, spacing: ColombaSpacing.space3) {
+            Image(systemName: isRefreshingReservations ? "arrow.triangle.2.circlepath" : "bolt.horizontal.circle.fill")
+                .font(.title3)
+                .foregroundStyle(Color.colomba.primary)
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: ColombaSpacing.space1) {
+                Text("Live reservations")
+                    .font(.colomba.bodyMd.weight(.semibold))
+                    .foregroundStyle(Color.colomba.text.primary)
+                Text(reservationSyncMessage)
+                    .font(.colomba.caption)
+                    .foregroundStyle(Color.colomba.text.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer()
+
+            Button("Refresh") {
+                Task { await refreshTodayReservations() }
+            }
+            .buttonStyle(.bordered)
+            .disabled(isRefreshingReservations)
+        }
+        .padding(ColombaSpacing.space4)
+        .background(Color.colomba.bg.card)
+        .clipShape(RoundedRectangle(cornerRadius: ColombaRadii.Component.card, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: ColombaRadii.Component.card, style: .continuous)
+                .stroke(Color.colomba.border.hairline, lineWidth: 1)
+        )
+    }
+
     private var workspaceSetupLinks: some View {
         HStack(spacing: ColombaSpacing.space3) {
             NavigationLink("Edit workspace setup") {
@@ -204,6 +246,73 @@ private struct WorkspaceDashboardView: View {
             .buttonStyle(.bordered)
         }
     }
+
+    @MainActor
+    private func refreshTodayReservations() async {
+        guard !isRefreshingReservations else { return }
+        isRefreshingReservations = true
+        defer { isRefreshingReservations = false }
+
+        do {
+            let reservations = try await reservationService.listMyReservations()
+            let todayReservations = Self.workspaceReservations(from: reservations, workspace: workspace)
+            workspace.reservations = todayReservations
+            markReservedTables(for: todayReservations)
+            reservationSyncMessage = syncSuccessMessage(count: todayReservations.count)
+        } catch {
+            reservationSyncMessage = "Live sync unavailable; showing the saved local reservation sheet."
+        }
+    }
+
+    private func markReservedTables(for reservations: [WorkspaceReservation]) {
+        let reservedTableNames = Set(reservations.filter { !$0.status.isPast }.map(\.tableName))
+        workspace.tables = workspace.tables.map { table in
+            var copy = table
+            copy.isReserved = reservedTableNames.contains(copy.name)
+            return copy
+        }
+    }
+
+    private func syncSuccessMessage(count: Int) -> String {
+        if count == 0 {
+            return "Live sync complete: no reservations found for today."
+        }
+        if count == 1 {
+            return "Live sync complete: 1 reservation loaded for today."
+        }
+        return "Live sync complete: \(count) reservations loaded for today."
+    }
+
+    private static func workspaceReservations(
+        from reservations: [Reservation],
+        workspace: Workspace
+    ) -> [WorkspaceReservation] {
+        let calendar = Calendar.current
+        let today = Date()
+        let tableNames = workspace.tables.map(\.name)
+
+        return reservations
+            .filter { calendar.isDate($0.startsAt, inSameDayAs: today) }
+            .sorted { $0.startsAt < $1.startsAt }
+            .enumerated()
+            .map { index, reservation in
+                WorkspaceReservation(
+                    id: reservation.id,
+                    time: reservationTimeFormatter.string(from: reservation.startsAt),
+                    guestName: reservation.restaurantName,
+                    guests: reservation.partySize,
+                    tableName: tableNames.isEmpty ? "Unassigned" : tableNames[index % tableNames.count],
+                    status: ReservationSheetStatus(reservationStatus: reservation.status)
+                )
+            }
+    }
+
+    private static let reservationTimeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
+        return formatter
+    }()
 
     private var todayGuestsButton: some View {
         NavigationLink {
@@ -304,7 +413,7 @@ private struct WorkspaceFloorPlanView: View {
                 Text("Room plan")
                     .font(.colomba.titleMd)
                     .foregroundStyle(Color.colomba.text.primary)
-                Text("Early shell: later this becomes the custom table layout from workspace setup.")
+                Text("Saved room setup. Reserved tables update after today’s live reservation sync.")
                     .font(.colomba.bodyMd)
                     .foregroundStyle(Color.colomba.text.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -743,6 +852,17 @@ private enum ReservationSheetStatus: String, Codable, Equatable {
     case open
     case completed
     case cancelled
+
+    init(reservationStatus: Reservation.Status) {
+        switch reservationStatus {
+        case .active:
+            self = .open
+        case .completed:
+            self = .completed
+        case .cancelled:
+            self = .cancelled
+        }
+    }
 
     var title: String {
         switch self {
