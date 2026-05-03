@@ -5,6 +5,9 @@ import SwiftUI
 @MainActor
 struct PaywallView: View {
     @StateObject private var viewModel: PaywallViewModel
+    @StateObject private var workspaceStore = WorkspaceStore()
+    @State private var showWorkspaceSetup = false
+    @State private var savedWorkspaceName: String?
 
     init() {
         _viewModel = StateObject(wrappedValue: PaywallViewModel())
@@ -28,6 +31,12 @@ struct PaywallView: View {
         }
         .padding(ColombaSpacing.Screen.margin)
         .background(Color.colomba.bg.base)
+        .navigationDestination(isPresented: $showWorkspaceSetup) {
+            WorkspaceSetupView(workspace: .draft()) { workspace in
+                workspaceStore.upsert(workspace)
+                savedWorkspaceName = workspace.name
+            }
+        }
         .task {
             guard case .idle = viewModel.state else {
                 return
@@ -60,9 +69,26 @@ struct PaywallView: View {
             ProgressView(purchasingText(for: productID))
                 .accessibilityLabel("Purchase in progress")
         case let .purchased(productID):
-            Text(purchasedText(for: productID))
-                .foregroundStyle(Color.colomba.success)
-                .accessibilityLabel("Purchase complete")
+            VStack(alignment: .leading, spacing: ColombaSpacing.space3) {
+                Text(purchasedText(for: productID))
+                    .foregroundStyle(Color.colomba.success)
+                    .accessibilityLabel("Purchase complete")
+
+                Text("Next: create the workspace that this plan will power.")
+                    .font(.colomba.bodyMd)
+                    .foregroundStyle(Color.colomba.text.secondary)
+
+                Button("Set up workspace") {
+                    showWorkspaceSetup = true
+                }
+                .buttonStyle(.borderedProminent)
+
+                if let savedWorkspaceName {
+                    Label("Saved \(savedWorkspaceName)", systemImage: "checkmark.circle.fill")
+                        .font(.colomba.bodyMd)
+                        .foregroundStyle(Color.colomba.success)
+                }
+            }
         case .cancelled:
             Text(PaywallError.purchaseCancelled.userMessage)
                 .accessibilityLabel("Purchase cancelled")

@@ -316,7 +316,7 @@ private struct WorkspaceDashboardView: View {
 
     private var todayGuestsButton: some View {
         NavigationLink {
-            TodayReservationsView(workspace: workspace)
+            TodayReservationsView(workspace: $workspace)
         } label: {
             HStack(spacing: ColombaSpacing.space4) {
                 VStack(alignment: .leading, spacing: ColombaSpacing.space2) {
@@ -349,20 +349,26 @@ private struct WorkspaceDashboardView: View {
 }
 
 private struct TodayReservationsView: View {
-    let workspace: Workspace
+    @Binding var workspace: Workspace
 
     var body: some View {
         List {
             Section("Open reservations") {
-                ForEach(workspace.openReservations) { reservation in
-                    ReservationSheetRow(reservation: reservation)
+                if openReservationIDs.isEmpty {
+                    Text("No open reservations for today yet.")
+                        .foregroundStyle(Color.colomba.text.secondary)
                 }
+
+                reservationLinks(for: openReservationIDs)
             }
 
             Section("Past today") {
-                ForEach(workspace.pastReservations) { reservation in
-                    ReservationSheetRow(reservation: reservation)
+                if pastReservationIDs.isEmpty {
+                    Text("No past reservations yet.")
+                        .foregroundStyle(Color.colomba.text.secondary)
                 }
+
+                reservationLinks(for: pastReservationIDs)
             }
         }
         .scrollContentBackground(.hidden)
@@ -370,6 +376,90 @@ private struct TodayReservationsView: View {
         .navigationTitle("Today's sheet")
         .navigationBarTitleDisplayMode(.inline)
         .accessibilityLabel("Today's reservation sheet")
+        .onChange(of: workspace.reservations) { _, _ in
+            refreshReservedTableStates()
+        }
+    }
+
+    @ViewBuilder
+    private func reservationLinks(for ids: [String]) -> some View {
+        ForEach(ids, id: \.self) { id in
+            if let reservation = reservationBinding(for: id) {
+                NavigationLink {
+                    ReservationDetailView(reservation: reservation, tableNames: workspace.tables.map(\.name))
+                } label: {
+                    ReservationSheetRow(reservation: reservation.wrappedValue)
+                }
+            }
+        }
+    }
+
+    private var openReservationIDs: [String] {
+        workspace.openReservations.map(\.id)
+    }
+
+    private var pastReservationIDs: [String] {
+        workspace.pastReservations.map(\.id)
+    }
+
+    private func reservationBinding(for id: String) -> Binding<WorkspaceReservation>? {
+        guard let index = workspace.reservations.firstIndex(where: { $0.id == id }) else { return nil }
+        return $workspace.reservations[index]
+    }
+
+    private func refreshReservedTableStates() {
+        let reservedTableNames = Set(workspace.openReservations.map(\.tableName))
+        workspace.tables = workspace.tables.map { table in
+            var copy = table
+            copy.isReserved = reservedTableNames.contains(copy.name)
+            return copy
+        }
+    }
+}
+
+private struct ReservationDetailView: View {
+    @Binding var reservation: WorkspaceReservation
+    let tableNames: [String]
+
+    var body: some View {
+        Form {
+            Section("Guest") {
+                LabeledContent("Name", value: reservation.guestName)
+                LabeledContent("Time", value: reservation.time)
+                Stepper(value: $reservation.guests, in: 1...20) {
+                    Text("\(reservation.guests) guests")
+                }
+            }
+
+            Section("Service") {
+                Picker("Table", selection: $reservation.tableName) {
+                    ForEach(tableChoices, id: \.self) { tableName in
+                        Text(tableName).tag(tableName)
+                    }
+                }
+
+                Picker("Status", selection: $reservation.status) {
+                    ForEach(ReservationSheetStatus.allCases) { status in
+                        Text(status.title).tag(status)
+                    }
+                }
+            }
+        }
+        .scrollContentBackground(.hidden)
+        .background(Color.colomba.bg.base)
+        .navigationTitle(reservation.guestName)
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private var tableChoices: [String] {
+        var choices = tableNames
+        if choices.isEmpty {
+            choices = ["Unassigned"]
+        }
+        if !choices.contains(reservation.tableName) {
+            choices.insert(reservation.tableName, at: 0)
+        }
+        return choices
     }
 }
 
@@ -479,7 +569,7 @@ private struct WorkspaceFloorPlanView: View {
     }
 }
 
-private struct WorkspaceSetupView: View {
+struct WorkspaceSetupView: View {
     @Environment(\.dismiss)
     private var dismiss
     @State private var draft: Workspace
@@ -687,7 +777,7 @@ private struct TableLayoutEditorView: View {
     }
 }
 
-private final class WorkspaceStore: ObservableObject {
+final class WorkspaceStore: ObservableObject {
     @Published var workspaces: [Workspace] {
         didSet { save() }
     }
@@ -720,7 +810,7 @@ private final class WorkspaceStore: ObservableObject {
     }
 }
 
-private struct Workspace: Identifiable, Codable, Equatable {
+struct Workspace: Identifiable, Codable, Equatable {
     var id: String
     var name: String
     var location: String
@@ -796,7 +886,7 @@ private struct Workspace: Identifiable, Codable, Equatable {
     ]
 }
 
-private struct WorkspaceReservation: Identifiable, Codable, Equatable {
+struct WorkspaceReservation: Identifiable, Codable, Equatable {
     var id: String
     var time: String
     var guestName: String
@@ -848,7 +938,7 @@ private struct WorkspaceReservation: Identifiable, Codable, Equatable {
     ]
 }
 
-private enum ReservationSheetStatus: String, Codable, Equatable {
+enum ReservationSheetStatus: String, Codable, Equatable, CaseIterable, Identifiable {
     case open
     case completed
     case cancelled
@@ -863,6 +953,8 @@ private enum ReservationSheetStatus: String, Codable, Equatable {
             self = .cancelled
         }
     }
+
+    var id: String { rawValue }
 
     var title: String {
         switch self {
@@ -896,7 +988,7 @@ private enum ReservationSheetStatus: String, Codable, Equatable {
     }
 }
 
-private struct WorkspaceTable: Identifiable, Codable, Equatable {
+struct WorkspaceTable: Identifiable, Codable, Equatable {
     var id: String
     var name: String
     var seats: Int
