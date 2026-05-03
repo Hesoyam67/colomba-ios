@@ -23,6 +23,11 @@ struct ColombaCustomerApp: App {
                 }
             }
             .environment(\.locale, Locale(identifier: selectedLanguageRaw))
+            .onOpenURL { url in
+                #if canImport(GoogleSignIn)
+                _ = GoogleSignInOAuthClient.handle(url: url)
+                #endif
+            }
         }
     }
 }

@@ -3,6 +3,30 @@ import ColombaAuth
 import XCTest
 
 final class GoogleIntegrationTests: XCTestCase {
+    func testGoogleSignInConfigurationUsesProductionClientByDefault() {
+        let clientID = GoogleSignInConfiguration.resolveClientID(
+            bundleIdentifier: "ch.colomba.customer",
+            infoDictionary: [
+                "ColombaGoogleOAuthProductionClientID": "production-client",
+                "ColombaGoogleOAuthLocalDevClientID": "local-client"
+            ]
+        )
+
+        XCTAssertEqual(clientID, "production-client")
+    }
+
+    func testGoogleSignInConfigurationUsesLocalClientForFreeDevBundle() {
+        let clientID = GoogleSignInConfiguration.resolveClientID(
+            bundleIdentifier: "com.hesoyam.colomba.dev",
+            infoDictionary: [
+                "ColombaGoogleOAuthProductionClientID": "production-client",
+                "ColombaGoogleOAuthLocalDevClientID": "local-client"
+            ]
+        )
+
+        XCTAssertEqual(clientID, "local-client")
+    }
+
     func testCalendarServiceRequestsGoogleCalendarScopeAndUpsertsEvent() async throws {
         let oauth = MockGoogleOAuthClient(tokenValue: "token-123")
         let client = MockGoogleCalendarClient(externalID: "evt-123")

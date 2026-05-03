@@ -3,6 +3,9 @@ import Foundation
 #if canImport(GoogleSignIn)
 import GoogleSignIn
 #endif
+#if canImport(UIKit)
+import UIKit
+#endif
 
 public struct GoogleOAuthToken: Equatable, Sendable {
     public let accessToken: String
@@ -20,6 +23,7 @@ public protocol GoogleOAuthAuthorizing: Sendable {
 
 public enum GoogleIntegrationError: Error, Equatable, Sendable {
     case missingClientID
+    case missingPresentingViewController
     case unsupportedAuthProvider(AuthProvider)
     case missingAppleCalendarAdapter
 }
@@ -44,15 +48,54 @@ public struct GoogleSignInConfiguration: Equatable, Sendable {
     public init(clientID: String?) {
         self.clientID = clientID
     }
+
+    public static func from(bundle: Bundle = .main) -> Self {
+        Self(
+            clientID: Self.resolveClientID(
+                bundleIdentifier: bundle.bundleIdentifier,
+                infoDictionary: bundle.infoDictionary ?? [:]
+            )
+        )
+    }
+
+    public static func resolveClientID(
+        bundleIdentifier: String?,
+        infoDictionary: [String: Any]
+    ) -> String? {
+        let productionClientID = infoDictionary["ColombaGoogleOAuthProductionClientID"] as? String
+        let localDevClientID = infoDictionary["ColombaGoogleOAuthLocalDevClientID"] as? String
+
+        if bundleIdentifier == "com.hesoyam.colomba.dev", let localDevClientID, localDevClientID.isEmpty == false {
+            return localDevClientID
+        }
+
+        if let productionClientID, productionClientID.isEmpty == false {
+            return productionClientID
+        }
+
+        return localDevClientID?.isEmpty == false ? localDevClientID : nil
+    }
 }
 
-#if canImport(GoogleSignIn)
+#if canImport(GoogleSignIn) && canImport(UIKit)
 @MainActor
 public final class GoogleSignInOAuthClient: GoogleOAuthAuthorizing {
     private let configuration: GoogleSignInConfiguration
+    private let presentingViewControllerProvider: @MainActor @Sendable () -> UIViewController?
 
-    public init(configuration: GoogleSignInConfiguration) {
+    public convenience init(configuration: GoogleSignInConfiguration) {
+        self.init(
+            configuration: configuration,
+            presentingViewControllerProvider: { UIApplication.shared.colombaTopViewController }
+        )
+    }
+
+    public init(
+        configuration: GoogleSignInConfiguration,
+        presentingViewControllerProvider: @escaping @MainActor @Sendable () -> UIViewController?
+    ) {
         self.configuration = configuration
+        self.presentingViewControllerProvider = presentingViewControllerProvider
     }
 
     public func authorize(scopes: Set<String>) async throws -> GoogleOAuthToken {
@@ -60,9 +103,51 @@ public final class GoogleSignInOAuthClient: GoogleOAuthAuthorizing {
             throw GoogleIntegrationError.missingClientID
         }
         GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientID)
-        // The presenting view controller is intentionally deferred until Papu provides the real OAuth client ID.
-        // This adapter is the swap point for live Google Sign-In; tests use MockGoogleOAuthClient.
-        throw GoogleIntegrationError.missingClientID
+
+        guard let presentingViewController = presentingViewControllerProvider() else {
+            throw GoogleIntegrationError.missingPresentingViewController
+        }
+
+        let signInResult = try await GIDSignIn.sharedInstance.signIn(
+            withPresenting: presentingViewController,
+            hint: nil,
+            additionalScopes: Array(scopes).sorted()
+        )
+
+        return GoogleOAuthToken(
+            accessToken: signInResult.user.accessToken.tokenString,
+            scopes: Set(signInResult.user.grantedScopes ?? []).union(scopes)
+        )
+    }
+
+    public static func handle(url: URL) -> Bool {
+        GIDSignIn.sharedInstance.handle(url)
+    }
+}
+
+private extension UIApplication {
+    var colombaTopViewController: UIViewController? {
+        connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows)
+            .first(where: { $0.isKeyWindow })?
+            .rootViewController?
+            .colombaTopMostViewController
+    }
+}
+
+private extension UIViewController {
+    var colombaTopMostViewController: UIViewController {
+        if let presentedViewController {
+            return presentedViewController.colombaTopMostViewController
+        }
+        if let navigationController = self as? UINavigationController {
+            return navigationController.visibleViewController?.colombaTopMostViewController ?? navigationController
+        }
+        if let tabBarController = self as? UITabBarController {
+            return tabBarController.selectedViewController?.colombaTopMostViewController ?? tabBarController
+        }
+        return self
     }
 }
 #endif
