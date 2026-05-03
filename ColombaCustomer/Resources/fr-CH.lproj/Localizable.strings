@@ -103,16 +103,18 @@
 
 /* MARK: Usage */
 "usage.nav_title" = "Utilisation";
+"usage.minute_one" = "minute";
+"usage.minute_other" = "minutes";
 "usage.loading" = "Chargement de l’utilisation";
 "usage.unavailable" = "L’utilisation est indisponible. Veuillez réessayer.";
 "usage.updated_from_format" = "Mis à jour depuis %@";
 "usage.source_cache" = "cache";
 "usage.source_server" = "serveur";
-"usage.overage_format" = "%@ événements hors forfait";
-"usage.this_month" = "Utilisation ce mois-ci";
-"usage.summary_format" = "%@ / %@ événements";
-"usage.text_format" = "%@ sur %@ événements utilisés";
-"usage.accessibility_format" = "%@ sur %@ événements utilisés ce mois-ci";
+"usage.overage_format" = "%@ minutes hors forfait";
+"usage.this_month" = "Minutes ce mois-ci";
+"usage.summary_format" = "%@ / %@ min";
+"usage.text_format" = "%@ %@ sur %@ %@ utilisées";
+"usage.accessibility_format" = "%@ %@ sur %@ %@ utilisées ce mois-ci";
 
 /* MARK: Billing */
 "billing.manage_subscription" = "Gérer l’abonnement";

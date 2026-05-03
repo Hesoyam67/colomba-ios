@@ -58,11 +58,20 @@ final class UsageViewModel: ObservableObject {
         return min(Double(snapshot.usedEvents) / Double(snapshot.includedEvents), 1)
     }
 
+    func usageUnitText(for count: Int) -> String {
+        if count == 1 {
+            return String(localized: "usage.minute_one")
+        }
+        return String(localized: "usage.minute_other")
+    }
+
     func usageText(for snapshot: UsageSnapshot) -> String {
         String(
             format: NSLocalizedString("usage.text_format", comment: ""),
             snapshot.usedEvents.formatted(),
-            snapshot.includedEvents.formatted()
+            usageUnitText(for: snapshot.usedEvents),
+            snapshot.includedEvents.formatted(),
+            usageUnitText(for: snapshot.includedEvents)
         )
     }
 
@@ -70,7 +79,9 @@ final class UsageViewModel: ObservableObject {
         String(
             format: NSLocalizedString("usage.accessibility_format", comment: ""),
             snapshot.usedEvents.formatted(),
-            snapshot.includedEvents.formatted()
+            usageUnitText(for: snapshot.usedEvents),
+            snapshot.includedEvents.formatted(),
+            usageUnitText(for: snapshot.includedEvents)
         )
     }
 }

@@ -103,16 +103,18 @@
 
 /* MARK: Usage */
 "usage.nav_title" = "Utilizzo";
+"usage.minute_one" = "minuto";
+"usage.minute_other" = "minuti";
 "usage.loading" = "Caricamento utilizzo";
 "usage.unavailable" = "Utilizzo non disponibile. Riprova.";
 "usage.updated_from_format" = "Aggiornato da %@";
 "usage.source_cache" = "cache";
 "usage.source_server" = "server";
-"usage.overage_format" = "%@ eventi extra";
-"usage.this_month" = "Utilizzo questo mese";
-"usage.summary_format" = "%@ / %@ eventi";
-"usage.text_format" = "%@ di %@ eventi utilizzati";
-"usage.accessibility_format" = "%@ di %@ eventi utilizzati questo mese";
+"usage.overage_format" = "%@ minuti extra";
+"usage.this_month" = "Minuti questo mese";
+"usage.summary_format" = "%@ / %@ min";
+"usage.text_format" = "%@ %@ di %@ %@ utilizzati";
+"usage.accessibility_format" = "%@ %@ di %@ %@ utilizzati questo mese";
 
 /* MARK: Billing */
 "billing.manage_subscription" = "Gestisci abbonamento";

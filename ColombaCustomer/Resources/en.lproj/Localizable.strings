@@ -103,16 +103,18 @@
 
 /* MARK: Usage */
 "usage.nav_title" = "Usage";
+"usage.minute_one" = "minute";
+"usage.minute_other" = "minutes";
 "usage.loading" = "Loading usage";
 "usage.unavailable" = "Usage is unavailable. Please try again.";
 "usage.updated_from_format" = "Updated from %@";
 "usage.source_cache" = "cache";
 "usage.source_server" = "server";
-"usage.overage_format" = "%@ overage events";
-"usage.this_month" = "Usage this month";
-"usage.summary_format" = "%@ / %@ events";
-"usage.text_format" = "%@ of %@ events used";
-"usage.accessibility_format" = "%@ of %@ events used this month";
+"usage.overage_format" = "%@ overage minutes";
+"usage.this_month" = "Minutes this month";
+"usage.summary_format" = "%@ / %@ min";
+"usage.text_format" = "%@ %@ of %@ %@ used";
+"usage.accessibility_format" = "%@ %@ of %@ %@ used this month";
 
 /* MARK: Billing */
 "billing.manage_subscription" = "Manage subscription";

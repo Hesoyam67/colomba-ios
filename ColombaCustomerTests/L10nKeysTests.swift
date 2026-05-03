@@ -108,6 +108,8 @@ final class L10nKeysTests: XCTestCase {
         "reservation.when",
         "usage.accessibility_format",
         "usage.loading",
+        "usage.minute_one",
+        "usage.minute_other",
         "usage.nav_title",
         "usage.overage_format",
         "usage.source_cache",

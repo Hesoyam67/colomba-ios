@@ -19,11 +19,19 @@ final class UsageViewModelTests: XCTestCase {
         try? await cache.clear()
     }
 
+    func testUsageTextDisplaysMinutes() async {
+        let viewModel = UsageViewModel()
+
+        let text = viewModel.usageText(for: .fixtureCurrentMonth)
+
+        XCTAssertEqual(text, "9'200 minutes of 10'000 minutes used")
+    }
+
     func testAccessibilityTextIncludesUnitsAndPeriod() async {
         let viewModel = UsageViewModel()
 
         let text = viewModel.accessibilityText(for: .fixtureCurrentMonth)
 
-        XCTAssertEqual(text, "9'200 of 10'000 events used this month")
+        XCTAssertEqual(text, "9'200 minutes of 10'000 minutes used this month")
     }
 }

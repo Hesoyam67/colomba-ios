@@ -103,16 +103,18 @@
 
 /* MARK: Usage */
 "usage.nav_title" = "Nutzung";
+"usage.minute_one" = "Minute";
+"usage.minute_other" = "Minuten";
 "usage.loading" = "Nutzung wird geladen";
 "usage.unavailable" = "Nutzung ist nicht verfügbar. Bitte versuchen Sie es erneut.";
 "usage.updated_from_format" = "Aktualisiert von %@";
 "usage.source_cache" = "Cache";
 "usage.source_server" = "Server";
-"usage.overage_format" = "%@ zusätzliche Ereignisse";
-"usage.this_month" = "Nutzung in diesem Monat";
-"usage.summary_format" = "%@ / %@ Ereignisse";
-"usage.text_format" = "%@ von %@ Ereignissen verwendet";
-"usage.accessibility_format" = "%@ von %@ Ereignissen diesen Monat verwendet";
+"usage.overage_format" = "%@ zusätzliche Minuten";
+"usage.this_month" = "Minuten in diesem Monat";
+"usage.summary_format" = "%@ / %@ Min.";
+"usage.text_format" = "%@ %@ von %@ %@ verwendet";
+"usage.accessibility_format" = "%@ %@ von %@ %@ diesen Monat verwendet";
 
 /* MARK: Billing */
 "billing.manage_subscription" = "Abo verwalten";
