@@ -93,6 +93,13 @@
 		F9DD3114D0FC6D27B90FA45D /* ColombaBilling in Frameworks */ = {isa = PBXBuildFile; productRef = D4D0F5D6BC5827A6ED7A31BA /* ColombaBilling */; };
 		FEF90F5F065A4F2162A728AA /* HeidiChatViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1E850D29C95A2608B27B12 /* HeidiChatViewModelTests.swift */; };
 		AA1600000000000000000002 /* WorkspaceStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1600000000000000000001 /* WorkspaceStoreTests.swift */; };
+		AA1700000000000000000002 /* AccountServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1700000000000000000001 /* AccountServiceProtocol.swift */; };
+		AA1700000000000000000004 /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1700000000000000000003 /* AccountService.swift */; };
+		AA1700000000000000000006 /* HTTPAccountClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1700000000000000000005 /* HTTPAccountClient.swift */; };
+		AA1700000000000000000008 /* AccountDeletionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1700000000000000000007 /* AccountDeletionViewModel.swift */; };
+		AA170000000000000000000A /* AccountDeletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1700000000000000000009 /* AccountDeletionView.swift */; };
+		AA170000000000000000000C /* AccountDeletionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA170000000000000000000B /* AccountDeletionViewModelTests.swift */; };
+		AA170000000000000000000E /* AccountServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA170000000000000000000D /* AccountServiceTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -204,6 +211,13 @@
 		FBA4B9AA4DA67D0344C60D05 /* PortalSessionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalSessionServiceTests.swift; sourceTree = "<group>"; };
 		FEB554A480235ADEAB707618 /* UpgradeFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = UpgradeFeature; path = Packages/Features/UpgradeFeature; sourceTree = SOURCE_ROOT; };
 		AA1600000000000000000001 /* WorkspaceStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceStoreTests.swift; sourceTree = "<group>"; };
+		AA1700000000000000000001 /* AccountServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountServiceProtocol.swift; sourceTree = "<group>"; };
+		AA1700000000000000000003 /* AccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.swift; sourceTree = "<group>"; };
+		AA1700000000000000000005 /* HTTPAccountClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPAccountClient.swift; sourceTree = "<group>"; };
+		AA1700000000000000000007 /* AccountDeletionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletionViewModel.swift; sourceTree = "<group>"; };
+		AA1700000000000000000009 /* AccountDeletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletionView.swift; sourceTree = "<group>"; };
+		AA170000000000000000000B /* AccountDeletionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletionViewModelTests.swift; sourceTree = "<group>"; };
+		AA170000000000000000000D /* AccountServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountServiceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -349,6 +363,8 @@
 			isa = PBXGroup;
 			children = (
 				3EF5A27AAF4F72FCBEB6813C /* SettingsView.swift */,
+				AA1700000000000000000007 /* AccountDeletionViewModel.swift */,
+				AA1700000000000000000009 /* AccountDeletionView.swift */,
 				C42EAC4449E790A102A09571 /* Components */,
 			);
 			path = Settings;
@@ -409,6 +425,9 @@
 			isa = PBXGroup;
 			children = (
 				AA0000000000000000000001 /* GoogleIntegrationServices.swift */,
+				AA1700000000000000000001 /* AccountServiceProtocol.swift */,
+				AA1700000000000000000003 /* AccountService.swift */,
+				AA1700000000000000000005 /* HTTPAccountClient.swift */,
 				E7152A267D990B8F6E00E16F /* HeidiService.swift */,
 				E008248AFDEAC2681F875CAC /* HeidiServiceProtocol.swift */,
 				90B75FD265B78B4AD709F8FD /* HTTPReservationClient.swift */,
@@ -437,6 +456,8 @@
 				0027DF6ACC24BE3A499F8001 /* PhoneVerifyViewModelTests.swift */,
 				6917566F50ECFA4832D4C36A /* PlansSnapshotTests.swift */,
 				7A0C6BDFDFE8C2C342F02AE5 /* PlansViewModelTests.swift */,
+				AA170000000000000000000B /* AccountDeletionViewModelTests.swift */,
+				AA170000000000000000000D /* AccountServiceTests.swift */,
 				FBA4B9AA4DA67D0344C60D05 /* PortalSessionServiceTests.swift */,
 				E09F4E901666727709C945FD /* SMSVerifyServiceTests.swift */,
 				30F30CFBB06472E4826E1ED9 /* UsageCacheTests.swift */,
@@ -621,6 +642,8 @@
 				8309229D5383B05AB7132503 /* PhoneVerifyViewModelTests.swift in Sources */,
 				0B0C5B29C0F6109AC85CF10E /* PlansSnapshotTests.swift in Sources */,
 				CAFBC43F3525DABFB1786F8A /* PlansViewModelTests.swift in Sources */,
+				AA170000000000000000000C /* AccountDeletionViewModelTests.swift in Sources */,
+				AA170000000000000000000E /* AccountServiceTests.swift in Sources */,
 				8710BAEABE6A2B19DD772432 /* PortalSessionServiceTests.swift in Sources */,
 				B9AFFE57C21FB35FED3E7369 /* ProfileEditViewModelTests.swift in Sources */,
 				0F7C18E31AA127D58C5FF763 /* ReservationServiceTests.swift in Sources */,
@@ -684,6 +707,11 @@
 				955C48E02C7F3EAB3EA0D56C /* SMSVerifyService.swift in Sources */,
 				4C0ECAD0E9D24194C036D167 /* SMSVerifyServiceProtocol.swift in Sources */,
 				C080E7312A110725AA56D5E7 /* SettingsView.swift in Sources */,
+				AA1700000000000000000002 /* AccountServiceProtocol.swift in Sources */,
+				AA1700000000000000000004 /* AccountService.swift in Sources */,
+				AA1700000000000000000006 /* HTTPAccountClient.swift in Sources */,
+				AA1700000000000000000008 /* AccountDeletionViewModel.swift in Sources */,
+				AA170000000000000000000A /* AccountDeletionView.swift in Sources */,
 				5ABE53A5213CD86ED62103F9 /* SignedOutAuthView.swift in Sources */,
 				A4BEF2B9265BF80A64B24DFA /* StripePortalCoordinator.swift in Sources */,
 				5609700205D89092D3980FC0 /* TwilioSMSVerifyClient.swift in Sources */,

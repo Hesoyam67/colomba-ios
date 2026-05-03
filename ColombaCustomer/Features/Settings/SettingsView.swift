@@ -64,6 +64,13 @@ struct SettingsView: View {
                         authController.signOut()
                     }
                     .accessibilityLabel(Text("settings.sign_out"))
+
+                    NavigationLink {
+                        AccountDeletionView(authController: authController)
+                    } label: {
+                        Text(String(localized: "account_deletion.title"))
+                    }
+                    .accessibilityLabel(Text(String(localized: "account_deletion.title")))
                 }
 
                 Section(String(localized: "settings.plan_billing")) {
