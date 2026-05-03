@@ -126,6 +126,14 @@
 "tabs.settings" = "Einstellungen";
 
 /* MARK: Settings */
+"settings.no_email" = "Keine E-Mail hinterlegt";
+"settings.primary_actions" = "Verwalten";
+"settings.manage_plan" = "Pläne und Abo";
+"settings.reservations" = "Reservationen";
+"settings.billing_usage" = "Abrechnungsnutzung";
+"settings.usage_minutes" = "Verwendete Minuten";
+"settings.usage_explanation" = "Colomba rechnet nach den in diesem Monat genutzten Kundenminuten ab. Öffnen Sie Nutzung für den detaillierten Zähler.";
+"settings.version_value" = "Colomba Customer";
 "settings.account" = "Konto";
 "settings.app" = "App";
 "settings.usage" = "Nutzung";

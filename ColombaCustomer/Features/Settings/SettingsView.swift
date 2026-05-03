@@ -14,7 +14,7 @@ struct SettingsView: View {
                         Text(customer.displayName)
                             .font(.colomba.bodyLg)
                             .foregroundStyle(Color.colomba.text.primary)
-                        Text(customer.email ?? "")
+                        Text(customer.email ?? String(localized: "settings.no_email"))
                             .font(.colomba.caption)
                             .foregroundStyle(Color.colomba.text.secondary)
                     }
@@ -36,30 +36,61 @@ struct SettingsView: View {
                     NavigationLink {
                         ProfileEditView(authController: authController, customer: customer)
                     } label: {
-                        Text(String(localized: "profile.edit", table: "Profile"))
+                        Label(String(localized: "profile.edit", table: "Profile"), systemImage: "person.crop.circle")
                     }
                     .accessibilityLabel(Text(String(localized: "profile.edit", table: "Profile")))
+                }
 
+                Section(String(localized: "settings.primary_actions")) {
+                    NavigationLink {
+                        PlansListView()
+                    } label: {
+                        Label(String(localized: "settings.manage_plan"), systemImage: "creditcard")
+                    }
+                    .accessibilityLabel(Text("settings.manage_plan"))
+
+                    NavigationLink {
+                        MyReservationsView(viewModel: MyReservationsViewModel(service: ReservationService()))
+                    } label: {
+                        Label(String(localized: "settings.reservations"), systemImage: "calendar")
+                    }
+                    .accessibilityLabel(Text("settings.reservations"))
+                }
+
+                Section(String(localized: "settings.billing_usage")) {
+                    NavigationLink {
+                        UsageView()
+                    } label: {
+                        Label(String(localized: "settings.usage_minutes"), systemImage: "timer")
+                    }
+                    .accessibilityLabel(Text("settings.usage_minutes"))
+
+                    Text("settings.usage_explanation")
+                        .font(.colomba.caption)
+                        .foregroundStyle(Color.colomba.text.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityLabel(Text("settings.usage_explanation"))
+                }
+
+                Section(String(localized: "settings.app")) {
+                    LabeledContent(String(localized: "settings.language")) {
+                        Text(customer.locale.rawValue)
+                            .foregroundStyle(Color.colomba.text.secondary)
+                    }
+                    .accessibilityElement(children: .combine)
+
+                    LabeledContent(String(localized: "settings.about")) {
+                        Text(String(localized: "settings.version_value"))
+                            .foregroundStyle(Color.colomba.text.secondary)
+                    }
+                    .accessibilityElement(children: .combine)
+                }
+
+                Section {
                     Button(String(localized: "settings.sign_out"), role: .destructive) {
                         authController.signOut()
                     }
                     .accessibilityLabel(Text("settings.sign_out"))
-                }
-
-                Section(String(localized: "settings.app")) {
-                    NavigationLink {
-                        UsageView()
-                    } label: {
-                        Text("settings.usage")
-                    }
-                    .accessibilityLabel(Text("settings.usage"))
-
-                    Text("settings.language")
-                        .foregroundStyle(Color.colomba.text.secondary)
-                        .accessibilityLabel(Text("settings.language"))
-                    Text("settings.about")
-                        .foregroundStyle(Color.colomba.text.secondary)
-                        .accessibilityLabel(Text("settings.about"))
                 }
             }
             .scrollContentBackground(.hidden)

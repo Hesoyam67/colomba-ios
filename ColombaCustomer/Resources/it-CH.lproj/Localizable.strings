@@ -126,6 +126,14 @@
 "tabs.settings" = "Impostazioni";
 
 /* MARK: Settings */
+"settings.no_email" = "Nessuna e-mail salvata";
+"settings.primary_actions" = "Gestisci";
+"settings.manage_plan" = "Piani e abbonamento";
+"settings.reservations" = "Prenotazioni";
+"settings.billing_usage" = "Utilizzo fatturato";
+"settings.usage_minutes" = "Minuti utilizzati";
+"settings.usage_explanation" = "La fatturazione Colomba si basa sui minuti cliente utilizzati questo mese. Apri Utilizzo per il contatore dettagliato.";
+"settings.version_value" = "Colomba Customer";
 "settings.account" = "Account";
 "settings.app" = "App";
 "settings.usage" = "Utilizzo";

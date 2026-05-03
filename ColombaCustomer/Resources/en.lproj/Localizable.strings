@@ -126,6 +126,14 @@
 "tabs.settings" = "Settings";
 
 /* MARK: Settings */
+"settings.no_email" = "No email on file";
+"settings.primary_actions" = "Manage";
+"settings.manage_plan" = "Plans and subscription";
+"settings.reservations" = "Reservations";
+"settings.billing_usage" = "Billing usage";
+"settings.usage_minutes" = "Used minutes";
+"settings.usage_explanation" = "Colomba billing is based on client minutes used this month. Open usage for the detailed meter.";
+"settings.version_value" = "Colomba Customer";
 "settings.account" = "Account";
 "settings.app" = "App";
 "settings.usage" = "Usage";
