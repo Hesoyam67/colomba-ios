@@ -11,7 +11,7 @@ final class UsageViewModelTests: XCTestCase {
         let viewModel = UsageViewModel(client: FixtureUsageClient(), cache: cache)
 
         await viewModel.load(preferCache: false)
-        XCTAssertEqual(viewModel.snapshot?.usedEvents, 9_200)
+        XCTAssertEqual(viewModel.snapshot?.usedMinutes, 9_200)
         XCTAssertEqual(viewModel.state, .loaded(.fixtureCurrentMonth, source: .network))
 
         await viewModel.load()
@@ -24,6 +24,6 @@ final class UsageViewModelTests: XCTestCase {
 
         let text = viewModel.accessibilityText(for: .fixtureCurrentMonth)
 
-        XCTAssertEqual(text, "9'200 of 10'000 events used this month")
+        XCTAssertEqual(text, "9'200 of 10'000 minutes used this month")
     }
 }

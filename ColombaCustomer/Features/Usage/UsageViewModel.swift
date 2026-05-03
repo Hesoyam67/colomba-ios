@@ -52,25 +52,25 @@ final class UsageViewModel: ObservableObject {
     }
 
     func progress(for snapshot: UsageSnapshot) -> Double {
-        guard snapshot.includedEvents > 0 else {
+        guard snapshot.includedMinutes > 0 else {
             return 0
         }
-        return min(Double(snapshot.usedEvents) / Double(snapshot.includedEvents), 1)
+        return min(Double(snapshot.usedMinutes) / Double(snapshot.includedMinutes), 1)
     }
 
     func usageText(for snapshot: UsageSnapshot) -> String {
         String(
             format: NSLocalizedString("usage.text_format", comment: ""),
-            snapshot.usedEvents.formatted(),
-            snapshot.includedEvents.formatted()
+            snapshot.usedMinutes.formatted(),
+            snapshot.includedMinutes.formatted()
         )
     }
 
     func accessibilityText(for snapshot: UsageSnapshot) -> String {
         String(
             format: NSLocalizedString("usage.accessibility_format", comment: ""),
-            snapshot.usedEvents.formatted(),
-            snapshot.includedEvents.formatted()
+            snapshot.usedMinutes.formatted(),
+            snapshot.includedMinutes.formatted()
         )
     }
 }

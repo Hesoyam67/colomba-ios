@@ -10,7 +10,7 @@ final class PlansViewModelTests: XCTestCase {
         await viewModel.load()
 
         XCTAssertEqual(viewModel.plans.map(\.tier), [.starter, .growth, .pro])
-        XCTAssertEqual(viewModel.includedEventsText(for: viewModel.plans[1]), "10'000 events included")
+        XCTAssertEqual(viewModel.includedMinutesText(for: viewModel.plans[1]), "10'000 minutes included")
     }
 }
 

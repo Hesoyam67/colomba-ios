@@ -44,10 +44,10 @@ final class PlansViewModel: ObservableObject {
         )
     }
 
-    func includedEventsText(for plan: Plan) -> String {
+    func includedMinutesText(for plan: Plan) -> String {
         String(
-            format: NSLocalizedString("plans.included_events_format", comment: ""),
-            plan.includedEvents.formatted()
+            format: NSLocalizedString("plans.included_minutes_format", comment: ""),
+            plan.includedMinutes.formatted()
         )
     }
 }

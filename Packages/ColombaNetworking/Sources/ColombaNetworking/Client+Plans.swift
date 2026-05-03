@@ -27,8 +27,8 @@ public extension PlanList {
                 name: "Piccola",
                 tier: .starter,
                 monthlyPriceMinor: 4_900,
-                includedEvents: 1_000,
-                features: ["Reservation capture", "Basic analytics"],
+                includedMinutes: 1_000,
+                features: ["plans.feature.reservation_capture", "plans.feature.basic_analytics"],
                 recommendedForPersona: "persona_small_beiz"
             ),
             Plan(
@@ -36,8 +36,8 @@ public extension PlanList {
                 name: "Media",
                 tier: .growth,
                 monthlyPriceMinor: 14_900,
-                includedEvents: 10_000,
-                features: ["AI support chat", "Usage alerts", "Team inbox"],
+                includedMinutes: 10_000,
+                features: ["plans.feature.ai_support_chat", "plans.feature.usage_alerts", "plans.feature.team_inbox"],
                 recommendedForPersona: "persona_mid_bistro"
             ),
             Plan(
@@ -45,19 +45,23 @@ public extension PlanList {
                 name: "Grande",
                 tier: .pro,
                 monthlyPriceMinor: 39_900,
-                includedEvents: 50_000,
-                features: ["Multi-location", "Priority support", "Advanced reporting"],
+                includedMinutes: 50_000,
+                features: [
+                    "plans.feature.multi_location",
+                    "plans.feature.priority_support",
+                    "plans.feature.advanced_reporting"
+                ],
                 recommendedForPersona: "persona_hair_salon_chain"
             )
         ],
         topUps: [
             Plan(
-                id: "topup_events_1000_chf",
-                name: "1k event top-up",
+                id: "topup_minutes_1000_chf",
+                name: "1k minute top-up",
                 tier: .topUp,
                 monthlyPriceMinor: 1_900,
-                includedEvents: 1_000,
-                features: ["One-off event capacity"]
+                includedMinutes: 1_000,
+                features: ["plans.feature.minute_top_up"]
             )
         ]
     )

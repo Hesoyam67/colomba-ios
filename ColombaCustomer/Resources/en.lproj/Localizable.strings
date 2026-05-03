@@ -94,25 +94,38 @@
 "plans.price_format" = "%@ %@/month";
 "plans.price_accessibility_format" = "%@ %d per month";
 "plans.included" = "Included";
-"plans.events_format" = "%@ events per month";
-"plans.events_accessibility_format" = "%@ events included per month";
-"plans.included_events_format" = "%@ events included";
+"plans.minutes_format" = "%@ minutes per month";
+"plans.minutes_accessibility_format" = "%@ minutes included per month";
+"plans.included_minutes_format" = "%@ minutes included";
 "plans.choose_format" = "Choose %@";
 "plans.choose_accessibility_format" = "Choose %@ plan";
-"plans.upgrade_hint" = "Opens the secure upgrade flow";
+"plans.selected_badge" = "Selected";
+"plans.selected_title" = "Plan selected";
+"plans.selected_format" = "%@ selected";
+"plans.selected_message_format" = "%@ is now selected. Continue to the purchase flow when billing is ready.";
+"plans.upgrade_hint" = "Selects this plan and opens the secure upgrade flow";
+"plans.feature.reservation_capture" = "Reservation capture";
+"plans.feature.basic_analytics" = "Basic analytics";
+"plans.feature.ai_support_chat" = "AI support chat";
+"plans.feature.usage_alerts" = "Usage alerts";
+"plans.feature.team_inbox" = "Team inbox";
+"plans.feature.multi_location" = "Multi-location";
+"plans.feature.priority_support" = "Priority support";
+"plans.feature.advanced_reporting" = "Advanced reporting";
+"plans.feature.minute_top_up" = "One-off minute capacity";
 
 /* MARK: Usage */
-"usage.nav_title" = "Usage";
+"usage.nav_title" = "Usage minutes";
 "usage.loading" = "Loading usage";
 "usage.unavailable" = "Usage is unavailable. Please try again.";
 "usage.updated_from_format" = "Updated from %@";
 "usage.source_cache" = "cache";
 "usage.source_server" = "server";
-"usage.overage_format" = "%@ overage events";
-"usage.this_month" = "Usage this month";
-"usage.summary_format" = "%@ / %@ events";
-"usage.text_format" = "%@ of %@ events used";
-"usage.accessibility_format" = "%@ of %@ events used this month";
+"usage.overage_format" = "%@ overage minutes";
+"usage.this_month" = "Minutes this month";
+"usage.summary_format" = "%@ / %@ minutes";
+"usage.text_format" = "%@ of %@ minutes used";
+"usage.accessibility_format" = "%@ of %@ minutes used this month";
 
 /* MARK: Billing */
 "billing.manage_subscription" = "Manage subscription";
@@ -128,7 +141,12 @@
 /* MARK: Settings */
 "settings.account" = "Account";
 "settings.app" = "App";
+"settings.plan_billing" = "Plan & billing";
+"settings.manage_plan" = "Manage plan";
+"settings.reservations" = "Reservations";
 "settings.usage" = "Usage";
+"settings.usage_minutes" = "Usage minutes";
+"settings.usage_minutes_note" = "Billing is based on used assistant minutes, not event counts.";
 "settings.language" = "Language";
 "settings.about" = "About";
 "settings.sign_out" = "Sign out";
@@ -139,6 +157,7 @@
 "reservation.list.empty.past" = "No past reservations";
 "reservation.list.filter.upcoming" = "Upcoming";
 "reservation.list.filter.past" = "Past";
+"reservation.list.book.cta" = "Book a reservation";
 "reservation.detail.cancel.cta" = "Cancel reservation";
 "reservation.detail.cancel.confirm.title" = "Cancel this reservation?";
 "reservation.detail.cancel.confirm.message" = "This cannot be undone.";

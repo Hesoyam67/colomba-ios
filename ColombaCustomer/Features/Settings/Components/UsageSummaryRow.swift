@@ -8,16 +8,16 @@ struct UsageSummaryRow: View {
     private var usageText: String {
         String(
             format: NSLocalizedString("usage.summary_format", comment: ""),
-            snapshot.usedEvents.formatted(),
-            snapshot.includedEvents.formatted()
+            snapshot.usedMinutes.formatted(),
+            snapshot.includedMinutes.formatted()
         )
     }
 
     private var accessibilityText: String {
         String(
             format: NSLocalizedString("usage.accessibility_format", comment: ""),
-            snapshot.usedEvents.formatted(),
-            snapshot.includedEvents.formatted()
+            snapshot.usedMinutes.formatted(),
+            snapshot.includedMinutes.formatted()
         )
     }
 

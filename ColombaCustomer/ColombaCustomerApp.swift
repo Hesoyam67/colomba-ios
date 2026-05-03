@@ -4,6 +4,10 @@ import SwiftUI
 @main
 struct ColombaCustomerApp: App {
     @StateObject private var onboardingViewModel = OnboardingViewModel()
+    @AppStorage(
+        "colomba.onboarding.selectedLanguage"
+    )
+    private var selectedLanguageRaw = AppLanguage.deCH.rawValue
 
     init() {
         ColdStart.markProcessStarted()
@@ -11,11 +15,14 @@ struct ColombaCustomerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if onboardingViewModel.isComplete {
-                RootView()
-            } else {
-                OnboardingContainerView(viewModel: onboardingViewModel)
+            Group {
+                if onboardingViewModel.isComplete {
+                    RootView()
+                } else {
+                    OnboardingContainerView(viewModel: onboardingViewModel)
+                }
             }
+            .environment(\.locale, Locale(identifier: selectedLanguageRaw))
         }
     }
 }

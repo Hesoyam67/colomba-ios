@@ -63,7 +63,7 @@ struct UsagePanel: View {
             Text(updatedFromText)
                 .font(.colomba.caption)
                 .foregroundStyle(Color.colomba.text.secondary)
-            if snapshot.overageEvents > 0 {
+            if snapshot.overageMinutes > 0 {
                 Text(overageText)
                     .font(.colomba.bodyMd)
                     .foregroundStyle(Color.colomba.error)
@@ -81,9 +81,9 @@ struct UsagePanel: View {
         return String(format: NSLocalizedString("usage.updated_from_format", comment: ""), sourceText)
     }
 
-    /// Format: usage.overage_format contains one formatted event count.
+    /// Format: usage.overage_format contains one formatted minute count.
     private var overageText: String {
-        String(format: NSLocalizedString("usage.overage_format", comment: ""), snapshot.overageEvents.formatted())
+        String(format: NSLocalizedString("usage.overage_format", comment: ""), snapshot.overageMinutes.formatted())
     }
 
 }
