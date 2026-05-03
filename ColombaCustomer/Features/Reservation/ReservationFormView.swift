@@ -1,13 +1,32 @@
 import SwiftUI
 
 public struct ReservationFormView: View {
+    public enum FormMode: Equatable {
+        case create
+        case modify(existing: Reservation)
+    }
+
     @ObservedObject private var viewModel: ReservationViewModel
     private let restaurant: Restaurant
+    public let mode: FormMode
+    private let onModified: (ReservationConfirmation, String?) -> Void
     @State private var confirmationRoute: ConfirmationRoute?
 
-    public init(viewModel: ReservationViewModel, restaurant: Restaurant) {
+    public init(
+        viewModel: ReservationViewModel,
+        restaurant: Restaurant,
+        mode: FormMode = .create,
+        onModified: @escaping (ReservationConfirmation, String?) -> Void = { _, _ in }
+    ) {
         self.viewModel = viewModel
         self.restaurant = restaurant
+        self.mode = mode
+        self.onModified = onModified
+        if case let .modify(existing) = mode {
+            viewModel.selectedDate = existing.startsAt
+            viewModel.partySize = existing.partySize
+            viewModel.specialRequests = existing.specialRequests ?? ""
+        }
     }
 
     public var body: some View {
@@ -28,8 +47,10 @@ public struct ReservationFormView: View {
             }
             Section(String(localized: "reservation.party")) {
                 Stepper(guestsText, value: $viewModel.partySize, in: 1...12)
-                TextField(String(localized: "reservation.full_name"), text: $viewModel.fullName)
-                    .textContentType(.name)
+                if mode == .create {
+                    TextField(String(localized: "reservation.full_name"), text: $viewModel.fullName)
+                        .textContentType(.name)
+                }
             }
             Section {
                 TextEditor(text: $viewModel.specialRequests)
@@ -50,17 +71,17 @@ public struct ReservationFormView: View {
             }
             Section {
                 Button {
-                    Task { await viewModel.submit(restaurant: restaurant) }
+                    Task { await submit() }
                 } label: {
                     if viewModel.phase == .submitting {
                         ProgressView()
                             .frame(maxWidth: .infinity)
                     } else {
-                        Text("reservation.confirm")
+                        Text(submitTitle)
                             .frame(maxWidth: .infinity)
                     }
                 }
-                .disabled(viewModel.canConfirm == false || viewModel.phase == .submitting)
+                .disabled(canSubmit == false || viewModel.phase == .submitting)
             }
         }
         .navigationTitle(navigationTitle)
@@ -69,14 +90,49 @@ public struct ReservationFormView: View {
         }
         .task {
             await viewModel.loadAvailability(for: restaurant, on: viewModel.selectedDate)
+            selectExistingSlotIfNeeded()
         }
         .onChange(of: viewModel.selectedDate) { _, newDate in
-            Task { await viewModel.loadAvailability(for: restaurant, on: newDate) }
+            Task {
+                await viewModel.loadAvailability(for: restaurant, on: newDate)
+                selectExistingSlotIfNeeded()
+            }
         }
         .onChange(of: viewModel.phase) { _, newPhase in
             if case let .confirmed(confirmation) = newPhase {
-                confirmationRoute = ConfirmationRoute(confirmation: confirmation)
+                switch mode {
+                case .create:
+                    confirmationRoute = ConfirmationRoute(confirmation: confirmation)
+                case .modify:
+                    let trimmedRequests = viewModel.specialRequests.trimmingCharacters(in: .whitespacesAndNewlines)
+                    onModified(confirmation, trimmedRequests.isEmpty ? nil : trimmedRequests)
+                }
             }
+        }
+    }
+
+    private var canSubmit: Bool {
+        switch mode {
+        case .create:
+            return viewModel.canConfirm
+        case .modify:
+            return viewModel.canConfirmModification
+        }
+    }
+
+    private func submit() async {
+        switch mode {
+        case .create:
+            await viewModel.submit(restaurant: restaurant)
+        case let .modify(existing):
+            await viewModel.modify(existing: existing)
+        }
+    }
+
+    private func selectExistingSlotIfNeeded() {
+        guard case let .modify(existing) = mode, viewModel.selectedSlot == nil else { return }
+        viewModel.selectedSlot = viewModel.availableSlots.first { slot in
+            abs(slot.startsAt.timeIntervalSince(existing.startsAt)) < 60
         }
     }
 
@@ -99,7 +155,21 @@ public struct ReservationFormView: View {
 
     /// Format: reservation.nav_title_format contains one restaurant name.
     private var navigationTitle: String {
-        String(format: NSLocalizedString("reservation.nav_title_format", comment: ""), restaurant.name)
+        switch mode {
+        case .create:
+            return String(format: NSLocalizedString("reservation.nav_title_format", comment: ""), restaurant.name)
+        case .modify:
+            return String(localized: "reservation.modify.title")
+        }
+    }
+
+    private var submitTitle: LocalizedStringKey {
+        switch mode {
+        case .create:
+            return "reservation.confirm"
+        case .modify:
+            return "reservation.modify.confirmCta"
+        }
     }
 }
 

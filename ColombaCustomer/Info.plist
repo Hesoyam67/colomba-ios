@@ -18,5 +18,11 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>ColombaReservationWebhookBaseURL</key>
+	<string>https://api.colomba-swiss.ch/webhook</string>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>Colomba uses calendar access only when you choose to add a reservation to your calendar.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Colomba uses calendar access only when you choose to add a reservation to your calendar.</string>
 </dict>
 </plist>

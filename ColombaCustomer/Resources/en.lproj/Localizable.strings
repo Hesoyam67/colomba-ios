@@ -132,3 +132,25 @@
 "settings.language" = "Language";
 "settings.about" = "About";
 "settings.sign_out" = "Sign out";
+
+/* MARK: Reservation management */
+"reservation.list.title" = "My Reservations";
+"reservation.list.empty.upcoming" = "No upcoming reservations";
+"reservation.list.empty.past" = "No past reservations";
+"reservation.list.filter.upcoming" = "Upcoming";
+"reservation.list.filter.past" = "Past";
+"reservation.detail.cancel.cta" = "Cancel reservation";
+"reservation.detail.cancel.confirm.title" = "Cancel this reservation?";
+"reservation.detail.cancel.confirm.message" = "This cannot be undone.";
+"reservation.detail.cancel.confirm.confirmCta" = "Cancel reservation";
+"reservation.detail.cancel.confirm.dismissCta" = "Keep it";
+"reservation.detail.modify.cta" = "Modify";
+"reservation.detail.status.active" = "Active";
+"reservation.detail.status.cancelled" = "Cancelled";
+"reservation.detail.status.completed" = "Completed";
+"reservation.detail.cancelledAt" = "Cancelled on %@";
+"reservation.modify.title" = "Modify reservation";
+"reservation.modify.confirmCta" = "Confirm change";
+"reservation.error.alreadyCancelled" = "This reservation was already cancelled.";
+"reservation.error.slotNoLongerAvailable" = "That time slot is no longer available.";
+"reservation.error.modifyDeadlinePassed" = "Reservations can only be modified before they start.";

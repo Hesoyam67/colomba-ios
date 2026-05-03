@@ -7,6 +7,15 @@ public protocol ReservationHTTPClientProtocol: Sendable {
         _ request: ReservationRequest,
         refreshToken: String
     ) async throws -> ReservationConfirmation
+    func listMyReservations(refreshToken: String) async throws -> [Reservation]
+    func cancelReservation(id: String, refreshToken: String) async throws
+    func modifyReservation(
+        id: String,
+        slotId: String,
+        partySize: Int,
+        specialRequests: String?,
+        refreshToken: String
+    ) async throws -> ReservationConfirmation
 }
 
 public struct HTTPReservationClient: ReservationHTTPClientProtocol, Sendable {
@@ -79,7 +88,46 @@ public struct HTTPReservationClient: ReservationHTTPClientProtocol, Sendable {
             refreshToken: refreshToken,
             body: body
         )
-        return try await perform(urlRequest, as: ReservationConfirmation.self)
+        return try await perform(urlRequest, as: ReservationConfirmation.self, operation: .create)
+    }
+
+    public func listMyReservations(refreshToken: String) async throws -> [Reservation] {
+        let request = try makeRequest(
+            path: "reservations-list",
+            refreshToken: refreshToken,
+            body: EmptyRequest()
+        )
+        let response = try await perform(request, as: ReservationListResponse.self)
+        return response.reservations
+    }
+
+    public func cancelReservation(id: String, refreshToken: String) async throws {
+        let request = try makeRequest(
+            path: "reservations-cancel",
+            refreshToken: refreshToken,
+            body: ReservationIDRequest(reservationId: id)
+        )
+        try await performEmpty(request, operation: .cancel)
+    }
+
+    public func modifyReservation(
+        id: String,
+        slotId: String,
+        partySize: Int,
+        specialRequests: String?,
+        refreshToken: String
+    ) async throws -> ReservationConfirmation {
+        let request = try makeRequest(
+            path: "reservations-modify",
+            refreshToken: refreshToken,
+            body: ModifyReservationRequest(
+                reservationId: id,
+                slotId: slotId,
+                partySize: partySize,
+                specialRequests: specialRequests
+            )
+        )
+        return try await perform(request, as: ReservationConfirmation.self, operation: .modify)
     }
 
     private func makeRequest<T: Encodable>(
@@ -97,29 +145,72 @@ public struct HTTPReservationClient: ReservationHTTPClientProtocol, Sendable {
         return request
     }
 
-    private func perform<T: Decodable>(_ request: URLRequest, as type: T.Type) async throws -> T {
+    private func perform<T: Decodable>(
+        _ request: URLRequest,
+        as type: T.Type,
+        operation: HTTPReservationOperation = .generic
+    ) async throws -> T {
+        let (data, response) = try await data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw ReservationError.server(status: -1)
+        }
+        switch httpResponse.statusCode {
+        case 200..<300:
+            return try decoder.decode(type, from: data)
+        default:
+            throw mappedError(statusCode: httpResponse.statusCode, data: data, operation: operation)
+        }
+    }
+
+    private func performEmpty(
+        _ request: URLRequest,
+        operation: HTTPReservationOperation = .generic
+    ) async throws {
+        let (data, response) = try await data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw ReservationError.server(status: -1)
+        }
+        switch httpResponse.statusCode {
+        case 200..<300:
+            return
+        default:
+            throw mappedError(statusCode: httpResponse.statusCode, data: data, operation: operation)
+        }
+    }
+
+    private func data(for request: URLRequest) async throws -> (Data, URLResponse) {
         do {
-            let (data, response) = try await urlSession.data(for: request)
-            guard let httpResponse = response as? HTTPURLResponse else {
-                throw ReservationError.server(status: -1)
-            }
-            switch httpResponse.statusCode {
-            case 200..<300:
-                return try decoder.decode(type, from: data)
-            case 401:
-                throw ReservationError.notAuthenticated
-            case 409:
-                throw ReservationError.slotUnavailable
-            case 422:
-                let error = try? decoder.decode(ErrorResponse.self, from: data)
-                throw ReservationError.validationFailed(field: error?.field ?? "unknown")
-            default:
-                throw ReservationError.server(status: httpResponse.statusCode)
-            }
+            return try await urlSession.data(for: request)
         } catch let error as ReservationError {
             throw error
         } catch {
             throw ReservationError.network(underlying: error)
+        }
+    }
+
+    private func mappedError(
+        statusCode: Int,
+        data: Data,
+        operation: HTTPReservationOperation
+    ) -> ReservationError {
+        let error = try? decoder.decode(ErrorResponse.self, from: data)
+        switch statusCode {
+        case 401:
+            return .notAuthenticated
+        case 409:
+            if operation == .modify, error?.error == "slot_unavailable" {
+                return .slotNoLongerAvailable
+            }
+            return .slotUnavailable
+        case 410:
+            return .alreadyCancelled
+        case 422:
+            if operation == .modify, error?.field == "startsAt" {
+                return .modifyDeadlinePassed
+            }
+            return .validationFailed(field: error?.field ?? "unknown")
+        default:
+            return .server(status: statusCode)
         }
     }
 
@@ -130,6 +221,13 @@ public struct HTTPReservationClient: ReservationHTTPClientProtocol, Sendable {
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter.string(from: date)
     }
+}
+
+private enum HTTPReservationOperation {
+    case generic
+    case create
+    case modify
+    case cancel
 }
 
 private struct EmptyRequest: Encodable {}
@@ -147,6 +245,21 @@ private struct AvailabilityResponse: Decodable {
     let slots: [TimeSlot]
 }
 
+private struct ReservationListResponse: Decodable {
+    let reservations: [Reservation]
+}
+
+private struct ReservationIDRequest: Encodable {
+    let reservationId: String
+}
+
+private struct ModifyReservationRequest: Encodable {
+    let reservationId: String
+    let slotId: String
+    let partySize: Int
+    let specialRequests: String?
+}
+
 private struct CreateReservationRequest: Encodable {
     let restaurantId: String
     let slotId: String
@@ -160,27 +273,6 @@ private struct CreateReservationRequest: Encodable {
         self.partySize = request.partySize
         self.fullName = request.fullName
         self.specialRequests = request.specialRequests
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case restaurantId
-        case slotId
-        case partySize
-        case fullName
-        case specialRequests
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(restaurantId, forKey: .restaurantId)
-        try container.encode(slotId, forKey: .slotId)
-        try container.encode(partySize, forKey: .partySize)
-        try container.encode(fullName, forKey: .fullName)
-        if let specialRequests {
-            try container.encode(specialRequests, forKey: .specialRequests)
-        } else {
-            try container.encodeNil(forKey: .specialRequests)
-        }
     }
 }
 
