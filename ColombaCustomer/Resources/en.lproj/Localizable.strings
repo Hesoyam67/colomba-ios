@@ -184,6 +184,14 @@
 "heidi.input.send" = "Send message";
 "heidi.reset" = "Reset";
 "heidi.card.check_availability" = "Check availability";
+"heidi.card.view_details" = "View details";
+"heidi.confirmation.confirm_booking" = "Confirm booking";
+"heidi.confirmation.modify" = "Modify";
+"heidi.confirmation.cancel" = "Cancel";
+"heidi.confirmation.cancel.confirm.title" = "Cancel this booking?";
+"heidi.confirmation.cancel.confirm.message" = "This will cancel the reservation through Colomba.";
+"heidi.confirmation.cancel.confirm.cta" = "Cancel booking";
+"heidi.confirmation.cancel.dismiss" = "Keep booking";
 "heidi.confirmation.book.title" = "Booking confirmed";
 "heidi.confirmation.details_format" = "%@ at %@ for %d guests";
 "heidi.confirmation.saved_in_reservations" = "Saved in Reservations";

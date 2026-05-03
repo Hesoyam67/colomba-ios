@@ -3,11 +3,11 @@ import SwiftUI
 
 struct RestaurantCardInChat: View {
     let card: HeidiRestaurantCard
-    let onCheckAvailability: () -> Void
+    let onViewDetails: (HeidiRestaurantCard) -> Void
 
-    init(card: HeidiRestaurantCard, onCheckAvailability: @escaping () -> Void = {}) {
+    init(card: HeidiRestaurantCard, onViewDetails: @escaping (HeidiRestaurantCard) -> Void = { _ in }) {
         self.card = card
-        self.onCheckAvailability = onCheckAvailability
+        self.onViewDetails = onViewDetails
     }
 
     var body: some View {
@@ -28,10 +28,13 @@ struct RestaurantCardInChat: View {
             Text(card.shortDescription)
                 .font(.subheadline)
                 .foregroundStyle(Color.colomba.text.secondary)
-            Button(action: onCheckAvailability) {
-                Label(LocalizedStringKey("heidi.card.check_availability"), systemImage: "clock")
+            Button {
+                onViewDetails(card)
+            } label: {
+                Label(LocalizedStringKey("heidi.card.view_details"), systemImage: "arrow.up.forward.app")
             }
             .buttonStyle(.borderedProminent)
+            .accessibilityIdentifier("heidi.restaurant.viewDetails.\(card.id)")
         }
         .padding(12)
         .background(Color.colomba.bg.base)

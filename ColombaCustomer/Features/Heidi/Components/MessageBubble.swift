@@ -3,14 +3,23 @@ import SwiftUI
 
 struct MessageBubble: View {
     let message: HeidiChatMessage
-    let onRestaurantAction: (HeidiRestaurantCard) -> Void
+    let onRestaurantDetails: (HeidiRestaurantCard) -> Void
+    let onConfirmBooking: (HeidiBookingConfirmation) -> Void
+    let onModifyBooking: (HeidiBookingConfirmation) -> Void
+    let onCancelBooking: (HeidiBookingConfirmation) -> Void
 
     init(
         message: HeidiChatMessage,
-        onRestaurantAction: @escaping (HeidiRestaurantCard) -> Void = { _ in }
+        onRestaurantDetails: @escaping (HeidiRestaurantCard) -> Void = { _ in },
+        onConfirmBooking: @escaping (HeidiBookingConfirmation) -> Void = { _ in },
+        onModifyBooking: @escaping (HeidiBookingConfirmation) -> Void = { _ in },
+        onCancelBooking: @escaping (HeidiBookingConfirmation) -> Void = { _ in }
     ) {
         self.message = message
-        self.onRestaurantAction = onRestaurantAction
+        self.onRestaurantDetails = onRestaurantDetails
+        self.onConfirmBooking = onConfirmBooking
+        self.onModifyBooking = onModifyBooking
+        self.onCancelBooking = onCancelBooking
     }
 
     var body: some View {
@@ -23,12 +32,15 @@ struct MessageBubble: View {
                         .foregroundStyle(message.role == .user ? .white : Color.colomba.text.primary)
                 }
                 ForEach(message.restaurantCards) { card in
-                    RestaurantCardInChat(card: card) {
-                        onRestaurantAction(card)
-                    }
+                    RestaurantCardInChat(card: card, onViewDetails: onRestaurantDetails)
                 }
                 if let confirmation = message.bookingConfirmation {
-                    BookingConfirmationCard(confirmation: confirmation)
+                    BookingConfirmationCard(
+                        confirmation: confirmation,
+                        onConfirm: onConfirmBooking,
+                        onModify: onModifyBooking,
+                        onCancel: onCancelBooking
+                    )
                 }
             }
             .padding(14)

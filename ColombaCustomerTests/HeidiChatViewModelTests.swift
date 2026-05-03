@@ -72,6 +72,50 @@ final class HeidiChatViewModelTests: XCTestCase {
         XCTAssertEqual(model.messages[1].text, service.sentMessages.first)
     }
 
+    func test_confirmBookingRoutesThroughHeidiService() async {
+        let model = HeidiChatViewModel(
+            service: StubHeidiService(confirmResponses: [.text("Confirmed"), .bookingConfirmation(Self.confirmation), .done])
+        )
+        await model.confirmBooking(Self.confirmation)
+        XCTAssertEqual(model.messages.last?.text, "Confirmed")
+        XCTAssertEqual(model.messages.last?.bookingConfirmation, Self.confirmation)
+    }
+
+    func test_cardActionRoutesBuildExpectedDestinations() {
+        var state = HeidiCardActionState()
+        state.apply(.viewRestaurantDetails(Self.card))
+        XCTAssertEqual(state.route?.id, "restaurant-details-one")
+        XCTAssertEqual(Self.card.restaurantForDeepLink.id, "one")
+        XCTAssertEqual(Self.card.restaurantForDeepLink.name, "Bellini")
+
+        state.apply(.modifyBooking(Self.confirmation))
+        XCTAssertEqual(state.route?.id, "modify-booking-booking-1")
+        XCTAssertEqual(Self.confirmation.reservationForAction.id, "booking-1")
+        XCTAssertEqual(Self.confirmation.reservationForAction.partySize, 4)
+    }
+
+    func test_confirmCardActionStagesConfirmationForHeidiService() {
+        var state = HeidiCardActionState()
+        state.apply(.confirmBooking(Self.confirmation))
+        XCTAssertEqual(state.confirmationToSend, Self.confirmation)
+    }
+
+    func test_cancelCardActionRequiresSecondConfirmationBeforeSendingCancel() {
+        var state = HeidiCardActionState()
+        state.apply(.requestCancelConfirmation(Self.confirmation))
+        XCTAssertEqual(state.cancelCandidate, Self.confirmation)
+        XCTAssertNil(state.cancellationToSend)
+
+        state.apply(.dismissCancelConfirmation)
+        XCTAssertNil(state.cancelCandidate)
+        XCTAssertNil(state.cancellationToSend)
+
+        state.apply(.requestCancelConfirmation(Self.confirmation))
+        state.apply(.confirmCancel)
+        XCTAssertNil(state.cancelCandidate)
+        XCTAssertEqual(state.cancellationToSend?.id, Self.confirmation.id)
+    }
+
     func test_modifyIntentReturnsAssistantText() async {
         let model = HeidiChatViewModel(service: HeidiService())
         await model.send("change my booking to 8")
@@ -162,6 +206,37 @@ final class HeidiChatViewModelTests: XCTestCase {
         XCTAssertEqual(cards.first?.neighborhood, "Zürich, Switzerland")
     }
 
+    func test_liveConfirmBookingUsesChatConfirmedDraftActionContract() async throws {
+        let baseURL = try Self.makeURL("https://api.example.test/webhook")
+        var capturedPath: String?
+        var capturedBody: [String: Any]?
+        HeidiMockURLProtocol.requestHandler = { request in
+            capturedPath = request.url?.path
+            let body = Self.bodyData(from: request)
+            capturedBody = try JSONSerialization.jsonObject(with: body) as? [String: Any]
+            let data = Data("[{\"type\":\"text\",\"content\":\"Confirmed\"},{\"type\":\"done\"}]".utf8)
+            return (try Self.response(status: 200, url: request.url), data)
+        }
+        let service = HeidiService(
+            mode: .live(
+                HeidiLiveConfiguration(
+                    baseURL: baseURL,
+                    sessionId: "ios-test-session",
+                    userId: "customer-1",
+                    bearerToken: "access-token"
+                )
+            ),
+            urlSession: Self.urlSession()
+        )
+        let stream = try await service.confirmBooking(Self.confirmation, history: [])
+        let responses = try await Self.responses(from: stream)
+
+        XCTAssertEqual(capturedPath, "/webhook/heidi/chat")
+        XCTAssertEqual(capturedBody?["confirmed"] as? Bool, true)
+        XCTAssertEqual((capturedBody?["draftAction"] as? [String: Any])?["type"] as? String, "confirm_booking")
+        XCTAssertEqual(responses.first, .text("Confirmed"))
+    }
+
     func test_liveServiceThrowsOnHTTPError() async throws {
         HeidiMockURLProtocol.requestHandler = { request in
             (try Self.response(status: 401, url: request.url), Data())
@@ -250,10 +325,12 @@ final class HeidiChatViewModelTests: XCTestCase {
 
     private static let confirmation = HeidiBookingConfirmation(
         id: "booking-1",
+        restaurantId: "one",
         restaurantName: "Bellini",
         dateText: "Saturday",
         timeText: "19:30",
-        partySize: 4
+        partySize: 4,
+        draftAction: HeidiDraftAction(payload: ["reservationId": "booking-1"])
     )
 }
 
@@ -304,8 +381,18 @@ private final class CapturingHeidiService: HeidiServiceProtocol, @unchecked Send
         history: [HeidiChatMessage]
     ) async throws -> AsyncThrowingStream<HeidiResponse, Error> {
         sentMessages.append(text)
-        let responses = responses
-        return AsyncThrowingStream { continuation in
+        return stream(responses)
+    }
+
+    func confirmBooking(
+        _ confirmation: HeidiBookingConfirmation,
+        history: [HeidiChatMessage]
+    ) async throws -> AsyncThrowingStream<HeidiResponse, Error> {
+        stream(responses)
+    }
+
+    private func stream(_ responses: [HeidiResponse]) -> AsyncThrowingStream<HeidiResponse, Error> {
+        AsyncThrowingStream { continuation in
             for response in responses {
                 continuation.yield(response)
             }
@@ -316,10 +403,12 @@ private final class CapturingHeidiService: HeidiServiceProtocol, @unchecked Send
 
 private struct StubHeidiService: HeidiServiceProtocol {
     let responses: [HeidiResponse]
+    let confirmResponses: [HeidiResponse]
     let error: Error?
 
-    init(responses: [HeidiResponse] = [], error: Error? = nil) {
+    init(responses: [HeidiResponse] = [], confirmResponses: [HeidiResponse] = [], error: Error? = nil) {
         self.responses = responses
+        self.confirmResponses = confirmResponses
         self.error = error
     }
 
@@ -328,8 +417,19 @@ private struct StubHeidiService: HeidiServiceProtocol {
         history: [HeidiChatMessage]
     ) async throws -> AsyncThrowingStream<HeidiResponse, Error> {
         if let error { throw error }
-        let responses = responses
-        return AsyncThrowingStream { continuation in
+        return stream(responses)
+    }
+
+    func confirmBooking(
+        _ confirmation: HeidiBookingConfirmation,
+        history: [HeidiChatMessage]
+    ) async throws -> AsyncThrowingStream<HeidiResponse, Error> {
+        if let error { throw error }
+        return stream(confirmResponses)
+    }
+
+    private func stream(_ responses: [HeidiResponse]) -> AsyncThrowingStream<HeidiResponse, Error> {
+        AsyncThrowingStream { continuation in
             for response in responses {
                 continuation.yield(response)
             }

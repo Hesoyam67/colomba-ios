@@ -28,11 +28,14 @@ public final class HeidiService: HeidiServiceProtocol, @unchecked Sendable {
     private let mode: Mode
     private let urlSession: URLSession
     private let encoder: JSONEncoder
+    private let decoder: JSONDecoder
 
     public init(mode: Mode = .mock, urlSession: URLSession = .shared) {
         self.mode = mode
         self.urlSession = urlSession
         self.encoder = JSONEncoder()
+        self.decoder = JSONDecoder()
+        self.decoder.dateDecodingStrategy = .iso8601
     }
 
     public func sendMessage(
@@ -47,15 +50,41 @@ public final class HeidiService: HeidiServiceProtocol, @unchecked Sendable {
         }
     }
 
+    public func confirmBooking(
+        _ confirmation: HeidiBookingConfirmation,
+        history: [HeidiChatMessage]
+    ) async throws -> AsyncThrowingStream<HeidiResponse, Error> {
+        switch mode {
+        case .mock:
+            return mockConfirmStream(for: confirmation)
+        case let .live(configuration):
+            return liveStream(
+                for: "Confirm booking",
+                history: history,
+                configuration: configuration,
+                confirmed: true,
+                draftAction: confirmation.draftAction ?? HeidiDraftAction(payload: ["reservationId": confirmation.id])
+            )
+        }
+    }
+
     private func liveStream(
         for text: String,
         history: [HeidiChatMessage],
-        configuration: HeidiLiveConfiguration
+        configuration: HeidiLiveConfiguration,
+        confirmed: Bool? = nil,
+        draftAction: HeidiDraftAction? = nil
     ) -> AsyncThrowingStream<HeidiResponse, Error> {
         AsyncThrowingStream { continuation in
             Task {
                 do {
-                    let request = try makeLiveRequest(text: text, history: history, configuration: configuration)
+                    let request = try makeLiveRequest(
+                        text: text,
+                        history: history,
+                        configuration: configuration,
+                        confirmed: confirmed,
+                        draftAction: draftAction
+                    )
                     let (data, response) = try await urlSession.data(for: request)
                     guard let httpResponse = response as? HTTPURLResponse else {
                         throw HeidiServiceError.invalidResponse
@@ -82,7 +111,9 @@ public final class HeidiService: HeidiServiceProtocol, @unchecked Sendable {
     private func makeLiveRequest(
         text: String,
         history: [HeidiChatMessage],
-        configuration: HeidiLiveConfiguration
+        configuration: HeidiLiveConfiguration,
+        confirmed: Bool? = nil,
+        draftAction: HeidiDraftAction? = nil
     ) throws -> URLRequest {
         let url = configuration.baseURL.appending(path: "heidi/chat")
         var request = URLRequest(url: url)
@@ -95,7 +126,9 @@ public final class HeidiService: HeidiServiceProtocol, @unchecked Sendable {
                 sessionId: configuration.sessionId,
                 userId: configuration.userId,
                 message: text,
-                history: history.compactMap(HeidiLiveHistoryMessage.init(message:))
+                history: history.compactMap(HeidiLiveHistoryMessage.init(message:)),
+                confirmed: confirmed,
+                draftAction: draftAction
             )
         )
         return request
@@ -135,6 +168,17 @@ public final class HeidiService: HeidiServiceProtocol, @unchecked Sendable {
         }
     }
 
+    private func mockConfirmStream(
+        for confirmation: HeidiBookingConfirmation
+    ) -> AsyncThrowingStream<HeidiResponse, Error> {
+        AsyncThrowingStream { continuation in
+            continuation.yield(.text("Confirmed — your booking at \(confirmation.restaurantName) is locked in."))
+            continuation.yield(.bookingConfirmation(confirmation))
+            continuation.yield(.done)
+            continuation.finish()
+        }
+    }
+
     public static let mockRestaurants: [HeidiRestaurantCard] = [
         HeidiRestaurantCard(
             id: "bellini",
@@ -143,7 +187,8 @@ public final class HeidiService: HeidiServiceProtocol, @unchecked Sendable {
             neighborhood: "Seefeld",
             priceRange: "$$$",
             nextAvailableTime: "19:30",
-            shortDescription: "Elegant pasta, warm lighting, good vegetarian options."
+            shortDescription: "Elegant pasta, warm lighting, good vegetarian options.",
+            address: "Seefeldstrasse 21, Zürich"
         ),
         HeidiRestaurantCard(
             id: "lindenhof",
@@ -152,7 +197,8 @@ public final class HeidiService: HeidiServiceProtocol, @unchecked Sendable {
             neighborhood: "Altstadt",
             priceRange: "$$",
             nextAvailableTime: "20:00",
-            shortDescription: "Classic Swiss plates near the old town viewpoint."
+            shortDescription: "Classic Swiss plates near the old town viewpoint.",
+            address: "Lindenhof, Zürich"
         ),
         HeidiRestaurantCard(
             id: "limmat",
@@ -161,7 +207,8 @@ public final class HeidiService: HeidiServiceProtocol, @unchecked Sendable {
             neighborhood: "Kreis 5",
             priceRange: "$$",
             nextAvailableTime: "18:45",
-            shortDescription: "Casual seasonal menu with terrace seating."
+            shortDescription: "Casual seasonal menu with terrace seating.",
+            address: "Limmatstrasse 120, Zürich"
         )
     ]
 
@@ -190,6 +237,8 @@ private struct HeidiLiveRequest: Encodable {
     let userId: String
     let message: String
     let history: [HeidiLiveHistoryMessage]
+    let confirmed: Bool?
+    let draftAction: HeidiDraftAction?
 }
 
 private struct HeidiLiveHistoryMessage: Encodable {
@@ -219,6 +268,7 @@ private struct HeidiLiveChunk: Decodable {
 private extension HeidiService {
     static func parseResponses(from data: Data) throws -> [HeidiResponse] {
         let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
         if let batch = try? decoder.decode(HeidiBatchResponse.self, from: data) {
             return batch.chunks.compactMap(Self.response(for:))
         }
@@ -292,7 +342,8 @@ private extension HeidiService {
             neighborhood: neighborhood,
             priceRange: priceRange,
             nextAvailableTime: nextAvailableTime,
-            shortDescription: shortDescription
+            shortDescription: shortDescription,
+            address: object.string(for: "address")
         )
     }
 
@@ -305,14 +356,31 @@ private extension HeidiService {
             ?? ""
         let timeText = object.string(for: "timeText") ?? object.string(for: "time") ?? ""
         let partySize = object.int(for: "partySize") ?? 0
+        let draftAction = draftAction(from: object["draftAction"]?.objectValue)
         return HeidiBookingConfirmation(
             id: id,
+            restaurantId: object.string(for: "restaurantId"),
             restaurantName: restaurantName,
             dateText: dateText,
             timeText: timeText,
+            startsAt: object.date(for: "startsAt"),
+            slotId: object.string(for: "slotId"),
             partySize: partySize,
-            specialRequests: object.string(for: "specialRequests")
+            specialRequests: object.string(for: "specialRequests"),
+            draftAction: draftAction
         )
+    }
+
+    static func draftAction(from object: [String: JSONValue]?) -> HeidiDraftAction? {
+        guard let object else { return nil }
+        let type = object.string(for: "type") ?? "confirm_booking"
+        let payloadObject = object["payload"]?.objectValue ?? object
+        let payload = payloadObject.reduce(into: [String: String]()) { result, pair in
+            if let value = pair.value.stringValue, pair.key != "type" {
+                result[pair.key] = value
+            }
+        }
+        return HeidiDraftAction(type: type, payload: payload)
     }
 }
 
@@ -384,5 +452,10 @@ private extension [String: JSONValue] {
 
     func int(for key: String) -> Int? {
         self[key]?.intValue
+    }
+
+    func date(for key: String) -> Date? {
+        guard let value = string(for: key) else { return nil }
+        return ISO8601DateFormatter().date(from: value)
     }
 }

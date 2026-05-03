@@ -83,7 +83,9 @@ private struct RootTabShell: View {
                                 )
                             )
                         )
-                    )
+                    ),
+                    reservationService: ReservationService(),
+                    prefilledName: session.customer.displayName
                 )
             }
             .accessibilityElement(children: .contain)

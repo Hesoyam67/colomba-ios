@@ -4,13 +4,30 @@ import SwiftUI
 @MainActor
 struct HeidiChatView: View {
     @StateObject private var viewModel: HeidiChatViewModel
+    @StateObject private var reservationsViewModel: MyReservationsViewModel
+    @State private var route: HeidiCardRoute?
+    @State private var cancelCandidate: HeidiBookingConfirmation?
+
+    private let reservationService: ReservationServiceProtocol
+    private let prefilledName: String
 
     init() {
+        let service = ReservationService()
         _viewModel = StateObject(wrappedValue: HeidiChatViewModel())
+        _reservationsViewModel = StateObject(wrappedValue: MyReservationsViewModel(service: service))
+        self.reservationService = service
+        self.prefilledName = ""
     }
 
-    init(viewModel: HeidiChatViewModel) {
+    init(
+        viewModel: HeidiChatViewModel,
+        reservationService: ReservationServiceProtocol = ReservationService(),
+        prefilledName: String = ""
+    ) {
         _viewModel = StateObject(wrappedValue: viewModel)
+        _reservationsViewModel = StateObject(wrappedValue: MyReservationsViewModel(service: reservationService))
+        self.reservationService = reservationService
+        self.prefilledName = prefilledName
     }
 
     var body: some View {
@@ -21,9 +38,12 @@ struct HeidiChatView: View {
                         ForEach(viewModel.messages) { message in
                             MessageBubble(
                                 message: message,
-                                onRestaurantAction: { card in
-                                    Task { await viewModel.checkAvailability(for: card) }
-                                }
+                                onRestaurantDetails: { route = .restaurantDetails($0) },
+                                onConfirmBooking: { confirmation in
+                                    Task { await viewModel.confirmBooking(confirmation) }
+                                },
+                                onModifyBooking: { route = .modifyBooking($0) },
+                                onCancelBooking: { cancelCandidate = $0 }
                             )
                             .id(message.id)
                         }
@@ -58,12 +78,58 @@ struct HeidiChatView: View {
         }
         .background(Color.colomba.bg.base)
         .navigationTitle(Text("heidi.nav_title"))
+        .navigationDestination(item: $route) { route in
+            destination(for: route)
+        }
+        .confirmationDialog(
+            String(localized: "heidi.confirmation.cancel.confirm.title"),
+            isPresented: Binding(
+                get: { cancelCandidate != nil },
+                set: { if $0 == false { cancelCandidate = nil } }
+            ),
+            titleVisibility: .visible
+        ) {
+            Button(String(localized: "heidi.confirmation.cancel.confirm.cta"), role: .destructive) {
+                if let cancelCandidate {
+                    Task { await reservationsViewModel.cancel(cancelCandidate.reservationForAction) }
+                }
+            }
+            Button(String(localized: "heidi.confirmation.cancel.dismiss"), role: .cancel) {}
+        } message: {
+            Text("heidi.confirmation.cancel.confirm.message")
+        }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(LocalizedStringKey("heidi.reset")) {
                     viewModel.reset()
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private func destination(for route: HeidiCardRoute) -> some View {
+        switch route {
+        case let .restaurantDetails(card):
+            let restaurant = card.restaurantForDeepLink
+            RestaurantDetailView(
+                viewModel: ReservationViewModel(service: reservationService, prefilledName: prefilledName),
+                restaurant: restaurant
+            )
+        case let .modifyBooking(confirmation):
+            let reservation = confirmation.reservationForAction
+            ReservationFormView(
+                viewModel: ReservationViewModel(service: reservationService, prefilledName: prefilledName),
+                restaurant: confirmation.restaurantForAction,
+                mode: .modify(existing: reservation),
+                onModified: { updatedConfirmation, specialRequests in
+                    reservationsViewModel.applyModifiedReservation(
+                        reservation,
+                        confirmation: updatedConfirmation,
+                        specialRequests: specialRequests
+                    )
+                }
+            )
         }
     }
 

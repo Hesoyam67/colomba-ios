@@ -79,6 +79,40 @@ public final class HeidiChatViewModel: ObservableObject {
         "Check availability for \(card.name) (restaurant id: \(card.id)) around \(card.nextAvailableTime)."
     }
 
+    public func confirmBooking(_ confirmation: HeidiBookingConfirmation) async {
+        let history = messages
+        phase = .sending
+        var assistant = HeidiChatMessage(role: .assistant, text: "")
+        messages.append(assistant)
+        let assistantIndex = messages.index(before: messages.endIndex)
+
+        do {
+            let stream = try await service.confirmBooking(confirmation, history: history)
+            for try await response in stream {
+                switch response {
+                case let .text(chunk):
+                    assistant.text = append(chunk, to: assistant.text)
+                case let .restaurantCards(cards):
+                    assistant.restaurantCards = cards
+                case let .bookingConfirmation(confirmation):
+                    assistant.bookingConfirmation = confirmation
+                case .done:
+                    break
+                }
+                messages[assistantIndex] = assistant
+            }
+            if assistant.text.isEmpty,
+               assistant.restaurantCards.isEmpty,
+               assistant.bookingConfirmation == nil {
+                messages.remove(at: assistantIndex)
+            }
+            phase = .idle
+        } catch {
+            messages.remove(at: assistantIndex)
+            phase = .failed(String(localized: "heidi.error.network"))
+        }
+    }
+
     public func reset() {
         phase = .idle
         draft = ""
