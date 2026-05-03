@@ -10,6 +10,7 @@ struct HeidiChatView: View {
 
     private let reservationService: ReservationServiceProtocol
     private let prefilledName: String
+    private let onGoHome: (() -> Void)?
 
     init() {
         let service = ReservationService()
@@ -17,17 +18,20 @@ struct HeidiChatView: View {
         _reservationsViewModel = StateObject(wrappedValue: MyReservationsViewModel(service: service))
         self.reservationService = service
         self.prefilledName = ""
+        self.onGoHome = nil
     }
 
     init(
         viewModel: HeidiChatViewModel,
         reservationService: ReservationServiceProtocol = ReservationService(),
-        prefilledName: String = ""
+        prefilledName: String = "",
+        onGoHome: (() -> Void)? = nil
     ) {
         _viewModel = StateObject(wrappedValue: viewModel)
         _reservationsViewModel = StateObject(wrappedValue: MyReservationsViewModel(service: reservationService))
         self.reservationService = reservationService
         self.prefilledName = prefilledName
+        self.onGoHome = onGoHome
     }
 
     var body: some View {
@@ -99,6 +103,16 @@ struct HeidiChatView: View {
             Text("heidi.confirmation.cancel.confirm.message")
         }
         .toolbar {
+            if let onGoHome {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        onGoHome()
+                    } label: {
+                        Label(LocalizedStringKey("tabs.home"), systemImage: "house.fill")
+                    }
+                    .accessibilityLabel(Text("tabs.home"))
+                }
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(LocalizedStringKey("heidi.reset")) {
                     viewModel.reset()

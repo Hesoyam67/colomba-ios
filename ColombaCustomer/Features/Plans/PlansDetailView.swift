@@ -33,7 +33,7 @@ struct PlansDetailView: View {
                             .accessibilityLabel(Text(LocalizedStringKey(feature)))
                     }
                 }
-                UsageSummaryRow(snapshot: .fixtureCurrentMonth)
+                UsageSummaryRow(snapshot: planUsageSnapshot)
                 if isSelected {
                     Label(selectedText, systemImage: "checkmark.circle.fill")
                         .font(.colomba.bodyMd)
@@ -83,6 +83,17 @@ struct PlansDetailView: View {
         String(
             format: NSLocalizedString("plans.minutes_accessibility_format", comment: ""),
             plan.includedMinutes.formatted()
+        )
+    }
+
+    private var planUsageSnapshot: UsageSnapshot {
+        UsageSnapshot(
+            period: UsagePeriod.currentMonth.rawValue,
+            usedMinutes: UsageSnapshot.fixtureCurrentMonth.usedMinutes,
+            includedMinutes: plan.includedMinutes,
+            overageMinutes: max(UsageSnapshot.fixtureCurrentMonth.usedMinutes - plan.includedMinutes, 0),
+            planId: plan.id,
+            updatedAt: UsageSnapshot.fixtureCurrentMonth.updatedAt
         )
     }
 

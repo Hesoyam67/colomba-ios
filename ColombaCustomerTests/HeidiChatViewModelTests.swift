@@ -38,10 +38,12 @@ final class HeidiChatViewModelTests: XCTestCase {
         XCTAssertEqual(model.messages.last?.text, "First\nSecond")
     }
 
-    func test_errorRemovesPlaceholderAndSetsFailedPhase() async {
+    func test_errorKeepsVisibleAssistantFailureAndSetsFailedPhase() async {
         let model = HeidiChatViewModel(service: StubHeidiService(error: HeidiMockError.requestFailed))
         await model.send("error")
-        XCTAssertEqual(model.messages.count, 2)
+        XCTAssertEqual(model.messages.count, 3)
+        XCTAssertEqual(model.messages.last?.role, .assistant)
+        XCTAssertFalse(model.messages.last?.text.isEmpty ?? true)
         guard case let .failed(message) = model.phase else {
             XCTFail("Expected failed phase")
             return

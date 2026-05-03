@@ -35,23 +35,41 @@ struct RootView: View {
     }
 }
 
+private enum RootTab: Hashable {
+    case home
+    case reservations
+    case plans
+    case heidi
+    case settings
+}
+
 private struct RootTabShell: View {
     let authController: AuthController
     let session: AuthSession
+    @State private var selectedTab: RootTab = .home
 
     var body: some View {
-        TabView {
-            AuthenticatedHomeView(authController: authController, session: session)
+        let reservationService = ReservationService(refreshToken: session.tokens.refreshToken)
+
+        TabView(selection: $selectedTab) {
+            AuthenticatedHomeView(
+                authController: authController,
+                session: session,
+                reservationService: reservationService
+            )
                 .accessibilityElement(children: .contain)
                 .accessibilityLabel(Text("tabs.home"))
                 .tabItem {
                     Image(systemName: "house.fill")
                     Text(LocalizedStringKey("tabs.home"))
                 }
+                .tag(RootTab.home)
 
             NavigationStack {
                 MyReservationsView(
-                    viewModel: MyReservationsViewModel(service: ReservationService())
+                    viewModel: MyReservationsViewModel(service: reservationService),
+                    reservationService: reservationService,
+                    prefilledName: session.customer.displayName
                 )
             }
             .accessibilityElement(children: .contain)
@@ -60,6 +78,7 @@ private struct RootTabShell: View {
                 Image(systemName: "calendar")
                 Text(LocalizedStringKey("tabs.reservations"))
             }
+            .tag(RootTab.reservations)
 
             NavigationStack {
                 PlansListView()
@@ -70,6 +89,7 @@ private struct RootTabShell: View {
                 Image(systemName: "creditcard")
                 Text(LocalizedStringKey("tabs.plans"))
             }
+            .tag(RootTab.plans)
 
             NavigationStack {
                 HeidiChatView(
@@ -84,8 +104,9 @@ private struct RootTabShell: View {
                             )
                         )
                     ),
-                    reservationService: ReservationService(),
-                    prefilledName: session.customer.displayName
+                    reservationService: reservationService,
+                    prefilledName: session.customer.displayName,
+                    onGoHome: { selectedTab = .home }
                 )
             }
             .accessibilityElement(children: .contain)
@@ -94,14 +115,21 @@ private struct RootTabShell: View {
                 Image(systemName: "sparkles")
                 Text(LocalizedStringKey("tabs.heidi"))
             }
+            .tag(RootTab.heidi)
 
-            SettingsView(authController: authController, customer: session.customer)
+            SettingsView(
+                authController: authController,
+                customer: session.customer,
+                reservationService: reservationService,
+                prefilledName: session.customer.displayName
+            )
                 .accessibilityElement(children: .contain)
                 .accessibilityLabel(Text("tabs.settings"))
                 .tabItem {
                     Image(systemName: "gear")
                     Text(LocalizedStringKey("tabs.settings"))
                 }
+                .tag(RootTab.settings)
         }
     }
 }

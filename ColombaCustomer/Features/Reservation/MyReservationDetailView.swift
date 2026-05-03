@@ -3,11 +3,20 @@ import SwiftUI
 public struct MyReservationDetailView: View {
     @ObservedObject var viewModel: MyReservationsViewModel
     let reservation: Reservation
+    private let reservationService: ReservationServiceProtocol
+    private let prefilledName: String
     @State private var showsCancelConfirmation = false
 
-    public init(viewModel: MyReservationsViewModel, reservation: Reservation) {
+    public init(
+        viewModel: MyReservationsViewModel,
+        reservation: Reservation,
+        reservationService: ReservationServiceProtocol = ReservationService(),
+        prefilledName: String = ""
+    ) {
         self.viewModel = viewModel
         self.reservation = reservation
+        self.reservationService = reservationService
+        self.prefilledName = prefilledName
     }
 
     public var body: some View {
@@ -83,7 +92,7 @@ public struct MyReservationDetailView: View {
                 Section {
                     NavigationLink(String(localized: "reservation.detail.modify.cta")) {
                         ReservationFormView(
-                            viewModel: ReservationViewModel(service: ReservationService(), prefilledName: ""),
+                            viewModel: ReservationViewModel(service: reservationService, prefilledName: prefilledName),
                             restaurant: Restaurant(
                                 id: currentReservation.restaurantId,
                                 name: currentReservation.restaurantName,

@@ -66,8 +66,10 @@ public final class HeidiChatViewModel: ObservableObject {
             }
             phase = .idle
         } catch {
-            messages.remove(at: assistantIndex)
-            phase = .failed(String(localized: "heidi.error.network"))
+            let message = String(localized: "heidi.error.network")
+            assistant.text = message
+            messages[assistantIndex] = assistant
+            phase = .failed(message)
         }
     }
 
@@ -108,8 +110,10 @@ public final class HeidiChatViewModel: ObservableObject {
             }
             phase = .idle
         } catch {
-            messages.remove(at: assistantIndex)
-            phase = .failed(String(localized: "heidi.error.network"))
+            let message = String(localized: "heidi.error.network")
+            assistant.text = message
+            messages[assistantIndex] = assistant
+            phase = .failed(message)
         }
     }
 

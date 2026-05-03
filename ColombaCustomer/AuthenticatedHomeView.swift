@@ -5,6 +5,17 @@ import SwiftUI
 struct AuthenticatedHomeView: View {
     let authController: AuthController
     let session: AuthSession
+    let reservationService: ReservationServiceProtocol
+
+    init(
+        authController: AuthController,
+        session: AuthSession,
+        reservationService: ReservationServiceProtocol = ReservationService()
+    ) {
+        self.authController = authController
+        self.session = session
+        self.reservationService = reservationService
+    }
 
     var body: some View {
         NavigationStack {
@@ -37,7 +48,7 @@ struct AuthenticatedHomeView: View {
                     NavigationLink(String(localized: "auth.reserve_table")) {
                         RestaurantListView(
                             viewModel: ReservationViewModel(
-                                service: ReservationService(),
+                                service: reservationService,
                                 prefilledName: session.customer.displayName
                             )
                         )

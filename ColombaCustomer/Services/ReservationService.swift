@@ -3,13 +3,16 @@ import Foundation
 public final class ReservationService: ReservationServiceProtocol, @unchecked Sendable {
     private let client: ReservationHTTPClientProtocol
     private let keychain: KeychainStoring
+    private let refreshTokenOverride: String?
 
     public init(
         client: ReservationHTTPClientProtocol = HTTPReservationClient(),
-        keychain: KeychainStoring = DefaultKeychain()
+        keychain: KeychainStoring = DefaultKeychain(),
+        refreshToken: String? = nil
     ) {
         self.client = client
         self.keychain = keychain
+        self.refreshTokenOverride = refreshToken
     }
 
     public func listRestaurants() async throws -> [Restaurant] {
@@ -70,6 +73,9 @@ public final class ReservationService: ReservationServiceProtocol, @unchecked Se
     }
 
     private func refreshToken() throws -> String {
+        if let refreshTokenOverride, refreshTokenOverride.isEmpty == false {
+            return refreshTokenOverride
+        }
         guard let token = try keychain.string(forKey: SMSVerifyService.refreshTokenKey), token.isEmpty == false else {
             throw ReservationError.notAuthenticated
         }
