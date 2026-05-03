@@ -71,6 +71,30 @@ private struct RootTabShell: View {
                 Text(LocalizedStringKey("tabs.plans"))
             }
 
+            NavigationStack {
+                HeidiChatView(
+                    viewModel: HeidiChatViewModel(
+                        service: HeidiService(
+                            mode: .live(
+                                HeidiLiveConfiguration(
+                                    sessionId: "ios-\(session.customer.id)",
+                                    userId: session.customer.id,
+                                    bearerToken: session.tokens.accessToken
+                                )
+                            )
+                        )
+                    ),
+                    reservationService: ReservationService(),
+                    prefilledName: session.customer.displayName
+                )
+            }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(Text("tabs.heidi"))
+            .tabItem {
+                Image(systemName: "sparkles")
+                Text(LocalizedStringKey("tabs.heidi"))
+            }
+
             SettingsView(authController: authController, customer: session.customer)
                 .accessibilityElement(children: .contain)
                 .accessibilityLabel(Text("tabs.settings"))

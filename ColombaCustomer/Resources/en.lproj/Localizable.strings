@@ -173,3 +173,27 @@
 "reservation.error.alreadyCancelled" = "This reservation was already cancelled.";
 "reservation.error.slotNoLongerAvailable" = "That time slot is no longer available.";
 "reservation.error.modifyDeadlinePassed" = "Reservations can only be modified before they start.";
+
+/* MARK: Heidi */
+"heidi.nav_title" = "Heidi";
+"heidi.welcome" = "Hi! I'm Heidi. Ask me anything about restaurants or bookings.";
+"heidi.thinking" = "Heidi is thinking…";
+"heidi.error.network" = "I couldn't reach the kitchen. Try again?";
+"heidi.input.placeholder" = "Ask Heidi about restaurants or bookings";
+"heidi.input.voice" = "Voice input";
+"heidi.input.send" = "Send message";
+"heidi.reset" = "Reset";
+"heidi.card.check_availability" = "Check availability";
+"heidi.card.view_details" = "View details";
+"heidi.confirmation.confirm_booking" = "Confirm booking";
+"heidi.confirmation.modify" = "Modify";
+"heidi.confirmation.cancel" = "Cancel";
+"heidi.confirmation.cancel.confirm.title" = "Cancel this booking?";
+"heidi.confirmation.cancel.confirm.message" = "This will cancel the reservation through Colomba.";
+"heidi.confirmation.cancel.confirm.cta" = "Cancel booking";
+"heidi.confirmation.cancel.dismiss" = "Keep booking";
+"heidi.confirmation.book.title" = "Booking confirmed";
+"heidi.confirmation.details_format" = "%@ at %@ for %d guests";
+"heidi.confirmation.saved_in_reservations" = "Saved in Reservations";
+"heidi.confirmation.view_booking" = "View booking";
+"tabs.heidi" = "Heidi";
