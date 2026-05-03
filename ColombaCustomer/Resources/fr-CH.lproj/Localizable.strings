@@ -16,6 +16,8 @@
 "auth.sending_link" = "Envoi du lien sécurisé…";
 "auth.verifying_code" = "Vérification du code…";
 "auth.checking_apple" = "Vérification de l’identifiant Apple…";
+"auth.signin_apple" = "Se connecter avec Apple";
+"auth.apple_unavailable_local_dev" = "La connexion Apple nécessite l’entitlement Apple Developer payant. Utilisez Google dans ce build local.";
 "auth.signin_google" = "Se connecter avec Google";
 "auth.checking_google" = "Vérification de l’identifiant Google…";
 "auth.signed_in" = "Connecté";

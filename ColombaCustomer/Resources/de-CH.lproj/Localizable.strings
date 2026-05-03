@@ -16,6 +16,8 @@
 "auth.sending_link" = "Sicherer Link wird gesendet…";
 "auth.verifying_code" = "Code wird verifiziert…";
 "auth.checking_apple" = "Apple-Anmeldedaten werden geprüft…";
+"auth.signin_apple" = "Mit Apple anmelden";
+"auth.apple_unavailable_local_dev" = "Apple-Anmeldung braucht das bezahlte Apple-Developer-Entitlement. Verwenden Sie Google in diesem lokalen Build.";
 "auth.signin_google" = "Mit Google anmelden";
 "auth.checking_google" = "Google-Anmeldedaten werden geprüft…";
 "auth.signed_in" = "Angemeldet";

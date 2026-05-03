@@ -47,18 +47,44 @@ struct SignedOutAuthView: View {
         }
     }
 
-    private var appleButton: some View {
-        SignInWithAppleButton(.signIn) { request in
-            appleNonce = Self.makeNonce()
-            request.requestedScopes = [.fullName, .email]
-            request.nonce = appleNonce
-        } onCompletion: { result in
-            handleAppleCompletion(result)
+    @ViewBuilder private var appleButton: some View {
+        if isAppleSignInEnabled {
+            SignInWithAppleButton(.signIn) { request in
+                appleNonce = Self.makeNonce()
+                request.requestedScopes = [.fullName, .email]
+                request.nonce = appleNonce
+            } onCompletion: { result in
+                handleAppleCompletion(result)
+            }
+            .signInWithAppleButtonStyle(.black)
+            .frame(height: 52)
+            .clipShape(RoundedRectangle(cornerRadius: ColombaRadii.Component.button, style: .continuous))
+            .disabled(state == .authenticatingWithApple || state == .authenticatingWithGoogle)
+            .accessibilityLabel("Sign in with Apple")
+        } else {
+            VStack(alignment: .leading, spacing: ColombaSpacing.space2) {
+                Button {
+                    authController.recordFailure(String(localized: "auth.apple_unavailable_local_dev"))
+                } label: {
+                    HStack(spacing: ColombaSpacing.space3) {
+                        Image(systemName: "apple.logo")
+                            .imageScale(.large)
+                        Text("auth.signin_apple")
+                            .font(.colomba.bodyMd.weight(.semibold))
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+                .tint(.black)
+                .frame(height: 52)
+                .accessibilityLabel("Sign in with Apple unavailable in local development build")
+
+                Text("auth.apple_unavailable_local_dev")
+                    .font(.colomba.caption)
+                    .foregroundStyle(Color.colomba.text.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
-        .signInWithAppleButtonStyle(.black)
-        .frame(height: 52)
-        .clipShape(RoundedRectangle(cornerRadius: ColombaRadii.Component.button, style: .continuous))
-        .accessibilityLabel("Sign in with Apple")
     }
 
     private var googleButton: some View {
@@ -197,6 +223,10 @@ struct SignedOutAuthView: View {
     private var cardBorder: some View {
         RoundedRectangle(cornerRadius: ColombaRadii.Component.card, style: .continuous)
             .stroke(Color.colomba.border.hairline, lineWidth: 1)
+    }
+
+    private var isAppleSignInEnabled: Bool {
+        Bundle.main.bundleIdentifier != "com.hesoyam.colomba.dev"
     }
 
     private func loadingMessage(_ text: String, label: String) -> some View {
