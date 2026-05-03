@@ -18,6 +18,7 @@ struct SignedOutAuthView: View {
             VStack(alignment: .leading, spacing: ColombaSpacing.space6) {
                 header
                 appleButton
+                googleButton
                 divider
                 magicLinkForm
                 stateMessage
@@ -58,6 +59,26 @@ struct SignedOutAuthView: View {
         .frame(height: 52)
         .clipShape(RoundedRectangle(cornerRadius: ColombaRadii.Component.button, style: .continuous))
         .accessibilityLabel("Sign in with Apple")
+    }
+
+    private var googleButton: some View {
+        Button {
+            Task {
+                await handleGoogleSignIn()
+            }
+        } label: {
+            HStack(spacing: ColombaSpacing.space3) {
+                Image(systemName: "g.circle.fill")
+                    .imageScale(.large)
+                Text("auth.signin_google")
+                    .font(.colomba.bodyMd.weight(.semibold))
+            }
+            .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.bordered)
+        .frame(height: 52)
+        .disabled(state == .authenticatingWithApple || state == .authenticatingWithGoogle)
+        .accessibilityLabel("Sign in with Google")
     }
 
     private var divider: some View {
@@ -151,6 +172,8 @@ struct SignedOutAuthView: View {
             loadingMessage(String(localized: "auth.verifying_code"), label: String(localized: "auth.verifying_code"))
         case .authenticatingWithApple:
             loadingMessage(String(localized: "auth.checking_apple"), label: String(localized: "auth.checking_apple"))
+        case .authenticatingWithGoogle:
+            loadingMessage(String(localized: "auth.checking_google"), label: String(localized: "auth.checking_google"))
         case let .failed(message):
             Text(message)
                 .font(.colomba.caption)
@@ -215,6 +238,26 @@ struct SignedOutAuthView: View {
         Task {
             await authController.signInWithApple(payload)
         }
+    }
+
+    private func handleGoogleSignIn() async {
+        #if canImport(GoogleSignIn)
+        do {
+            let token = try await GoogleSignInOAuthClient(configuration: .from()).authorize(scopes: [])
+            let credential = GoogleCredentialPayload(
+                accessToken: token.accessToken,
+                idToken: token.idToken,
+                email: token.email,
+                fullName: token.fullName,
+                scopes: token.scopes
+            )
+            await authController.signInWithGoogle(credential)
+        } catch {
+            authController.recordFailure(error.localizedDescription)
+        }
+        #else
+        authController.recordFailure(AuthFailure.missingGoogleCredential.localizedDescription)
+        #endif
     }
 
     private func fullName(from components: PersonNameComponents?) -> String? {

@@ -5,7 +5,7 @@
 /* MARK: Auth */
 "auth.colomba_brand" = "Colomba";
 "auth.welcome_title" = "Bienvenue sur Colomba";
-"auth.signin_copy" = "Connectez-vous en toute sécurité avec Apple ou utilisez le magic link par e-mail pour les comptes pilotes.";
+"auth.signin_copy" = "Connectez-vous en toute sécurité avec Apple, Google ou le magic link par e-mail pour les comptes pilotes.";
 "auth.or" = "ou";
 "auth.email_magic_link" = "Magic link par e-mail";
 "auth.email_placeholder" = "proprietaire@example.ch";
@@ -16,6 +16,8 @@
 "auth.sending_link" = "Envoi du lien sécurisé…";
 "auth.verifying_code" = "Vérification du code…";
 "auth.checking_apple" = "Vérification de l’identifiant Apple…";
+"auth.signin_google" = "Se connecter avec Google";
+"auth.checking_google" = "Vérification de l’identifiant Google…";
 "auth.signed_in" = "Connecté";
 "auth.welcome_name_format" = "Bienvenue, %@";
 "auth.session_copy" = "Votre session sécurisée est active. Consultez l’état des offres et de la facturation depuis le tableau de bord.";

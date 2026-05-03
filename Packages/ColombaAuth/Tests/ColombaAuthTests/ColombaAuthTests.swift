@@ -48,6 +48,24 @@ final class ColombaAuthTests: XCTestCase {
         XCTAssertEqual(try store.load()?.customer.billingEmail, "owner@salon.ch")
     }
 
+    func testGoogleExchangeStoresSession() async throws {
+        let store = InMemoryAuthSessionStore()
+        let controller = makeController(store: store)
+        let credential = GoogleCredentialPayload(
+            accessToken: "google-access-token",
+            idToken: "google-id-token",
+            email: "owner@google.ch",
+            fullName: "Google Owner",
+            scopes: ["openid", "email", "profile"]
+        )
+
+        await controller.signInWithGoogle(credential)
+
+        XCTAssertEqual(controller.state.session?.customer.authProvider, .google)
+        XCTAssertEqual(controller.state.session?.customer.displayName, "Google Owner")
+        XCTAssertEqual(try store.load()?.customer.billingEmail, "owner@google.ch")
+    }
+
     func testMagicLinkURLHandlerExchangesSession() async throws {
         let store = InMemoryAuthSessionStore()
         let controller = makeController(store: store)
@@ -112,7 +130,8 @@ final class ColombaAuthTests: XCTestCase {
             cooldownSeconds: 0
         )
 
-        XCTAssertEqual(AuthScreenSnapshot.describe(state: .signedOut), "auth.signedOut.apple+magicLink")
+        XCTAssertEqual(AuthScreenSnapshot.describe(state: .signedOut), "auth.signedOut.apple+google+magicLink")
+        XCTAssertEqual(AuthScreenSnapshot.describe(state: .authenticatingWithGoogle), "auth.google.exchanging")
         XCTAssertEqual(AuthScreenSnapshot.describe(state: .magicLinkSent(challenge)), "auth.magic.sent:o***@colomba.ch")
         XCTAssertEqual(
             AuthScreenSnapshot.describe(state: .authenticated(Self.sampleSession(accessToken: "snapshot"))),

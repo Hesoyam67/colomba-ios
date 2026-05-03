@@ -5,7 +5,7 @@
 /* MARK: Auth */
 "auth.colomba_brand" = "Colomba";
 "auth.welcome_title" = "Welcome to Colomba";
-"auth.signin_copy" = "Sign in securely with Apple, or use the email magic link for pilot accounts.";
+"auth.signin_copy" = "Sign in securely with Apple, Google, or the email magic link for pilot accounts.";
 "auth.or" = "or";
 "auth.email_magic_link" = "Email magic link";
 "auth.email_placeholder" = "owner@example.ch";
@@ -16,6 +16,8 @@
 "auth.sending_link" = "Sending secure link…";
 "auth.verifying_code" = "Verifying code…";
 "auth.checking_apple" = "Checking Apple credential…";
+"auth.signin_google" = "Sign in with Google";
+"auth.checking_google" = "Checking Google credential…";
 "auth.signed_in" = "Signed in";
 "auth.welcome_name_format" = "Welcome, %@";
 "auth.session_copy" = "Your secure session is active. Review plan and billing readiness from the dashboard.";

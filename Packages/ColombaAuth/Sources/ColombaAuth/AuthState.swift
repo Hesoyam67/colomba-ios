@@ -7,6 +7,7 @@ public enum AuthState: Equatable, Sendable {
     case magicLinkSent(MagicLinkChallenge)
     case verifyingMagicLink(MagicLinkChallenge)
     case authenticatingWithApple
+    case authenticatingWithGoogle
     case authenticated(AuthSession)
     case failed(message: String)
 
@@ -20,6 +21,7 @@ public enum AuthState: Equatable, Sendable {
 
 public enum AuthFailure: Error, Equatable, LocalizedError, Sendable {
     case missingAppleCredential
+    case missingGoogleCredential
     case invalidEmail
     case invalidDisplayName
     case invalidMagicCode
@@ -30,6 +32,8 @@ public enum AuthFailure: Error, Equatable, LocalizedError, Sendable {
         switch self {
         case .missingAppleCredential:
             "Apple did not return a usable credential."
+        case .missingGoogleCredential:
+            "Google did not return a usable credential."
         case .invalidEmail:
             "Enter a valid email address."
         case .invalidDisplayName:

@@ -14,6 +14,7 @@ struct RootView: View {
                  .magicLinkSent,
                  .verifyingMagicLink,
                  .authenticatingWithApple,
+                 .authenticatingWithGoogle,
                  .failed:
                 AuthGateView(authController: authController)
             case let .authenticated(session):

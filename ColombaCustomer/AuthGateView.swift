@@ -15,6 +15,7 @@ struct AuthGateView: View {
                  .magicLinkSent,
                  .verifyingMagicLink,
                  .authenticatingWithApple,
+                 .authenticatingWithGoogle,
                  .failed:
                 SignedOutAuthView(authController: authController, state: authController.state)
             case let .authenticated(session):

@@ -9,10 +9,22 @@ import UIKit
 
 public struct GoogleOAuthToken: Equatable, Sendable {
     public let accessToken: String
+    public let idToken: String?
+    public let email: String?
+    public let fullName: String?
     public let scopes: Set<String>
 
-    public init(accessToken: String, scopes: Set<String>) {
+    public init(
+        accessToken: String,
+        idToken: String? = nil,
+        email: String? = nil,
+        fullName: String? = nil,
+        scopes: Set<String>
+    ) {
         self.accessToken = accessToken
+        self.idToken = idToken
+        self.email = email
+        self.fullName = fullName
         self.scopes = scopes
     }
 }
@@ -116,6 +128,9 @@ public final class GoogleSignInOAuthClient: GoogleOAuthAuthorizing {
 
         return GoogleOAuthToken(
             accessToken: signInResult.user.accessToken.tokenString,
+            idToken: signInResult.user.idToken?.tokenString,
+            email: signInResult.user.profile?.email,
+            fullName: signInResult.user.profile?.name,
             scopes: Set(signInResult.user.grantedScopes ?? []).union(scopes)
         )
     }
