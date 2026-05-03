@@ -35,6 +35,7 @@ struct PaywallView: View {
             WorkspaceSetupView(workspace: .draft()) { workspace in
                 workspaceStore.upsert(workspace)
                 savedWorkspaceName = workspace.name
+                Task { await workspaceStore.pushToCloud(workspace) }
             }
         }
         .task {

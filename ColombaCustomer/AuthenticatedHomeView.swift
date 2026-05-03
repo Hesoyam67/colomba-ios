@@ -8,7 +8,7 @@ struct AuthenticatedHomeView: View {
     let session: AuthSession
     let reservationService: ReservationServiceProtocol
 
-    @StateObject private var workspaceStore = WorkspaceStore()
+    @StateObject private var workspaceStore: WorkspaceStore
 
     init(
         authController: AuthController,
@@ -18,6 +18,11 @@ struct AuthenticatedHomeView: View {
         self.authController = authController
         self.session = session
         self.reservationService = reservationService
+        _workspaceStore = StateObject(
+            wrappedValue: WorkspaceStore(
+                syncClient: HTTPWorkspaceSyncClient(refreshToken: session.tokens.refreshToken)
+            )
+        )
     }
 
     var body: some View {
@@ -34,6 +39,9 @@ struct AuthenticatedHomeView: View {
             }
             .background(Color.colomba.bg.base)
             .navigationTitle("Home")
+            .task {
+                await workspaceStore.syncFromCloud()
+            }
             .accessibilityElement(children: .contain)
             .accessibilityLabel("Authenticated Colomba workspace home screen")
         }
@@ -79,9 +87,21 @@ struct AuthenticatedHomeView: View {
             NavigationLink("Create workspace") {
                 WorkspaceSetupView(workspace: .draft()) { workspace in
                     workspaceStore.upsert(workspace)
+                    Task { await workspaceStore.pushToCloud(workspace) }
                 }
             }
             .buttonStyle(.borderedProminent)
+
+            Text(workspaceStore.syncMessage)
+                .font(.colomba.caption)
+                .foregroundStyle(Color.colomba.text.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Button(workspaceStore.isSyncing ? "Syncing workspaces…" : "Sync workspaces") {
+                Task { await workspaceStore.syncFromCloud() }
+            }
+            .buttonStyle(.bordered)
+            .disabled(workspaceStore.isSyncing)
 
             NavigationLink("Choose or manage plan") {
                 PlansListView()
@@ -777,16 +797,99 @@ private struct TableLayoutEditorView: View {
     }
 }
 
+protocol WorkspaceSyncClientProtocol: Sendable {
+    func listWorkspaces() async throws -> [Workspace]
+    func upsertWorkspace(_ workspace: Workspace) async throws
+}
+
+struct HTTPWorkspaceSyncClient: WorkspaceSyncClientProtocol {
+    private struct WorkspaceListResponse: Decodable {
+        let workspaces: [Workspace]
+    }
+
+    private struct WorkspaceUpsertRequest: Encodable {
+        let workspace: Workspace
+    }
+
+    private let baseURL: URL
+    private let refreshToken: String
+    private let urlSession: URLSession
+    private let encoder: JSONEncoder
+    private let decoder: JSONDecoder
+
+    init(
+        refreshToken: String,
+        baseURL: URL = HTTPReservationClient.resolvedBaseURL(),
+        urlSession: URLSession = .shared
+    ) {
+        self.refreshToken = refreshToken
+        self.baseURL = baseURL
+        self.urlSession = urlSession
+        self.encoder = JSONEncoder()
+        self.decoder = JSONDecoder()
+    }
+
+    func listWorkspaces() async throws -> [Workspace] {
+        let request = try makeRequest(path: "workspaces-list", body: EmptyWorkspaceSyncRequest())
+        let (data, response) = try await urlSession.data(for: request)
+        try validate(response)
+        return try decoder.decode(WorkspaceListResponse.self, from: data).workspaces
+    }
+
+    func upsertWorkspace(_ workspace: Workspace) async throws {
+        let request = try makeRequest(path: "workspaces-upsert", body: WorkspaceUpsertRequest(workspace: workspace))
+        let (_, response) = try await urlSession.data(for: request)
+        try validate(response)
+    }
+
+    private func makeRequest<T: Encodable>(path: String, body: T) throws -> URLRequest {
+        let url = baseURL.appending(path: path)
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(refreshToken)", forHTTPHeaderField: "Authorization")
+        request.httpBody = try encoder.encode(body)
+        return request
+    }
+
+    private func validate(_ response: URLResponse) throws {
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw WorkspaceSyncError.invalidResponse
+        }
+        guard 200..<300 ~= httpResponse.statusCode else {
+            throw WorkspaceSyncError.server(status: httpResponse.statusCode)
+        }
+    }
+}
+
+struct EmptyWorkspaceSyncRequest: Encodable {}
+
+enum WorkspaceSyncError: Error, Equatable {
+    case invalidResponse
+    case server(status: Int)
+}
+
+@MainActor
 final class WorkspaceStore: ObservableObject {
     @Published var workspaces: [Workspace] {
         didSet { save() }
     }
+    @Published var syncMessage = "Workspace sync is local until cloud responds."
+    @Published var isSyncing = false
 
     private let defaults: UserDefaults
-    private let key = "colomba.workspaces.v1"
+    private let key: String
+    private let syncClient: WorkspaceSyncClientProtocol
 
-    init(defaults: UserDefaults = .standard) {
+    init(
+        defaults: UserDefaults = .standard,
+        key: String = "colomba.workspaces.v1",
+        syncClient: WorkspaceSyncClientProtocol = LocalWorkspaceSyncClient()
+    ) {
         self.defaults = defaults
+        self.key = key
+        self.syncClient = syncClient
         if let data = defaults.data(forKey: key),
            let decoded = try? JSONDecoder().decode([Workspace].self, from: data),
            decoded.isEmpty == false {
@@ -797,10 +900,38 @@ final class WorkspaceStore: ObservableObject {
     }
 
     func upsert(_ workspace: Workspace) {
-        if let index = workspaces.firstIndex(where: { $0.id == workspace.id }) {
-            workspaces[index] = workspace
+        let normalized = workspace.normalized()
+        if let index = workspaces.firstIndex(where: { $0.id == normalized.id }) {
+            workspaces[index] = normalized
         } else {
-            workspaces.append(workspace)
+            workspaces.append(normalized)
+        }
+    }
+
+    func syncFromCloud() async {
+        guard !isSyncing else { return }
+        isSyncing = true
+        defer { isSyncing = false }
+
+        do {
+            let remoteWorkspaces = try await syncClient.listWorkspaces()
+            guard remoteWorkspaces.isEmpty == false else {
+                syncMessage = "Cloud sync complete: no remote workspaces yet, keeping local setup."
+                return
+            }
+            workspaces = remoteWorkspaces.map { $0.normalized() }
+            syncMessage = "Cloud sync complete: \(remoteWorkspaces.count) workspace(s) loaded."
+        } catch {
+            syncMessage = "Cloud sync unavailable; local workspace setup is saved on this device."
+        }
+    }
+
+    func pushToCloud(_ workspace: Workspace) async {
+        do {
+            try await syncClient.upsertWorkspace(workspace.normalized())
+            syncMessage = "Workspace saved locally and synced to cloud."
+        } catch {
+            syncMessage = "Workspace saved locally; cloud sync will retry when backend is ready."
         }
     }
 
@@ -808,6 +939,11 @@ final class WorkspaceStore: ObservableObject {
         guard let data = try? JSONEncoder().encode(workspaces) else { return }
         defaults.set(data, forKey: key)
     }
+}
+
+struct LocalWorkspaceSyncClient: WorkspaceSyncClientProtocol {
+    func listWorkspaces() async throws -> [Workspace] { [] }
+    func upsertWorkspace(_ workspace: Workspace) async throws {}
 }
 
 struct Workspace: Identifiable, Codable, Equatable {

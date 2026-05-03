@@ -92,6 +92,7 @@
 		F3313BC579B71A9EE06D2219 /* MyReservationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B28DA0BC40E755DEFF54CA7 /* MyReservationsViewModel.swift */; };
 		F9DD3114D0FC6D27B90FA45D /* ColombaBilling in Frameworks */ = {isa = PBXBuildFile; productRef = D4D0F5D6BC5827A6ED7A31BA /* ColombaBilling */; };
 		FEF90F5F065A4F2162A728AA /* HeidiChatViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1E850D29C95A2608B27B12 /* HeidiChatViewModelTests.swift */; };
+		AA1600000000000000000002 /* WorkspaceStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1600000000000000000001 /* WorkspaceStoreTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -202,6 +203,7 @@
 		FB666C951B517966380ACFD3 /* HeidiChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeidiChatView.swift; sourceTree = "<group>"; };
 		FBA4B9AA4DA67D0344C60D05 /* PortalSessionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalSessionServiceTests.swift; sourceTree = "<group>"; };
 		FEB554A480235ADEAB707618 /* UpgradeFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = UpgradeFeature; path = Packages/Features/UpgradeFeature; sourceTree = SOURCE_ROOT; };
+		AA1600000000000000000001 /* WorkspaceStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceStoreTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -338,6 +340,7 @@
 				654B0FDE5DE0EECC86BB4D5E /* ProfileEditViewModelTests.swift */,
 				67CD85AAD7336C8A837A25CD /* ReservationServiceTests.swift */,
 				43342F23DEA2C4DB6C90A3C8 /* ReservationViewModelTests.swift */,
+				AA1600000000000000000001 /* WorkspaceStoreTests.swift */,
 			);
 			path = ColombaCustomerTests;
 			sourceTree = "<group>";
@@ -625,6 +628,7 @@
 				F30717457C7532B0DB890D8F /* SMSVerifyServiceTests.swift in Sources */,
 				AE972C7C744AFE9082AD66B5 /* UsageCacheTests.swift in Sources */,
 				B9FFC3EA638B97A3823F8D0E /* UsageViewModelTests.swift in Sources */,
+				AA1600000000000000000002 /* WorkspaceStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
