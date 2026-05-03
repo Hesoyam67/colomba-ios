@@ -50,11 +50,8 @@ private struct RootTabShell: View {
                 }
 
             NavigationStack {
-                RestaurantListView(
-                    viewModel: ReservationViewModel(
-                        service: ReservationService(),
-                        prefilledName: session.customer.displayName
-                    )
+                MyReservationsView(
+                    viewModel: MyReservationsViewModel(service: ReservationService())
                 )
             }
             .accessibilityElement(children: .contain)

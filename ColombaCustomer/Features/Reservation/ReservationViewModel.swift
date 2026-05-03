@@ -99,6 +99,26 @@ public final class ReservationViewModel: ObservableObject {
         }
     }
 
+    public func modify(existing reservation: Reservation) async {
+        guard canConfirm, let selectedSlot else {
+            phase = .failed(reason: "Please complete the reservation details")
+            return
+        }
+        phase = .submitting
+        let trimmedRequests = specialRequests.trimmingCharacters(in: .whitespacesAndNewlines)
+        do {
+            let confirmation = try await service.modifyReservation(
+                id: reservation.id,
+                slotId: selectedSlot.id,
+                partySize: partySize,
+                specialRequests: trimmedRequests.isEmpty ? nil : trimmedRequests
+            )
+            phase = .confirmed(confirmation)
+        } catch {
+            phase = .failed(reason: Self.userMessage(for: error))
+        }
+    }
+
     public func reset() {
         phase = .idle
         restaurants = []
@@ -117,8 +137,12 @@ public final class ReservationViewModel: ObservableObject {
         switch reservationError {
         case .notAuthenticated:
             return "Please verify your phone again"
-        case .slotUnavailable:
-            return "Slot unavailable"
+        case .slotUnavailable, .slotNoLongerAvailable:
+            return String(localized: "reservation.error.slotNoLongerAvailable")
+        case .alreadyCancelled:
+            return String(localized: "reservation.error.alreadyCancelled")
+        case .modifyDeadlinePassed:
+            return String(localized: "reservation.error.modifyDeadlinePassed")
         case let .validationFailed(field):
             return "Invalid reservation field: \(field)"
         case .network:

@@ -77,7 +77,7 @@ final class ReservationViewModelTests: XCTestCase {
         await model.loadAvailability(for: Self.restaurant, on: model.selectedDate)
         model.selectedSlot = Self.slot
         await model.submit(restaurant: Self.restaurant)
-        assertFailed(model.phase, expectedReason: "Slot unavailable")
+        assertFailed(model.phase, expectedReason: "That time slot is no longer available.")
     }
 
     func test_submit_notAuthenticated_transitionsToFailed() async {

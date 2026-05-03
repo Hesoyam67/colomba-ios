@@ -132,3 +132,25 @@
 "settings.language" = "Lingua";
 "settings.about" = "Info";
 "settings.sign_out" = "Esci";
+
+/* MARK: Reservation management */
+"reservation.list.title" = "My Reservations"; // TODO_TRANSLATE
+"reservation.list.empty.upcoming" = "No upcoming reservations"; // TODO_TRANSLATE
+"reservation.list.empty.past" = "No past reservations"; // TODO_TRANSLATE
+"reservation.list.filter.upcoming" = "Upcoming"; // TODO_TRANSLATE
+"reservation.list.filter.past" = "Past"; // TODO_TRANSLATE
+"reservation.detail.cancel.cta" = "Cancel reservation"; // TODO_TRANSLATE
+"reservation.detail.cancel.confirm.title" = "Cancel this reservation?"; // TODO_TRANSLATE
+"reservation.detail.cancel.confirm.message" = "This cannot be undone."; // TODO_TRANSLATE
+"reservation.detail.cancel.confirm.confirmCta" = "Cancel reservation"; // TODO_TRANSLATE
+"reservation.detail.cancel.confirm.dismissCta" = "Keep it"; // TODO_TRANSLATE
+"reservation.detail.modify.cta" = "Modify"; // TODO_TRANSLATE
+"reservation.detail.status.active" = "Active"; // TODO_TRANSLATE
+"reservation.detail.status.cancelled" = "Cancelled"; // TODO_TRANSLATE
+"reservation.detail.status.completed" = "Completed"; // TODO_TRANSLATE
+"reservation.detail.cancelledAt" = "Cancelled on %@"; // TODO_TRANSLATE
+"reservation.modify.title" = "Modify reservation"; // TODO_TRANSLATE
+"reservation.modify.confirmCta" = "Confirm change"; // TODO_TRANSLATE
+"reservation.error.alreadyCancelled" = "This reservation was already cancelled."; // TODO_TRANSLATE
+"reservation.error.slotNoLongerAvailable" = "That time slot is no longer available."; // TODO_TRANSLATE
+"reservation.error.modifyDeadlinePassed" = "Reservations can only be modified before they start."; // TODO_TRANSLATE

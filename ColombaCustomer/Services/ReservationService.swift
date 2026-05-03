@@ -37,6 +37,38 @@ public final class ReservationService: ReservationServiceProtocol, @unchecked Se
         }
     }
 
+    public func listMyReservations() async throws -> [Reservation] {
+        let token = try refreshToken()
+        return try await mapTransportErrors {
+            try await client.listMyReservations(refreshToken: token)
+        }
+    }
+
+    public func cancelReservation(id: String) async throws {
+        let token = try refreshToken()
+        return try await mapTransportErrors {
+            try await client.cancelReservation(id: id, refreshToken: token)
+        }
+    }
+
+    public func modifyReservation(
+        id: String,
+        slotId: String,
+        partySize: Int,
+        specialRequests: String?
+    ) async throws -> ReservationConfirmation {
+        let token = try refreshToken()
+        return try await mapTransportErrors {
+            try await client.modifyReservation(
+                id: id,
+                slotId: slotId,
+                partySize: partySize,
+                specialRequests: specialRequests,
+                refreshToken: token
+            )
+        }
+    }
+
     private func refreshToken() throws -> String {
         guard let token = try keychain.string(forKey: SMSVerifyService.refreshTokenKey), token.isEmpty == false else {
             throw ReservationError.notAuthenticated
