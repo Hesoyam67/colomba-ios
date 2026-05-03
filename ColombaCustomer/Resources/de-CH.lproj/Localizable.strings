@@ -154,3 +154,26 @@
 "reservation.error.alreadyCancelled" = "This reservation was already cancelled."; // TODO_TRANSLATE
 "reservation.error.slotNoLongerAvailable" = "That time slot is no longer available."; // TODO_TRANSLATE
 "reservation.error.modifyDeadlinePassed" = "Reservations can only be modified before they start."; // TODO_TRANSLATE
+
+/* MARK: Heidi */
+"tabs.heidi" = "Heidi";
+"heidi.nav_title" = "Heidi";
+"heidi.welcome" = "Hoi! Ich bin Heidi. Frag mich alles zu Restaurants oder Buchungen.";
+"heidi.thinking" = "Heidi denkt nach...";
+"heidi.empty_response" = "Ich bin da — frag mich nach einem Restaurant oder einer Buchung.";
+"heidi.error.network" = "Ich erreiche die Küche gerade nicht. Nochmals versuchen?";
+"heidi.input.placeholder" = "Frag Heidi zu Restaurants oder Buchungen";
+"heidi.input.send" = "Nachricht senden";
+"heidi.input.voice_placeholder" = "Spracheingabe kommt bald";
+"heidi.accessibility.chat" = "Heidi Chat-Assistentin";
+"heidi.restaurant.select" = "Auswählen";
+"heidi.restaurant.select_accessibility" = "%@ auswählen";
+"heidi.confirmation.book.title" = "Buchung bestätigen?";
+"heidi.confirmation.view_booking" = "Buchung ansehen";
+"heidi.confirmation.confirm" = "Bestätigen";
+"heidi.mock.search_intro" = "Ich habe ein paar gute Optionen für dich gefunden. ";
+"heidi.mock.booking_offer" = "Bellini hat um 19:30 einen Tisch für vier. Ich kann ihn vormerken, bis das Live-Heidi-Backend online ist.";
+"heidi.lifecycle.create" = "Buchung erstellen";
+"heidi.lifecycle.modify" = "Buchung ändern";
+"heidi.lifecycle.cancel" = "Buchung stornieren";
+"heidi.lifecycle.list" = "Buchungen anzeigen";
