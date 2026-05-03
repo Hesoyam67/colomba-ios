@@ -2,6 +2,9 @@ import ColombaDesign
 import SwiftUI
 
 struct BookingConfirmationCard: View {
+    @Environment(\.openURL)
+    private var openURL
+
     let confirmation: HeidiBookingConfirmation
 
     var body: some View {
@@ -35,6 +38,12 @@ struct BookingConfirmationCard: View {
             Text(confirmation.id)
                 .font(.caption2.monospaced())
                 .foregroundStyle(Color.colomba.text.secondary)
+            Button {
+                openURL(confirmation.reservationDeepLinkURL)
+            } label: {
+                Label(LocalizedStringKey("heidi.confirmation.view_booking"), systemImage: "arrow.forward.circle")
+            }
+            .buttonStyle(.bordered)
         }
         .padding(12)
         .background(Color.colomba.success.opacity(0.12))

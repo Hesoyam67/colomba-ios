@@ -72,6 +72,7 @@ public struct HeidiBookingConfirmation: Sendable, Equatable, Identifiable, Codab
     public let timeText: String
     public let partySize: Int
     public let specialRequests: String?
+    public var reservationDeepLinkURL: URL { AppRouter.DeepLink.reservation(id: id).url }
 
     public init(
         id: String,

@@ -337,3 +337,27 @@ private struct StubHeidiService: HeidiServiceProtocol {
         }
     }
 }
+
+@MainActor
+final class HeidiDeepLinkTests: XCTestCase {
+    func test_reservationDeepLinkRoundTripsFromBookingConfirmation() {
+        let confirmation = HeidiBookingConfirmation(
+            id: "reservation-123",
+            restaurantName: "Bellini Zürich",
+            dateText: "Saturday",
+            timeText: "19:30",
+            partySize: 4
+        )
+
+        XCTAssertEqual(confirmation.reservationDeepLinkURL.absoluteString, "colomba://reservations/reservation-123")
+        XCTAssertEqual(
+            AppRouter.DeepLink(url: confirmation.reservationDeepLinkURL),
+            .reservation(id: "reservation-123")
+        )
+    }
+
+    func test_httpsAppReservationDeepLinkParses() throws {
+        let url = try XCTUnwrap(URL(string: "https://colomba-swiss.ch/app/reservations/reservation-123"))
+        XCTAssertEqual(AppRouter.DeepLink(url: url), .reservation(id: "reservation-123"))
+    }
+}
