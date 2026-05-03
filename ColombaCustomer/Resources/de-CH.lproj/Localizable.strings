@@ -201,3 +201,32 @@
 "heidi.confirmation.saved_in_reservations" = "In Reservationen gespeichert";
 "heidi.confirmation.view_booking" = "Buchung ansehen";
 "tabs.heidi" = "Heidi";
+
+/* MARK: Account deletion */
+"account_deletion.title" = "Delete account";
+"account_deletion.warning_title" = "Permanent account deletion";
+"account_deletion.warning_body" = "This removes your Colomba account, profile, sessions, and stored reservation data after backend confirmation.";
+"account_deletion.confirm_section" = "Confirm";
+"account_deletion.confirm_instruction" = "Type DELETE to unlock account deletion.";
+"account_deletion.confirm_placeholder" = "DELETE";
+"account_deletion.confirm_accessibility" = "Account deletion confirmation text";
+"account_deletion.reauth_section" = "Re-authentication";
+"account_deletion.magic_link_help" = "Enter the latest magic-link challenge and code to prove this is your account.";
+"account_deletion.challenge_id" = "Challenge ID";
+"account_deletion.magic_code" = "Magic code";
+"account_deletion.delete_cta" = "Delete account";
+"account_deletion.delete_hint" = "Permanently deletes this Colomba account after backend verification";
+"account_deletion.subscription_blocked_body" = "Cancel the active subscription before deleting this account.";
+"account_deletion.open_billing_portal" = "Open billing portal";
+"account_deletion.deleted_body" = "Account deletion was accepted. You will now be signed out.";
+"account_deletion.done_cta" = "Done";
+"account_deletion.error_not_authenticated" = "Sign in again before deleting your account.";
+"account_deletion.error_reauth_required" = "Re-authentication is required before deletion.";
+"account_deletion.error_reauth_invalid" = "The re-authentication code is invalid or expired.";
+"account_deletion.error_reauth_mismatch" = "The re-authentication proof does not match this account.";
+"account_deletion.error_subscription_active" = "An active subscription blocks deletion.";
+"account_deletion.error_already_deleted" = "This account was already deleted.";
+"account_deletion.error_maintenance" = "Account deletion is temporarily unavailable.";
+"account_deletion.error_validation" = "Check the confirmation and re-authentication fields.";
+"account_deletion.error_network" = "Network error while deleting the account.";
+"account_deletion.error_server" = "Server error while deleting the account.";
