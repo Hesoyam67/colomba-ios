@@ -38,6 +38,7 @@ struct PlansListView: View {
                                     PlanCardView(plan: plan, currency: catalog.currency, viewModel: viewModel)
                                 }
                                 .buttonStyle(.plain)
+                                .contentShape(Rectangle())
                                 .accessibilityLabel(openDetailsText(for: plan))
                             }
                         }
@@ -82,6 +83,10 @@ private struct PlanCardView: View {
                 Text(viewModel.priceText(for: plan, currency: currency))
                     .font(.colomba.billingFigure)
                     .foregroundStyle(Color.colomba.primary)
+                Image(systemName: "chevron.right")
+                    .font(.colomba.caption)
+                    .foregroundStyle(Color.colomba.text.tertiary)
+                    .accessibilityHidden(true)
             }
             Text(viewModel.includedEventsText(for: plan))
                 .font(.colomba.bodyMd)

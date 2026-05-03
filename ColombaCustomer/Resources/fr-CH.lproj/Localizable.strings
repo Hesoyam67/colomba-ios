@@ -99,6 +99,9 @@
 "plans.included_events_format" = "%@ événements inclus";
 "plans.choose_format" = "Choisir %@";
 "plans.choose_accessibility_format" = "Choisir l’offre %@";
+"plans.selection_title_format" = "%@ sélectionné";
+"plans.selection_message_format" = "Votre choix %@ a été enregistré. Le parcours de paiement sécurisé sera relié ici avant TestFlight.";
+"plans.selection_done" = "OK";
 "plans.upgrade_hint" = "Ouvre le flux de mise à niveau sécurisé";
 
 /* MARK: Usage */
@@ -154,3 +157,59 @@
 "reservation.error.alreadyCancelled" = "This reservation was already cancelled."; // TODO_TRANSLATE
 "reservation.error.slotNoLongerAvailable" = "That time slot is no longer available."; // TODO_TRANSLATE
 "reservation.error.modifyDeadlinePassed" = "Reservations can only be modified before they start."; // TODO_TRANSLATE
+
+/* MARK: Account deletion */
+// TODO_TRANSLATE
+"account_deletion.title" = "Delete account";
+// TODO_TRANSLATE
+"account_deletion.warning_title" = "Account deletion has a 30-day grace period";
+// TODO_TRANSLATE
+"account_deletion.warning_body" = "We will hide your account immediately, invalidate sessions, and schedule permanent deletion after 30 days. Reservation history may be retained in anonymized form for restaurant analytics and audit obligations.";
+// TODO_TRANSLATE
+"account_deletion.confirm_section" = "Confirm deletion";
+// TODO_TRANSLATE
+"account_deletion.confirm_instruction" = "Type DELETE to confirm you want to delete this Colomba account.";
+// TODO_TRANSLATE
+"account_deletion.confirm_placeholder" = "DELETE";
+// TODO_TRANSLATE
+"account_deletion.confirm_accessibility" = "Deletion confirmation text";
+// TODO_TRANSLATE
+"account_deletion.reauth_section" = "Re-authenticate";
+// TODO_TRANSLATE
+"account_deletion.magic_link_help" = "Enter the magic-link challenge and code from the re-authentication step. Apple re-authentication will be enabled when the backend flow is live.";
+// TODO_TRANSLATE
+"account_deletion.challenge_id" = "Challenge ID";
+// TODO_TRANSLATE
+"account_deletion.magic_code" = "Magic code";
+// TODO_TRANSLATE
+"account_deletion.delete_cta" = "Request account deletion";
+// TODO_TRANSLATE
+"account_deletion.delete_hint" = "Deletes the account after successful re-authentication";
+// TODO_TRANSLATE
+"account_deletion.subscription_blocked_body" = "Active Stripe subscriptions must be cancelled before account deletion. Open the billing portal, cancel your subscription, then return here.";
+// TODO_TRANSLATE
+"account_deletion.open_billing_portal" = "Open billing portal";
+// TODO_TRANSLATE
+"account_deletion.deleted_body" = "Your account deletion request was accepted. You can restore the account by signing in again during the 30-day grace period.";
+// TODO_TRANSLATE
+"account_deletion.done_cta" = "Done";
+// TODO_TRANSLATE
+"account_deletion.error_not_authenticated" = "Please sign in again before deleting your account.";
+// TODO_TRANSLATE
+"account_deletion.error_reauth_required" = "Please re-authenticate before deleting your account.";
+// TODO_TRANSLATE
+"account_deletion.error_reauth_invalid" = "The re-authentication code was invalid or expired.";
+// TODO_TRANSLATE
+"account_deletion.error_reauth_mismatch" = "The re-authenticated identity does not match this account.";
+// TODO_TRANSLATE
+"account_deletion.error_subscription_active" = "Cancel your active subscription before deleting your account.";
+// TODO_TRANSLATE
+"account_deletion.error_already_deleted" = "This account is already scheduled for deletion.";
+// TODO_TRANSLATE
+"account_deletion.error_maintenance" = "Account deletion is temporarily unavailable during maintenance.";
+// TODO_TRANSLATE
+"account_deletion.error_validation" = "Check the confirmation text and re-authentication code.";
+// TODO_TRANSLATE
+"account_deletion.error_network" = "Network error. Please try again.";
+// TODO_TRANSLATE
+"account_deletion.error_server" = "Server error. Please try again.";

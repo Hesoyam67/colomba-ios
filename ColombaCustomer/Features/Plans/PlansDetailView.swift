@@ -6,6 +6,10 @@ struct PlansDetailView: View {
     let plan: Plan
     let currency: String
 
+    @Environment(\.dismiss)
+    private var dismiss
+    @State private var isShowingSelectionConfirmation = false
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: ColombaSpacing.space6) {
@@ -32,16 +36,25 @@ struct PlansDetailView: View {
                     }
                 }
                 UsageSummaryRow(snapshot: .fixtureCurrentMonth)
-                Button(chooseText) {}
-                    .buttonStyle(.borderedProminent)
-                    .accessibilityLabel(chooseAccessibilityText)
-                    .accessibilityHint(String(localized: "plans.upgrade_hint"))
+                Button(chooseText) {
+                    isShowingSelectionConfirmation = true
+                }
+                .buttonStyle(.borderedProminent)
+                .accessibilityLabel(chooseAccessibilityText)
+                .accessibilityHint(String(localized: "plans.upgrade_hint"))
             }
             .padding(ColombaSpacing.Screen.margin)
             .frame(maxWidth: 620, alignment: .leading)
         }
         .background(Color.colomba.bg.base)
         .navigationTitle(plan.name)
+        .alert(selectionTitle, isPresented: $isShowingSelectionConfirmation) {
+            Button(String(localized: "plans.selection_done")) {
+                dismiss()
+            }
+        } message: {
+            Text(selectionMessage)
+        }
     }
 
     /// Format: plans.price_format contains currency and formatted amount.
@@ -80,6 +93,16 @@ struct PlansDetailView: View {
     /// Format: plans.choose_accessibility_format contains one plan name.
     private var chooseAccessibilityText: String {
         String(format: NSLocalizedString("plans.choose_accessibility_format", comment: ""), plan.name)
+    }
+
+    /// Format: plans.selection_title_format contains one plan name.
+    private var selectionTitle: String {
+        String(format: NSLocalizedString("plans.selection_title_format", comment: ""), plan.name)
+    }
+
+    /// Format: plans.selection_message_format contains one plan name.
+    private var selectionMessage: String {
+        String(format: NSLocalizedString("plans.selection_message_format", comment: ""), plan.name)
     }
 }
 

@@ -99,6 +99,9 @@
 "plans.included_events_format" = "%@ events included";
 "plans.choose_format" = "Choose %@";
 "plans.choose_accessibility_format" = "Choose %@ plan";
+"plans.selection_title_format" = "%@ selected";
+"plans.selection_message_format" = "We saved your %@ choice. The secure billing flow will be attached here before TestFlight.";
+"plans.selection_done" = "Done";
 "plans.upgrade_hint" = "Opens the secure upgrade flow";
 
 /* MARK: Usage */
@@ -154,3 +157,32 @@
 "reservation.error.alreadyCancelled" = "This reservation was already cancelled.";
 "reservation.error.slotNoLongerAvailable" = "That time slot is no longer available.";
 "reservation.error.modifyDeadlinePassed" = "Reservations can only be modified before they start.";
+
+/* MARK: Account deletion */
+"account_deletion.title" = "Delete account";
+"account_deletion.warning_title" = "Account deletion has a 30-day grace period";
+"account_deletion.warning_body" = "We will hide your account immediately, invalidate sessions, and schedule permanent deletion after 30 days. Reservation history may be retained in anonymized form for restaurant analytics and audit obligations.";
+"account_deletion.confirm_section" = "Confirm deletion";
+"account_deletion.confirm_instruction" = "Type DELETE to confirm you want to delete this Colomba account.";
+"account_deletion.confirm_placeholder" = "DELETE";
+"account_deletion.confirm_accessibility" = "Deletion confirmation text";
+"account_deletion.reauth_section" = "Re-authenticate";
+"account_deletion.magic_link_help" = "Enter the magic-link challenge and code from the re-authentication step. Apple re-authentication will be enabled when the backend flow is live.";
+"account_deletion.challenge_id" = "Challenge ID";
+"account_deletion.magic_code" = "Magic code";
+"account_deletion.delete_cta" = "Request account deletion";
+"account_deletion.delete_hint" = "Deletes the account after successful re-authentication";
+"account_deletion.subscription_blocked_body" = "Active Stripe subscriptions must be cancelled before account deletion. Open the billing portal, cancel your subscription, then return here.";
+"account_deletion.open_billing_portal" = "Open billing portal";
+"account_deletion.deleted_body" = "Your account deletion request was accepted. You can restore the account by signing in again during the 30-day grace period.";
+"account_deletion.done_cta" = "Done";
+"account_deletion.error_not_authenticated" = "Please sign in again before deleting your account.";
+"account_deletion.error_reauth_required" = "Please re-authenticate before deleting your account.";
+"account_deletion.error_reauth_invalid" = "The re-authentication code was invalid or expired.";
+"account_deletion.error_reauth_mismatch" = "The re-authenticated identity does not match this account.";
+"account_deletion.error_subscription_active" = "Cancel your active subscription before deleting your account.";
+"account_deletion.error_already_deleted" = "This account is already scheduled for deletion.";
+"account_deletion.error_maintenance" = "Account deletion is temporarily unavailable during maintenance.";
+"account_deletion.error_validation" = "Check the confirmation text and re-authentication code.";
+"account_deletion.error_network" = "Network error. Please try again.";
+"account_deletion.error_server" = "Server error. Please try again.";
