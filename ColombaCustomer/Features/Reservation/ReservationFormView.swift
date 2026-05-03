@@ -21,8 +21,8 @@ public struct ReservationFormView: View {
                 Picker(String(localized: "reservation.time"), selection: $viewModel.selectedSlot) {
                     Text("reservation.choose_time").tag(TimeSlot?.none)
                     ForEach(viewModel.availableSlots) { slot in
-                        Text(slot.startsAt, format: .dateTime.hour().minute())
-                            .tag(Optional(slot))
+                        Text(verbatim: timeText(for: slot))
+                            .tag(TimeSlot?.some(slot))
                     }
                 }
             }
@@ -36,7 +36,7 @@ public struct ReservationFormView: View {
                     .frame(minHeight: 96)
                 Text(characterCounterText)
                     .font(.caption)
-                    .foregroundStyle(viewModel.specialRequests.utf8.count <= 500 ? .secondary : .red)
+                    .foregroundStyle(viewModel.specialRequests.utf8.count <= 500 ? Color.secondary : Color.red)
             } header: {
                 Text("reservation.special_requests")
             } footer: {
@@ -80,6 +80,10 @@ public struct ReservationFormView: View {
         }
     }
 
+    private func timeText(for slot: TimeSlot) -> String {
+        slot.startsAt.formatted(date: .omitted, time: .shortened)
+    }
+
     /// Format: reservation.guests_format contains one integer guest count.
     private var guestsText: String {
         String(format: NSLocalizedString("reservation.guests_format", comment: ""), viewModel.partySize)
@@ -99,12 +103,20 @@ public struct ReservationFormView: View {
     }
 }
 
-private struct ConfirmationRoute: Identifiable, Equatable {
+private struct ConfirmationRoute: Identifiable, Equatable, Hashable {
     let id: String
     let confirmation: ReservationConfirmation
 
     init(confirmation: ReservationConfirmation) {
         self.id = confirmation.reservationId
         self.confirmation = confirmation
+    }
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }

@@ -19,7 +19,7 @@ public final class PhoneVerifyViewModel: ObservableObject {
 
     private let service: SMSVerifyServiceProtocol
     private let locale: AppLanguage
-    private let phoneNumberKit: PhoneNumberKit
+    private let phoneNumberKit: PhoneNumberUtility
     private let now: @Sendable () -> Date
     private var challenge: SMSChallenge?
     private var cooldownTask: Task<Void, Never>?
@@ -27,7 +27,7 @@ public final class PhoneVerifyViewModel: ObservableObject {
     public init(
         service: SMSVerifyServiceProtocol,
         locale: AppLanguage,
-        phoneNumberKit: PhoneNumberKit = PhoneNumberKit(),
+        phoneNumberKit: PhoneNumberUtility = PhoneNumberUtility(),
         now: @escaping @Sendable () -> Date = Date.init
     ) {
         self.service = service
