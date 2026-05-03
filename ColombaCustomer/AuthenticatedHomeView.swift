@@ -8,7 +8,7 @@ struct AuthenticatedHomeView: View {
     let session: AuthSession
     let reservationService: ReservationServiceProtocol
 
-    private let workspaces = Workspace.sampleWorkspaces
+    @StateObject private var workspaceStore = WorkspaceStore()
 
     init(
         authController: AuthController,
@@ -58,9 +58,9 @@ struct AuthenticatedHomeView: View {
 
     private var workspaceList: some View {
         VStack(spacing: ColombaSpacing.space4) {
-            ForEach(workspaces) { workspace in
+            ForEach($workspaceStore.workspaces) { $workspace in
                 NavigationLink {
-                    WorkspaceDashboardView(workspace: workspace)
+                    WorkspaceDashboardView(workspace: $workspace)
                 } label: {
                     WorkspaceCard(workspace: workspace)
                 }
@@ -76,10 +76,17 @@ struct AuthenticatedHomeView: View {
                 .font(.colomba.titleMd)
                 .foregroundStyle(Color.colomba.text.primary)
 
+            NavigationLink("Create workspace") {
+                WorkspaceSetupView(workspace: .draft()) { workspace in
+                    workspaceStore.upsert(workspace)
+                }
+            }
+            .buttonStyle(.borderedProminent)
+
             NavigationLink("Choose or manage plan") {
                 PlansListView()
             }
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(.bordered)
 
             NavigationLink("Usage minutes") {
                 UsageView()
@@ -147,13 +154,14 @@ private struct WorkspaceCard: View {
 }
 
 private struct WorkspaceDashboardView: View {
-    let workspace: Workspace
+    @Binding var workspace: Workspace
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: ColombaSpacing.space6) {
                 header
                 todayGuestsButton
+                workspaceSetupLinks
                 WorkspaceFloorPlanView(workspace: workspace)
             }
             .padding(ColombaSpacing.Screen.margin)
@@ -178,6 +186,22 @@ private struct WorkspaceDashboardView: View {
             Text(workspace.location)
                 .font(.colomba.bodyLg)
                 .foregroundStyle(Color.colomba.text.secondary)
+        }
+    }
+
+    private var workspaceSetupLinks: some View {
+        HStack(spacing: ColombaSpacing.space3) {
+            NavigationLink("Edit workspace setup") {
+                WorkspaceSetupView(workspace: workspace) { updated in
+                    workspace = updated
+                }
+            }
+            .buttonStyle(.borderedProminent)
+
+            NavigationLink("Edit table layout") {
+                TableLayoutEditorView(tables: $workspace.tables)
+            }
+            .buttonStyle(.bordered)
         }
     }
 
@@ -346,14 +370,255 @@ private struct WorkspaceFloorPlanView: View {
     }
 }
 
-private struct Workspace: Identifiable {
-    let id: String
-    let name: String
-    let location: String
-    let businessKind: String
-    let symbolName: String
-    let reservations: [WorkspaceReservation]
-    let tables: [WorkspaceTable]
+private struct WorkspaceSetupView: View {
+    @Environment(\.dismiss)
+    private var dismiss
+    @State private var draft: Workspace
+    let onSave: (Workspace) -> Void
+
+    init(workspace: Workspace, onSave: @escaping (Workspace) -> Void) {
+        _draft = State(initialValue: workspace)
+        self.onSave = onSave
+    }
+
+    var body: some View {
+        Form {
+            Section("Business") {
+                TextField("Workspace name", text: $draft.name)
+                    .textContentType(.organizationName)
+                TextField("Location", text: $draft.location)
+                    .textContentType(.fullStreetAddress)
+                Picker("Type", selection: $draft.businessKind) {
+                    Text("Restaurant workspace").tag("Restaurant workspace")
+                    Text("Bar workspace").tag("Bar workspace")
+                    Text("Salon workspace").tag("Salon workspace")
+                    Text("Hotel workspace").tag("Hotel workspace")
+                }
+            }
+
+            Section("Room setup") {
+                NavigationLink("Edit table positions") {
+                    TableLayoutEditorView(tables: $draft.tables)
+                }
+                LabeledContent("Tables", value: "\(draft.tables.count)")
+                Button("Add table") {
+                    draft.tables.append(.newTable(number: draft.tables.count + 1))
+                }
+            }
+
+            Section("Preview") {
+                WorkspaceFloorPlanView(workspace: draft)
+                    .listRowInsets(EdgeInsets())
+                    .padding(.vertical, ColombaSpacing.space3)
+            }
+        }
+        .scrollContentBackground(.hidden)
+        .background(Color.colomba.bg.base)
+        .navigationTitle("Workspace setup")
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Save") {
+                    onSave(draft.normalized())
+                    dismiss()
+                }
+                .disabled(!draft.canSave)
+            }
+        }
+    }
+}
+
+private struct TableLayoutEditorView: View {
+    @Binding var tables: [WorkspaceTable]
+    @State private var selectedTableID: String?
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: ColombaSpacing.space5) {
+                Text("Move tables into the room position. Local setup for now; backend sync comes next.")
+                    .font(.colomba.bodyMd)
+                    .foregroundStyle(Color.colomba.text.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                editablePlan
+                tableControls
+            }
+            .padding(ColombaSpacing.Screen.margin)
+            .frame(maxWidth: 760, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: .top)
+        }
+        .background(Color.colomba.bg.base)
+        .navigationTitle("Table layout")
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            selectedTableID = selectedTableID ?? tables.first?.id
+        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button("Add") {
+                    let table = WorkspaceTable.newTable(number: tables.count + 1)
+                    tables.append(table)
+                    selectedTableID = table.id
+                }
+            }
+        }
+    }
+
+    private var editablePlan: some View {
+        GeometryReader { geometry in
+            ZStack(alignment: .topLeading) {
+                RoundedRectangle(cornerRadius: 28, style: .continuous)
+                    .fill(Color.colomba.bg.raised)
+                RoundedRectangle(cornerRadius: 28, style: .continuous)
+                    .stroke(Color.colomba.border.hairline, lineWidth: 2)
+
+                ForEach(tables) { table in
+                    Button {
+                        selectedTableID = table.id
+                    } label: {
+                        editableTable(table, geometry: geometry)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+        .frame(height: 380)
+    }
+
+    private var tableControls: some View {
+        VStack(alignment: .leading, spacing: ColombaSpacing.space4) {
+            if let selectedTable {
+                Text("Selected: \(selectedTable.name)")
+                    .font(.colomba.titleMd)
+                    .foregroundStyle(Color.colomba.text.primary)
+
+                HStack(spacing: ColombaSpacing.space3) {
+                    Button("←") { moveSelected(dx: -0.05, dy: 0) }
+                    Button("↑") { moveSelected(dx: 0, dy: -0.05) }
+                    Button("↓") { moveSelected(dx: 0, dy: 0.05) }
+                    Button("→") { moveSelected(dx: 0.05, dy: 0) }
+                }
+                .buttonStyle(.borderedProminent)
+
+                Stepper("Seats: \(selectedTable.seats)", value: selectedSeatsBinding, in: 1...12)
+
+                Button("Remove selected table", role: .destructive) {
+                    removeSelected()
+                }
+                .buttonStyle(.bordered)
+            } else {
+                Text("Add a table to start the room plan.")
+                    .font(.colomba.bodyMd)
+                    .foregroundStyle(Color.colomba.text.secondary)
+            }
+        }
+        .padding(ColombaSpacing.space4)
+        .background(Color.colomba.bg.card)
+        .clipShape(RoundedRectangle(cornerRadius: ColombaRadii.Component.card, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: ColombaRadii.Component.card, style: .continuous)
+                .stroke(Color.colomba.border.hairline, lineWidth: 1)
+        )
+    }
+
+    private var selectedTable: WorkspaceTable? {
+        guard let selectedTableID else { return nil }
+        return tables.first { $0.id == selectedTableID }
+    }
+
+    private var selectedSeatsBinding: Binding<Int> {
+        Binding(
+            get: { selectedTable?.seats ?? 1 },
+            set: { seats in
+                guard let index = selectedIndex else { return }
+                tables[index].seats = seats
+            }
+        )
+    }
+
+    private var selectedIndex: Int? {
+        guard let selectedTableID else { return nil }
+        return tables.firstIndex { $0.id == selectedTableID }
+    }
+
+    private func editableTable(_ table: WorkspaceTable, geometry: GeometryProxy) -> some View {
+        let width = geometry.size.width * table.width
+        let height = geometry.size.height * table.height
+        let isSelected = table.id == selectedTableID
+        return ZStack {
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(isSelected ? Color.colomba.primary.opacity(0.32) : Color.colomba.bg.card)
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .stroke(
+                    isSelected ? Color.colomba.primary : Color.colomba.border.hairline,
+                    lineWidth: isSelected ? 3 : 2
+                )
+            VStack(spacing: 2) {
+                Text(table.name)
+                    .font(.colomba.caption.weight(.bold))
+                    .foregroundStyle(Color.colomba.text.primary)
+                Text("\(table.seats) seats")
+                    .font(.caption2)
+                    .foregroundStyle(Color.colomba.text.secondary)
+            }
+        }
+        .frame(width: width, height: height)
+        .position(x: geometry.size.width * table.x, y: geometry.size.height * table.y)
+    }
+
+    private func moveSelected(dx: CGFloat, dy: CGFloat) {
+        guard let index = selectedIndex else { return }
+        tables[index].x = min(max(tables[index].x + dx, 0.12), 0.88)
+        tables[index].y = min(max(tables[index].y + dy, 0.14), 0.88)
+    }
+
+    private func removeSelected() {
+        guard let index = selectedIndex else { return }
+        tables.remove(at: index)
+        selectedTableID = tables.first?.id
+    }
+}
+
+private final class WorkspaceStore: ObservableObject {
+    @Published var workspaces: [Workspace] {
+        didSet { save() }
+    }
+
+    private let defaults: UserDefaults
+    private let key = "colomba.workspaces.v1"
+
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+        if let data = defaults.data(forKey: key),
+           let decoded = try? JSONDecoder().decode([Workspace].self, from: data),
+           decoded.isEmpty == false {
+            workspaces = decoded
+        } else {
+            workspaces = Workspace.sampleWorkspaces
+        }
+    }
+
+    func upsert(_ workspace: Workspace) {
+        if let index = workspaces.firstIndex(where: { $0.id == workspace.id }) {
+            workspaces[index] = workspace
+        } else {
+            workspaces.append(workspace)
+        }
+    }
+
+    private func save() {
+        guard let data = try? JSONEncoder().encode(workspaces) else { return }
+        defaults.set(data, forKey: key)
+    }
+}
+
+private struct Workspace: Identifiable, Codable, Equatable {
+    var id: String
+    var name: String
+    var location: String
+    var businessKind: String
+    var symbolName: String
+    var reservations: [WorkspaceReservation]
+    var tables: [WorkspaceTable]
 
     var todayGuestCount: Int {
         reservations.reduce(0) { $0 + $1.guests }
@@ -365,6 +630,48 @@ private struct Workspace: Identifiable {
 
     var pastReservations: [WorkspaceReservation] {
         reservations.filter(\.status.isPast)
+    }
+
+    var canSave: Bool {
+        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+            !location.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+            !tables.isEmpty
+    }
+
+    func normalized() -> Self {
+        var copy = self
+        copy.name = copy.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        copy.location = copy.location.trimmingCharacters(in: .whitespacesAndNewlines)
+        copy.symbolName = Self.symbolName(for: copy.businessKind)
+        if copy.tables.isEmpty {
+            copy.tables = [.newTable(number: 1)]
+        }
+        return copy
+    }
+
+    static func draft() -> Self {
+        Self(
+            id: UUID().uuidString,
+            name: "",
+            location: "Basel, Switzerland",
+            businessKind: "Restaurant workspace",
+            symbolName: symbolName(for: "Restaurant workspace"),
+            reservations: [],
+            tables: WorkspaceTable.sampleRestaurant.map { $0.availableForSetup }
+        )
+    }
+
+    static func symbolName(for businessKind: String) -> String {
+        switch businessKind {
+        case "Bar workspace":
+            "wineglass.fill"
+        case "Salon workspace":
+            "scissors.circle.fill"
+        case "Hotel workspace":
+            "bed.double.circle.fill"
+        default:
+            "fork.knife.circle.fill"
+        }
     }
 
     static let sampleWorkspaces = [
@@ -380,13 +687,13 @@ private struct Workspace: Identifiable {
     ]
 }
 
-private struct WorkspaceReservation: Identifiable {
-    let id: String
-    let time: String
-    let guestName: String
-    let guests: Int
-    let tableName: String
-    let status: ReservationSheetStatus
+private struct WorkspaceReservation: Identifiable, Codable, Equatable {
+    var id: String
+    var time: String
+    var guestName: String
+    var guests: Int
+    var tableName: String
+    var status: ReservationSheetStatus
 
     static let sampleToday = [
         Self(
@@ -432,7 +739,7 @@ private struct WorkspaceReservation: Identifiable {
     ]
 }
 
-private enum ReservationSheetStatus {
+private enum ReservationSheetStatus: String, Codable, Equatable {
     case open
     case completed
     case cancelled
@@ -469,15 +776,34 @@ private enum ReservationSheetStatus {
     }
 }
 
-private struct WorkspaceTable: Identifiable {
-    let id: String
-    let name: String
-    let seats: Int
-    let x: CGFloat
-    let y: CGFloat
-    let width: CGFloat
-    let height: CGFloat
-    let isReserved: Bool
+private struct WorkspaceTable: Identifiable, Codable, Equatable {
+    var id: String
+    var name: String
+    var seats: Int
+    var x: CGFloat
+    var y: CGFloat
+    var width: CGFloat
+    var height: CGFloat
+    var isReserved: Bool
+
+    var availableForSetup: Self {
+        var copy = self
+        copy.isReserved = false
+        return copy
+    }
+
+    static func newTable(number: Int) -> Self {
+        Self(
+            id: UUID().uuidString,
+            name: "T\(number)",
+            seats: 2,
+            x: min(0.25 + CGFloat(number % 4) * 0.18, 0.82),
+            y: min(0.30 + CGFloat(number / 4) * 0.20, 0.78),
+            width: 0.18,
+            height: 0.14,
+            isReserved: false
+        )
+    }
 
     static let sampleRestaurant = [
         Self(id: "t1", name: "T1", seats: 2, x: 0.25, y: 0.32, width: 0.20, height: 0.14, isReserved: true),
