@@ -5,7 +5,7 @@
 /* MARK: Auth */
 "auth.colomba_brand" = "Colomba";
 "auth.welcome_title" = "Benvenuto in Colomba";
-"auth.signin_copy" = "Accedi in modo sicuro con Apple oppure usa il magic link via e-mail per gli account pilota.";
+"auth.signin_copy" = "Accedi in modo sicuro con Apple, Google oppure usa il magic link via e-mail per gli account pilota.";
 "auth.or" = "oppure";
 "auth.email_magic_link" = "Magic link via e-mail";
 "auth.email_placeholder" = "titolare@example.ch";
@@ -16,6 +16,10 @@
 "auth.sending_link" = "Invio del link sicuro…";
 "auth.verifying_code" = "Verifica del codice…";
 "auth.checking_apple" = "Verifica delle credenziali Apple…";
+"auth.signin_apple" = "Accedi con Apple";
+"auth.apple_unavailable_local_dev" = "L’accesso con Apple richiede l’entitlement Apple Developer a pagamento. Usa Google in questa build locale.";
+"auth.signin_google" = "Accedi con Google";
+"auth.checking_google" = "Verifica delle credenziali Google…";
 "auth.signed_in" = "Accesso effettuato";
 "auth.welcome_name_format" = "Benvenuto, %@";
 "auth.session_copy" = "La tua sessione sicura è attiva. Controlla lo stato di piano e fatturazione dalla dashboard.";

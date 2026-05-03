@@ -104,6 +104,17 @@ public final class AuthController {
         }
     }
 
+    public func signInWithGoogle(_ credential: GoogleCredentialPayload) async {
+        state = .authenticatingWithGoogle
+        do {
+            let session = try await service.exchangeGoogleCredential(credential, device: device)
+            try sessionStore.save(session)
+            state = .authenticated(session)
+        } catch {
+            state = .failed(message: error.localizedDescription)
+        }
+    }
+
     public func refreshSession() async {
         guard let session = state.session else {
             state = .signedOut
@@ -137,7 +148,8 @@ public final class AuthController {
             email: session.customer.email,
             phoneNumber: session.customer.phoneNumber,
             billingEmail: session.customer.billingEmail,
-            locale: session.customer.locale
+            locale: session.customer.locale,
+            authProvider: session.customer.authProvider
         )
         let updatedSession = AuthSession(
             customer: updatedCustomer,

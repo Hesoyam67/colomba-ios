@@ -12,12 +12,16 @@ struct SignedOutAuthView: View {
     @State private var email = ""
     @State private var code = ""
     @State private var appleNonce = Self.makeNonce()
+    @AppStorage(ColombaAppearance.storageKey)
+    private var selectedAppearanceRaw = ColombaAppearance.system.rawValue
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: ColombaSpacing.space6) {
                 header
+                appearancePicker
                 appleButton
+                googleButton
                 divider
                 magicLinkForm
                 stateMessage
@@ -46,18 +50,74 @@ struct SignedOutAuthView: View {
         }
     }
 
-    private var appleButton: some View {
-        SignInWithAppleButton(.signIn) { request in
-            appleNonce = Self.makeNonce()
-            request.requestedScopes = [.fullName, .email]
-            request.nonce = appleNonce
-        } onCompletion: { result in
-            handleAppleCompletion(result)
+    private var appearancePicker: some View {
+        Picker("Appearance", selection: $selectedAppearanceRaw) {
+            ForEach(ColombaAppearance.allCases) { appearance in
+                Text(appearance.title).tag(appearance.rawValue)
+            }
         }
-        .signInWithAppleButtonStyle(.black)
+        .pickerStyle(.segmented)
+        .accessibilityLabel("Appearance")
+    }
+
+    @ViewBuilder private var appleButton: some View {
+        if isAppleSignInEnabled {
+            SignInWithAppleButton(.signIn) { request in
+                appleNonce = Self.makeNonce()
+                request.requestedScopes = [.fullName, .email]
+                request.nonce = appleNonce
+            } onCompletion: { result in
+                handleAppleCompletion(result)
+            }
+            .signInWithAppleButtonStyle(.black)
+            .frame(height: 52)
+            .clipShape(RoundedRectangle(cornerRadius: ColombaRadii.Component.button, style: .continuous))
+            .disabled(state == .authenticatingWithApple || state == .authenticatingWithGoogle)
+            .accessibilityLabel("Sign in with Apple")
+        } else {
+            VStack(alignment: .leading, spacing: ColombaSpacing.space2) {
+                Button {
+                    authController.recordFailure(String(localized: "auth.apple_unavailable_local_dev"))
+                } label: {
+                    HStack(spacing: ColombaSpacing.space3) {
+                        Image(systemName: "apple.logo")
+                            .imageScale(.large)
+                        Text("auth.signin_apple")
+                            .font(.colomba.bodyMd.weight(.semibold))
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+                .tint(.black)
+                .frame(height: 52)
+                .accessibilityLabel("Sign in with Apple unavailable in local development build")
+
+                Text("auth.apple_unavailable_local_dev")
+                    .font(.colomba.caption)
+                    .foregroundStyle(Color.colomba.text.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
+    private var googleButton: some View {
+        Button {
+            Task {
+                await handleGoogleSignIn()
+            }
+        } label: {
+            HStack(spacing: ColombaSpacing.space3) {
+                Image(systemName: "g.circle.fill")
+                    .imageScale(.large)
+                Text("auth.signin_google")
+                    .font(.colomba.bodyMd.weight(.semibold))
+            }
+            .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.bordered)
         .frame(height: 52)
-        .clipShape(RoundedRectangle(cornerRadius: ColombaRadii.Component.button, style: .continuous))
-        .accessibilityLabel("Sign in with Apple")
+        .disabled(state == .authenticatingWithApple || state == .authenticatingWithGoogle)
+        .accessibilityLabel("Sign in with Google")
     }
 
     private var divider: some View {
@@ -151,6 +211,8 @@ struct SignedOutAuthView: View {
             loadingMessage(String(localized: "auth.verifying_code"), label: String(localized: "auth.verifying_code"))
         case .authenticatingWithApple:
             loadingMessage(String(localized: "auth.checking_apple"), label: String(localized: "auth.checking_apple"))
+        case .authenticatingWithGoogle:
+            loadingMessage(String(localized: "auth.checking_google"), label: String(localized: "auth.checking_google"))
         case let .failed(message):
             Text(message)
                 .font(.colomba.caption)
@@ -174,6 +236,10 @@ struct SignedOutAuthView: View {
     private var cardBorder: some View {
         RoundedRectangle(cornerRadius: ColombaRadii.Component.card, style: .continuous)
             .stroke(Color.colomba.border.hairline, lineWidth: 1)
+    }
+
+    private var isAppleSignInEnabled: Bool {
+        Bundle.main.bundleIdentifier != "com.hesoyam.colomba.dev"
     }
 
     private func loadingMessage(_ text: String, label: String) -> some View {
@@ -215,6 +281,26 @@ struct SignedOutAuthView: View {
         Task {
             await authController.signInWithApple(payload)
         }
+    }
+
+    private func handleGoogleSignIn() async {
+        #if canImport(GoogleSignIn)
+        do {
+            let token = try await GoogleSignInOAuthClient(configuration: .from()).authorize(scopes: [])
+            let credential = GoogleCredentialPayload(
+                accessToken: token.accessToken,
+                idToken: token.idToken,
+                email: token.email,
+                fullName: token.fullName,
+                scopes: token.scopes
+            )
+            await authController.signInWithGoogle(credential)
+        } catch {
+            authController.recordFailure(error.localizedDescription)
+        }
+        #else
+        authController.recordFailure(AuthFailure.missingGoogleCredential.localizedDescription)
+        #endif
     }
 
     private func fullName(from components: PersonNameComponents?) -> String? {

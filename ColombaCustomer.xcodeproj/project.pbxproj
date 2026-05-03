@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA0000000000000000000007 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = AA0000000000000000000006 /* GoogleSignIn */; };
+		AA0000000000000000000002 /* GoogleIntegrationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000001 /* GoogleIntegrationServices.swift */; };
+		AA0000000000000000000004 /* GoogleIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000003 /* GoogleIntegrationTests.swift */; };
 		012EE94B2AFBBD21B28D7B8B /* PhoneNumberKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8542197AFEB53E4A4E7831F4 /* PhoneNumberKit */; };
 		0B0C5B29C0F6109AC85CF10E /* PlansSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6917566F50ECFA4832D4C36A /* PlansSnapshotTests.swift */; };
 		0BB5D6B7640596C1CDB85941 /* ColombaDesign in Frameworks */ = {isa = PBXBuildFile; productRef = 37CC4DF457DDB92F64295051 /* ColombaDesign */; };
@@ -102,6 +105,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AA0000000000000000000001 /* GoogleIntegrationServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleIntegrationServices.swift; sourceTree = "<group>"; };
+		AA0000000000000000000003 /* GoogleIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleIntegrationTests.swift; sourceTree = "<group>"; };
 		0027DF6ACC24BE3A499F8001 /* PhoneVerifyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerifyViewModelTests.swift; sourceTree = "<group>"; };
 		0686D2C343EF44037655077A /* it-CH */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "it-CH"; path = "it-CH.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		07AEB8CB3AF60AA3F1410ECE /* ColombaCustomer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ColombaCustomer.entitlements; sourceTree = "<group>"; };
@@ -220,6 +225,7 @@
 				596BB3E32D94EFB3FD72DA25 /* ColombaNetworking in Frameworks */,
 				1141D2EF9FA7571A54A4D7DB /* ColombaBilling in Frameworks */,
 				BD07D5DE38064365D51B809E /* PhoneNumberKit in Frameworks */,
+				AA0000000000000000000007 /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,6 +331,7 @@
 		6EEAB8DAC0B5AC1FF08D8C68 /* ColombaCustomerTests */ = {
 			isa = PBXGroup;
 			children = (
+				AA0000000000000000000003 /* GoogleIntegrationTests.swift */,
 				5A1E850D29C95A2608B27B12 /* HeidiChatViewModelTests.swift */,
 				6782E7FA643C38F23D6B009D /* L10nKeysTests.swift */,
 				E67529021DC8EF3E1045CAA0 /* MyReservationsViewModelTests.swift */,
@@ -398,6 +405,7 @@
 		C1749F2CFF8B73597848A6A6 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				AA0000000000000000000001 /* GoogleIntegrationServices.swift */,
 				E7152A267D990B8F6E00E16F /* HeidiService.swift */,
 				E008248AFDEAC2681F875CAC /* HeidiServiceProtocol.swift */,
 				90B75FD265B78B4AD709F8FD /* HTTPReservationClient.swift */,
@@ -527,6 +535,7 @@
 				6765EBBDF7953544D2ACD496 /* ColombaNetworking */,
 				89D8608146065A8BF5DFC08A /* ColombaBilling */,
 				F0E15FB09FC1C1C017AD9CBA /* PhoneNumberKit */,
+				AA0000000000000000000006 /* GoogleSignIn */,
 			);
 			productName = ColombaCustomer;
 			productReference = 130E0989CAB8544F2CF00003 /* ColombaCustomer.app */;
@@ -557,6 +566,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				64C119E22417FEAC9562E583 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */,
+				AA0000000000000000000005 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				76F353BB897CDE0D210962A3 /* XCLocalSwiftPackageReference "Packages/Features/AccountFeature" */,
 				5ED18371A15EB383FB6AB8C4 /* XCLocalSwiftPackageReference "Packages/ColombaAuth" */,
 				7821683CA2B30A770A5F940B /* XCLocalSwiftPackageReference "Packages/ColombaBilling" */,
@@ -600,6 +610,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA0000000000000000000004 /* GoogleIntegrationTests.swift in Sources */,
 				FEF90F5F065A4F2162A728AA /* HeidiChatViewModelTests.swift in Sources */,
 				779D03D2AF6281A113850B3E /* L10nKeysTests.swift in Sources */,
 				F0067856EC0B04AE1D1D9F2E /* MyReservationsViewModelTests.swift in Sources */,
@@ -629,6 +640,7 @@
 				954BA11475379FE1323642A4 /* BookingConfirmationCard.swift in Sources */,
 				46B04B556AE3C67EE092C630 /* ChatInputBar.swift in Sources */,
 				3EB460CEB1FD73DEDFFC4361 /* ColombaCustomerApp.swift in Sources */,
+				AA0000000000000000000002 /* GoogleIntegrationServices.swift in Sources */,
 				38B4AFA2276DFEA2F80B2171 /* HTTPReservationClient.swift in Sources */,
 				24BA40E9F52BBBA6BFD637AC /* HeidiChatView.swift in Sources */,
 				C41F60C860CF1FBFF5A6068B /* HeidiChatViewModel.swift in Sources */,
@@ -996,6 +1008,14 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		AA0000000000000000000005 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
 		64C119E22417FEAC9562E583 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/marmelroy/PhoneNumberKit.git";
@@ -1007,6 +1027,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		AA0000000000000000000006 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AA0000000000000000000005 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
 		015730E5242C31325C0EC6F2 /* ColombaAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ColombaAuth;

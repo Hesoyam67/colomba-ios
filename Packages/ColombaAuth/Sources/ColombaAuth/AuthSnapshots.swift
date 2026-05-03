@@ -4,7 +4,7 @@ public enum AuthScreenSnapshot {
         case .restoring:
             "auth.restore.loading"
         case .signedOut:
-            "auth.signedOut.apple+magicLink"
+            "auth.signedOut.apple+google+magicLink"
         case let .requestingMagicLink(email):
             "auth.magic.requesting:\(email)"
         case let .magicLinkSent(challenge):
@@ -13,6 +13,8 @@ public enum AuthScreenSnapshot {
             "auth.magic.verifying:\(challenge.challengeId)"
         case .authenticatingWithApple:
             "auth.apple.exchanging"
+        case .authenticatingWithGoogle:
+            "auth.google.exchanging"
         case let .authenticated(session):
             "auth.authenticated:\(session.customer.displayName)"
         case let .failed(message):

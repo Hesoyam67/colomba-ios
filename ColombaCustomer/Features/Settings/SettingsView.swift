@@ -11,6 +11,8 @@ struct SettingsView: View {
         "colomba.onboarding.selectedLanguage"
     )
     private var selectedLanguageRaw = AppLanguage.deCH.rawValue
+    @AppStorage(ColombaAppearance.storageKey)
+    private var selectedAppearanceRaw = ColombaAppearance.system.rawValue
 
     init(
         authController: AuthController,
@@ -107,6 +109,13 @@ struct SettingsView: View {
                         UserDefaults.standard.set([newValue], forKey: "AppleLanguages")
                     }
                     .accessibilityLabel(Text("settings.language"))
+
+                    Picker("Appearance", selection: $selectedAppearanceRaw) {
+                        ForEach(ColombaAppearance.allCases) { appearance in
+                            Text(appearance.title).tag(appearance.rawValue)
+                        }
+                    }
+                    .accessibilityLabel("Appearance")
 
                     Text("settings.about")
                         .foregroundStyle(Color.colomba.text.secondary)
