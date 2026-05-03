@@ -98,6 +98,15 @@ public final class MyReservationsViewModel: ObservableObject {
         }
     }
 
+    public func applyModifiedReservation(
+        _ reservation: Reservation,
+        confirmation: ReservationConfirmation,
+        specialRequests: String?
+    ) {
+        replaceReservation(reservation, with: confirmation, specialRequests: specialRequests)
+        phase = .loaded
+    }
+
     private func markCancelled(reservationId: String, cancelledAt: Date) {
         reservations = reservations.map { reservation in
             guard reservation.id == reservationId else { return reservation }

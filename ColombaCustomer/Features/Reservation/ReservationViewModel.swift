@@ -27,14 +27,16 @@ public final class ReservationViewModel: ObservableObject {
     private let calendar: Calendar
 
     public var canConfirm: Bool {
+        guard canConfirmModification else { return false }
+        return fullName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false
+    }
+
+    public var canConfirmModification: Bool {
         let localMidnight = calendar.startOfDay(for: Date())
         let selectedMidnight = calendar.startOfDay(for: selectedDate)
         guard selectedMidnight >= localMidnight else { return false }
         guard let selectedSlot, availableSlots.contains(selectedSlot) else { return false }
         guard (1...12).contains(partySize) else { return false }
-        guard fullName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false else {
-            return false
-        }
         return specialRequests.utf8.count <= 500
     }
 
@@ -100,7 +102,7 @@ public final class ReservationViewModel: ObservableObject {
     }
 
     public func modify(existing reservation: Reservation) async {
-        guard canConfirm, let selectedSlot else {
+        guard canConfirmModification, let selectedSlot else {
             phase = .failed(reason: "Please complete the reservation details")
             return
         }

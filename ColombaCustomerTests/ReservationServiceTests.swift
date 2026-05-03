@@ -151,6 +151,98 @@ final class ReservationServiceTests: XCTestCase {
         XCTAssertEqual(confirmation.partySize, 4)
     }
 
+    func test_modifyReservation_mapsSlotUnavailableToModifyError() async throws {
+        let baseURL = try Self.makeURL("https://n8n.test/webhook")
+        MockURLProtocol.requestHandler = { request in
+            XCTAssertEqual(request.url?.lastPathComponent, "reservations-modify")
+            return (
+                try Self.response(status: 409, url: request.url),
+                Data("{\"error\":\"slot_unavailable\"}".utf8)
+            )
+        }
+        let client = HTTPReservationClient(baseURL: baseURL, urlSession: Self.urlSession())
+        do {
+            _ = try await client.modifyReservation(
+                id: "reservation-1",
+                slotId: "slot-2",
+                partySize: 4,
+                specialRequests: nil,
+                refreshToken: "refresh-token"
+            )
+            XCTFail("Expected slotNoLongerAvailable")
+        } catch ReservationError.slotNoLongerAvailable {
+            XCTAssertTrue(true)
+        }
+    }
+
+    func test_modifyReservation_mapsStartsAtValidationToDeadlinePassed() async throws {
+        let baseURL = try Self.makeURL("https://n8n.test/webhook")
+        MockURLProtocol.requestHandler = { request in
+            XCTAssertEqual(request.url?.lastPathComponent, "reservations-modify")
+            return (
+                try Self.response(status: 422, url: request.url),
+                Data("{\"error\":\"validation_failed\",\"field\":\"startsAt\"}".utf8)
+            )
+        }
+        let client = HTTPReservationClient(baseURL: baseURL, urlSession: Self.urlSession())
+        do {
+            _ = try await client.modifyReservation(
+                id: "reservation-1",
+                slotId: "slot-2",
+                partySize: 4,
+                specialRequests: nil,
+                refreshToken: "refresh-token"
+            )
+            XCTFail("Expected modifyDeadlinePassed")
+        } catch ReservationError.modifyDeadlinePassed {
+            XCTAssertTrue(true)
+        }
+    }
+
+    func test_createReservation_keepsSlotUnavailableErrorFor409() async throws {
+        let baseURL = try Self.makeURL("https://n8n.test/webhook")
+        MockURLProtocol.requestHandler = { request in
+            XCTAssertEqual(request.url?.lastPathComponent, "reservations-create")
+            return (
+                try Self.response(status: 409, url: request.url),
+                Data("{\"error\":\"slot_unavailable\"}".utf8)
+            )
+        }
+        let client = HTTPReservationClient(baseURL: baseURL, urlSession: Self.urlSession())
+        do {
+            _ = try await client.createReservation(
+                ReservationRequest(
+                    restaurantId: "restaurant-1",
+                    slotId: "slot-1",
+                    partySize: 2,
+                    fullName: "Papu"
+                ),
+                refreshToken: "refresh-token"
+            )
+            XCTFail("Expected slotUnavailable")
+        } catch ReservationError.slotUnavailable {
+            XCTAssertTrue(true)
+        }
+    }
+
+    func test_cancelReservation_mapsAlreadyCancelled() async throws {
+        let baseURL = try Self.makeURL("https://n8n.test/webhook")
+        MockURLProtocol.requestHandler = { request in
+            XCTAssertEqual(request.url?.lastPathComponent, "reservations-cancel")
+            return (
+                try Self.response(status: 410, url: request.url),
+                Data("{\"error\":\"already_cancelled\"}".utf8)
+            )
+        }
+        let client = HTTPReservationClient(baseURL: baseURL, urlSession: Self.urlSession())
+        do {
+            try await client.cancelReservation(id: "reservation-1", refreshToken: "refresh-token")
+            XCTFail("Expected alreadyCancelled")
+        } catch ReservationError.alreadyCancelled {
+            XCTAssertTrue(true)
+        }
+    }
+
     private static func urlSession() -> URLSession {
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [MockURLProtocol.self]

@@ -88,7 +88,7 @@ public struct HTTPReservationClient: ReservationHTTPClientProtocol, Sendable {
             refreshToken: refreshToken,
             body: body
         )
-        return try await perform(urlRequest, as: ReservationConfirmation.self)
+        return try await perform(urlRequest, as: ReservationConfirmation.self, operation: .create)
     }
 
     public func listMyReservations(refreshToken: String) async throws -> [Reservation] {
@@ -107,7 +107,7 @@ public struct HTTPReservationClient: ReservationHTTPClientProtocol, Sendable {
             refreshToken: refreshToken,
             body: ReservationIDRequest(reservationId: id)
         )
-        try await performEmpty(request)
+        try await performEmpty(request, operation: .cancel)
     }
 
     public func modifyReservation(
@@ -127,7 +127,7 @@ public struct HTTPReservationClient: ReservationHTTPClientProtocol, Sendable {
                 specialRequests: specialRequests
             )
         )
-        return try await perform(request, as: ReservationConfirmation.self)
+        return try await perform(request, as: ReservationConfirmation.self, operation: .modify)
     }
 
     private func makeRequest<T: Encodable>(
@@ -145,7 +145,11 @@ public struct HTTPReservationClient: ReservationHTTPClientProtocol, Sendable {
         return request
     }
 
-    private func perform<T: Decodable>(_ request: URLRequest, as type: T.Type) async throws -> T {
+    private func perform<T: Decodable>(
+        _ request: URLRequest,
+        as type: T.Type,
+        operation: HTTPReservationOperation = .generic
+    ) async throws -> T {
         let (data, response) = try await data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw ReservationError.server(status: -1)
@@ -154,11 +158,14 @@ public struct HTTPReservationClient: ReservationHTTPClientProtocol, Sendable {
         case 200..<300:
             return try decoder.decode(type, from: data)
         default:
-            throw mappedError(statusCode: httpResponse.statusCode, data: data)
+            throw mappedError(statusCode: httpResponse.statusCode, data: data, operation: operation)
         }
     }
 
-    private func performEmpty(_ request: URLRequest) async throws {
+    private func performEmpty(
+        _ request: URLRequest,
+        operation: HTTPReservationOperation = .generic
+    ) async throws {
         let (data, response) = try await data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw ReservationError.server(status: -1)
@@ -167,7 +174,7 @@ public struct HTTPReservationClient: ReservationHTTPClientProtocol, Sendable {
         case 200..<300:
             return
         default:
-            throw mappedError(statusCode: httpResponse.statusCode, data: data)
+            throw mappedError(statusCode: httpResponse.statusCode, data: data, operation: operation)
         }
     }
 
@@ -181,17 +188,24 @@ public struct HTTPReservationClient: ReservationHTTPClientProtocol, Sendable {
         }
     }
 
-    private func mappedError(statusCode: Int, data: Data) -> ReservationError {
+    private func mappedError(
+        statusCode: Int,
+        data: Data,
+        operation: HTTPReservationOperation
+    ) -> ReservationError {
         let error = try? decoder.decode(ErrorResponse.self, from: data)
         switch statusCode {
         case 401:
             return .notAuthenticated
         case 409:
-            return error?.error == "slot_unavailable" ? .slotNoLongerAvailable : .slotUnavailable
+            if operation == .modify, error?.error == "slot_unavailable" {
+                return .slotNoLongerAvailable
+            }
+            return .slotUnavailable
         case 410:
             return .alreadyCancelled
         case 422:
-            if error?.field == "startsAt" {
+            if operation == .modify, error?.field == "startsAt" {
                 return .modifyDeadlinePassed
             }
             return .validationFailed(field: error?.field ?? "unknown")
@@ -207,6 +221,13 @@ public struct HTTPReservationClient: ReservationHTTPClientProtocol, Sendable {
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter.string(from: date)
     }
+}
+
+private enum HTTPReservationOperation {
+    case generic
+    case create
+    case modify
+    case cancel
 }
 
 private struct EmptyRequest: Encodable {}
