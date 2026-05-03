@@ -3,6 +3,11 @@ import XCTest
 
 @MainActor
 final class HeidiChatViewModelTests: XCTestCase {
+    override func tearDown() {
+        HeidiMockURLProtocol.requestHandler = nil
+        super.tearDown()
+    }
+
     func test_emptyStateShowsWelcomeAndCanNotSendBlankDraft() {
         let model = HeidiChatViewModel(service: StubHeidiService(responses: [.done]))
         XCTAssertEqual(model.messages.count, 1)
@@ -89,6 +94,140 @@ final class HeidiChatViewModelTests: XCTestCase {
         XCTAssertEqual(model.phase, .idle)
     }
 
+    func test_liveServiceSendsAuthenticatedRequestAndParsesSSE() async throws {
+        let baseURL = try Self.makeURL("https://api.example.test/webhook")
+        var capturedAuthorization: String?
+        var capturedPath: String?
+        var capturedBody: [String: Any]?
+        HeidiMockURLProtocol.requestHandler = { request in
+            capturedAuthorization = request.value(forHTTPHeaderField: "Authorization")
+            capturedPath = request.url?.path
+            let body = Self.bodyData(from: request)
+            capturedBody = try JSONSerialization.jsonObject(with: body) as? [String: Any]
+
+            let data = Data(
+                """
+                event: message
+                data: {"type":"text","content":"Here are good options"}
+
+                event: message
+                data: {"type":"restaurants","content":[{"id":"colomba-demo","name":"Colomba Zürich","cuisine":"Swiss premium","address":"Zürich, Switzerland"}]}
+
+                event: message
+                data: {"type":"done","ok":true,"sessionId":"ios-test-session"}
+
+                """.utf8
+            )
+            return (try Self.response(status: 200, url: request.url), data)
+        }
+
+        let service = HeidiService(
+            mode: .live(
+                HeidiLiveConfiguration(
+                    baseURL: baseURL,
+                    sessionId: "ios-test-session",
+                    userId: "customer-1",
+                    bearerToken: "access-token"
+                )
+            ),
+            urlSession: Self.urlSession()
+        )
+        let history = [HeidiChatMessage(role: .assistant, text: "Welcome")]
+        let stream = try await service.sendMessage("show restaurants", history: history)
+        let responses = try await Self.responses(from: stream)
+
+        XCTAssertEqual(capturedAuthorization, "Bearer access-token")
+        XCTAssertEqual(capturedPath, "/webhook/heidi/chat")
+        XCTAssertEqual(capturedBody?["sessionId"] as? String, "ios-test-session")
+        XCTAssertEqual(capturedBody?["userId"] as? String, "customer-1")
+        XCTAssertEqual(capturedBody?["message"] as? String, "show restaurants")
+        XCTAssertEqual((capturedBody?["history"] as? [[String: Any]])?.first?["text"] as? String, "Welcome")
+        XCTAssertEqual(responses.first, .text("Here are good options"))
+        XCTAssertEqual(responses.last, .done)
+        guard case let .restaurantCards(cards) = responses.dropFirst().first else {
+            XCTFail("Expected restaurant cards")
+            return
+        }
+        XCTAssertEqual(cards.first?.name, "Colomba Zürich")
+        XCTAssertEqual(cards.first?.neighborhood, "Zürich, Switzerland")
+    }
+
+    func test_liveServiceThrowsOnHTTPError() async throws {
+        HeidiMockURLProtocol.requestHandler = { request in
+            (try Self.response(status: 401, url: request.url), Data())
+        }
+        let service = HeidiService(
+            mode: .live(
+                HeidiLiveConfiguration(
+                    baseURL: try Self.makeURL("https://api.example.test/webhook"),
+                    sessionId: "ios-test-session",
+                    userId: "customer-1",
+                    bearerToken: "bad-token"
+                )
+            ),
+            urlSession: Self.urlSession()
+        )
+        let stream = try await service.sendMessage("hello", history: [])
+
+        do {
+            _ = try await Self.responses(from: stream)
+            XCTFail("Expected HTTP error")
+        } catch HeidiServiceError.server(status: 401) {
+            XCTAssertTrue(true)
+        }
+    }
+
+
+    private static func responses(
+        from stream: AsyncThrowingStream<HeidiResponse, Error>
+    ) async throws -> [HeidiResponse] {
+        var responses: [HeidiResponse] = []
+        for try await response in stream {
+            responses.append(response)
+        }
+        return responses
+    }
+
+    private static func urlSession() -> URLSession {
+        let config = URLSessionConfiguration.ephemeral
+        config.protocolClasses = [HeidiMockURLProtocol.self]
+        return URLSession(configuration: config)
+    }
+
+    private static func makeURL(_ rawValue: String) throws -> URL {
+        guard let url = URL(string: rawValue) else {
+            throw HeidiTestError.invalidURL
+        }
+        return url
+    }
+
+    private static func response(status: Int, url: URL?) throws -> HTTPURLResponse {
+        guard let url,
+              let response = HTTPURLResponse(url: url, statusCode: status, httpVersion: nil, headerFields: nil) else {
+            throw HeidiTestError.invalidResponse
+        }
+        return response
+    }
+
+    private static func bodyData(from request: URLRequest) -> Data {
+        if let body = request.httpBody {
+            return body
+        }
+        guard let stream = request.httpBodyStream else {
+            return Data()
+        }
+        stream.open()
+        defer { stream.close() }
+        var data = Data()
+        var buffer = [UInt8](repeating: 0, count: 4_096)
+        while stream.hasBytesAvailable {
+            let count = stream.read(&buffer, maxLength: buffer.count)
+            guard count > 0 else { break }
+            data.append(buffer, count: count)
+        }
+        return data
+    }
+
     private static let card = HeidiRestaurantCard(
         id: "one",
         name: "Bellini",
@@ -106,6 +245,40 @@ final class HeidiChatViewModelTests: XCTestCase {
         timeText: "19:30",
         partySize: 4
     )
+}
+
+private enum HeidiTestError: Error {
+    case invalidURL
+    case invalidResponse
+}
+
+private final class HeidiMockURLProtocol: URLProtocol {
+    static var requestHandler: ((URLRequest) throws -> (HTTPURLResponse, Data))?
+
+    override static func canInit(with request: URLRequest) -> Bool {
+        true
+    }
+
+    override static func canonicalRequest(for request: URLRequest) -> URLRequest {
+        request
+    }
+
+    override func startLoading() {
+        guard let requestHandler = Self.requestHandler else {
+            client?.urlProtocol(self, didFailWithError: HeidiTestError.invalidResponse)
+            return
+        }
+        do {
+            let (response, data) = try requestHandler(request)
+            client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+            client?.urlProtocol(self, didLoad: data)
+            client?.urlProtocolDidFinishLoading(self)
+        } catch {
+            client?.urlProtocol(self, didFailWithError: error)
+        }
+    }
+
+    override func stopLoading() {}
 }
 
 private struct StubHeidiService: HeidiServiceProtocol {

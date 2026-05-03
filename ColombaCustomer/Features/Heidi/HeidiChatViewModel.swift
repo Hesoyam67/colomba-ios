@@ -37,6 +37,7 @@ public final class HeidiChatViewModel: ObservableObject {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard trimmed.isEmpty == false else { return }
 
+        let history = messages
         messages.append(HeidiChatMessage(role: .user, text: trimmed))
         phase = .sending
         var assistant = HeidiChatMessage(role: .assistant, text: "")
@@ -44,7 +45,7 @@ public final class HeidiChatViewModel: ObservableObject {
         let assistantIndex = messages.index(before: messages.endIndex)
 
         do {
-            let stream = try await service.sendMessage(trimmed, history: messages)
+            let stream = try await service.sendMessage(trimmed, history: history)
             for try await response in stream {
                 switch response {
                 case let .text(chunk):

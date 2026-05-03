@@ -72,7 +72,19 @@ private struct RootTabShell: View {
             }
 
             NavigationStack {
-                HeidiChatView()
+                HeidiChatView(
+                    viewModel: HeidiChatViewModel(
+                        service: HeidiService(
+                            mode: .live(
+                                HeidiLiveConfiguration(
+                                    sessionId: "ios-\(session.customer.id)",
+                                    userId: session.customer.id,
+                                    bearerToken: session.tokens.accessToken
+                                )
+                            )
+                        )
+                    )
+                )
             }
             .accessibilityElement(children: .contain)
             .accessibilityLabel(Text("tabs.heidi"))
