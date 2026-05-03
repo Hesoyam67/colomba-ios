@@ -44,6 +44,13 @@ struct SettingsView: View {
                     }
                     .accessibilityLabel(Text(String(localized: "profile.edit", table: "Profile")))
 
+                    NavigationLink {
+                        AccountDeletionView(authController: authController)
+                    } label: {
+                        Text(String(localized: "account_deletion.title"))
+                    }
+                    .accessibilityLabel(Text(String(localized: "account_deletion.title")))
+
                     Button(String(localized: "settings.sign_out"), role: .destructive) {
                         authController.signOut()
                     }
