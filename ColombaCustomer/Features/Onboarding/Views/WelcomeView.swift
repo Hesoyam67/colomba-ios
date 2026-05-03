@@ -14,15 +14,10 @@ public struct WelcomeView: View {
         VStack(spacing: 28) {
             Spacer(minLength: 24)
 
-            ZStack {
-                Circle()
-                    .fill(Color.colomba.primary)
-                    .frame(width: 88, height: 88)
-                Text("C")
-                    .font(.custom("Fraunces", size: 42, relativeTo: .largeTitle).weight(.bold))
-                    .foregroundStyle(Color.white)
-            }
-            .accessibilityHidden(true)
+            Text("Colomba")
+                .font(.custom("Fraunces", size: 44, relativeTo: .largeTitle).weight(.bold))
+                .foregroundStyle(Color.colomba.primary)
+                .accessibilityLabel("Colomba")
 
             VStack(spacing: 12) {
                 Text(copy.welcomeTitle)

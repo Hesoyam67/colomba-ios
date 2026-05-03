@@ -12,11 +12,14 @@ struct SignedOutAuthView: View {
     @State private var email = ""
     @State private var code = ""
     @State private var appleNonce = Self.makeNonce()
+    @AppStorage(ColombaAppearance.storageKey)
+    private var selectedAppearanceRaw = ColombaAppearance.system.rawValue
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: ColombaSpacing.space6) {
                 header
+                appearancePicker
                 appleButton
                 googleButton
                 divider
@@ -45,6 +48,16 @@ struct SignedOutAuthView: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityLabel("Sign in securely with Apple or email magic link")
         }
+    }
+
+    private var appearancePicker: some View {
+        Picker("Appearance", selection: $selectedAppearanceRaw) {
+            ForEach(ColombaAppearance.allCases) { appearance in
+                Text(appearance.title).tag(appearance.rawValue)
+            }
+        }
+        .pickerStyle(.segmented)
+        .accessibilityLabel("Appearance")
     }
 
     @ViewBuilder private var appleButton: some View {
