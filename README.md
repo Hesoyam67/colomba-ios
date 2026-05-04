@@ -2,7 +2,7 @@
 
 SwiftUI customer app for [colomba-swiss.ch](https://colomba-swiss.ch), the Swiss telephone-reception and reservation assistant platform.
 
-[![iOS CI](https://github.com/Hesoyam67/colomba-ios/actions/workflows/ios.yml/badge.svg)](https://github.com/Hesoyam67/colomba-ios/actions/workflows/ios.yml)
+[![iOS CI](https://github.com/Hesoyam67/colomba-ios/actions/workflows/ios-customer-app.yml/badge.svg)](https://github.com/Hesoyam67/colomba-ios/actions/workflows/ios-customer-app.yml)
 ![Swift 5.10](https://img.shields.io/badge/Swift-5.10-orange.svg)
 ![iOS 17+](https://img.shields.io/badge/iOS-17%2B-blue.svg)
 ![License: Proprietary](https://img.shields.io/badge/license-Proprietary-lightgrey.svg)
@@ -32,7 +32,7 @@ Colomba Customer is the SwiftUI iOS app that pairs with Colomba's telephone-rece
 │   ├── ColombaAuth/              # Authentication and verification logic
 │   └── Features/                 # Feature modules
 ├── scripts/                      # Local validation and measurement scripts
-└── .github/workflows/ios.yml     # GitHub Actions CI workflow
+└── .github/workflows/ios-customer-app.yml # GitHub Actions CI workflow
 ```
 
 ## Localization
@@ -49,7 +49,7 @@ Open the project in Xcode, select the `ColombaCustomer` scheme, choose an iPhone
 
 ## CI
 
-GitHub Actions CI is defined in `.github/workflows/ios.yml` and runs the iOS validation lane for this repository.
+GitHub Actions CI is defined in `.github/workflows/ios-customer-app.yml` and runs the iOS validation lane for this repository.
 
 ## Local checks
 

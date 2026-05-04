@@ -52,7 +52,7 @@ jobs:
         run: swiftlint --strict
 
       - name: iOS simulator build + cold-start gate
-        continue-on-error: true # TEMP non-blocking until cold-start baseline rebaselined
+        continue-on-error: true # TEMP non-blocking until Xcode/runtime cold-start baseline is reaccepted; see state/COLD-START-NONBLOCKING-FOLLOWUP-2026-05-04.md
         env:
           DEVICE_NAME: iPhone 16
           DEVICE_TYPE: com.apple.CoreSimulator.SimDeviceType.iPhone-16

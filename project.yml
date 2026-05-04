@@ -11,6 +11,9 @@ packages:
   PhoneNumberKit:
     url: https://github.com/marmelroy/PhoneNumberKit.git
     from: 4.0.0
+  GoogleSignIn:
+    url: https://github.com/google/GoogleSignIn-iOS
+    from: 8.0.0
   ColombaCore:
     path: Packages/ColombaCore
   ColombaDesign:
@@ -49,6 +52,23 @@ targets:
       - path: ColombaCustomer/PrivacyInfo.xcprivacy
     info:
       path: ColombaCustomer/Info.plist
+      properties:
+        CFBundleURLTypes:
+          - CFBundleTypeRole: Editor
+            CFBundleURLName: Colomba Google OAuth Production
+            CFBundleURLSchemes:
+              - com.googleusercontent.apps.603668283017-gp0r3ks2980c3jrktdjvjeptbe0usa5a
+          - CFBundleTypeRole: Editor
+            CFBundleURLName: Colomba Google OAuth Local Dev
+            CFBundleURLSchemes:
+              - com.googleusercontent.apps.603668283017-ue8n490uq608gp9sfa9v89674uahf230
+        ColombaGoogleOAuthLocalDevClientID: 603668283017-ue8n490uq608gp9sfa9v89674uahf230.apps.googleusercontent.com
+        ColombaGoogleOAuthProductionClientID: 603668283017-gp0r3ks2980c3jrktdjvjeptbe0usa5a.apps.googleusercontent.com
+        ColombaReservationWebhookBaseURL: https://api.colomba-swiss.ch/webhook
+        NSCalendarsFullAccessUsageDescription: Colomba uses calendar access only when you choose to add a reservation to your calendar.
+        NSCalendarsUsageDescription: Colomba uses calendar access only when you choose to add a reservation to your calendar.
+        UILaunchScreen: {}
+        UIRequiresFullScreen: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: ch.colomba.customer
@@ -65,6 +85,7 @@ targets:
       - package: ColombaNetworking
       - package: ColombaBilling
       - package: PhoneNumberKit
+      - package: GoogleSignIn
   ColombaCustomerTests:
     type: bundle.unit-test
     platform: iOS
