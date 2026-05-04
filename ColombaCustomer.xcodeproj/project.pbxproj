@@ -7,25 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA0000000000000000000007 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = AA0000000000000000000006 /* GoogleSignIn */; };
-		AA0000000000000000000002 /* GoogleIntegrationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000001 /* GoogleIntegrationServices.swift */; };
-		AA0000000000000000000004 /* GoogleIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000003 /* GoogleIntegrationTests.swift */; };
 		012EE94B2AFBBD21B28D7B8B /* PhoneNumberKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8542197AFEB53E4A4E7831F4 /* PhoneNumberKit */; };
+		04B3F108D049B5E95553473E /* WorkspaceStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01A463E1904BC76951E24A6 /* WorkspaceStoreTests.swift */; };
 		0B0C5B29C0F6109AC85CF10E /* PlansSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6917566F50ECFA4832D4C36A /* PlansSnapshotTests.swift */; };
 		0BB5D6B7640596C1CDB85941 /* ColombaDesign in Frameworks */ = {isa = PBXBuildFile; productRef = 37CC4DF457DDB92F64295051 /* ColombaDesign */; };
 		0D6C75287EBFCBE50C9E4737 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6261245D60A8DCFB9C16774E /* AppRouter.swift */; };
+		0E341FD09CF251CFD080B695 /* HTTPAccountClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB0E2F27067501043A26744 /* HTTPAccountClient.swift */; };
 		0F7C18E31AA127D58C5FF763 /* ReservationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CD85AAD7336C8A837A25CD /* ReservationServiceTests.swift */; };
 		1141D2EF9FA7571A54A4D7DB /* ColombaBilling in Frameworks */ = {isa = PBXBuildFile; productRef = 89D8608146065A8BF5DFC08A /* ColombaBilling */; };
 		11E46E940B379448F1943666 /* PaywallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25819DE27A8B0345505253B /* PaywallViewModel.swift */; };
 		16D493523C79473E67B361FC /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A308E03ACA3993B0FD4297 /* PaywallView.swift */; };
 		192234616D23A2A3D7CBF0F5 /* PlansListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAFA86210D4DD668E37A24F /* PlansListView.swift */; };
 		1A7E8E7798747B073B7BFCCC /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CEDC3B58608C93A1799D9E /* OnboardingViewModel.swift */; };
+		1E03DD87D3D4BA7050316D70 /* AccountDeletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605CEDD283D687F27091E097 /* AccountDeletionView.swift */; };
 		21A0A98661B40EFEF8BD04A3 /* UsageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85991E6CD00298AB0B7C0E7 /* UsageCache.swift */; };
 		2487BC440BA568B78379EC33 /* ReservationFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27830F05946E3A6E0EC8F351 /* ReservationFormView.swift */; };
 		24BA40E9F52BBBA6BFD637AC /* HeidiChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB666C951B517966380ACFD3 /* HeidiChatView.swift */; };
 		25A1179932F366547B55693F /* ColombaCore in Frameworks */ = {isa = PBXBuildFile; productRef = B768EBF2BC474A93E9CDE877 /* ColombaCore */; };
+		27010B736FD9875E8BF769D1 /* GoogleIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CE849BFFF70C173CDD218D /* GoogleIntegrationTests.swift */; };
 		271C8E03A8A50D5768614950 /* MessageBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790E47F1CEF1F61A299189AA /* MessageBubble.swift */; };
 		2852144735FAAB6C1A78ED33 /* RestaurantCardInChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2215D211ED24BA700C91820F /* RestaurantCardInChat.swift */; };
+		2BD00640EED723C5E2744382 /* AccountDeletionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F2B8ABE489CFFAFB011B49 /* AccountDeletionViewModelTests.swift */; };
 		2BF843889C9A47463A3B62B4 /* PhoneVerifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7611BB92F14FAB53ED5EAA6 /* PhoneVerifyView.swift */; };
 		2F9765F69A199CCFCAF08764 /* NotificationsOptInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD557EB2D06F6EACB96F73E /* NotificationsOptInView.swift */; };
 		38B4AFA2276DFEA2F80B2171 /* HTTPReservationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B75FD265B78B4AD709F8FD /* HTTPReservationClient.swift */; };
@@ -58,6 +60,7 @@
 		955C48E02C7F3EAB3EA0D56C /* SMSVerifyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F3CF458951EB1974F38B9E /* SMSVerifyService.swift */; };
 		9630E462FCD3A9FA913A67F7 /* UsageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519F02BBB3F8CA4DBEA53B6D /* UsageViewModel.swift */; };
 		9861CF9A9E7030B7CE2ACC12 /* RestaurantDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3A82583B968FE75652993F /* RestaurantDetailView.swift */; };
+		A322B7649C83DF2D2E288BFD /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9D7F2DE42A736EE620A792 /* AccountService.swift */; };
 		A40285D205A5266CA27C0D72 /* ReservationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2810FBAE4D10652F3CEF39F1 /* ReservationService.swift */; };
 		A4BEF2B9265BF80A64B24DFA /* StripePortalCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C10C1A05B15F533667B384C /* StripePortalCoordinator.swift */; };
 		A9187E85E8D761689958E0EB /* ReservationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43342F23DEA2C4DB6C90A3C8 /* ReservationViewModelTests.swift */; };
@@ -65,6 +68,8 @@
 		AC5BB2F5FE25E2EC7220EC82 /* UsageSummaryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B390C1F276C1FF68703D680 /* UsageSummaryRow.swift */; };
 		AE3859BB8246B74854C2452A /* PlansRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96ED09A41FD3344CEECCD447 /* PlansRepository.swift */; };
 		AE972C7C744AFE9082AD66B5 /* UsageCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F30CFBB06472E4826E1ED9 /* UsageCacheTests.swift */; };
+		AF6E7286FAD5BF02A9663A81 /* AccountServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41C360E9B9BB0BADAEBE15 /* AccountServiceProtocol.swift */; };
+		B20B4508B3E0FE60D5F12895 /* AccountDeletionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBEF25F097DA303F0D13B52 /* AccountDeletionViewModel.swift */; };
 		B6F86DD1FB28FFEDA5E6CF73 /* AuthRootHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266C69860D471188D23A0775 /* AuthRootHost.swift */; };
 		B86248BF956AB23C60D7A279 /* RestaurantListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE65D452BA9FD5EB85CA65 /* RestaurantListView.swift */; };
 		B9AFFE57C21FB35FED3E7369 /* ProfileEditViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654B0FDE5DE0EECC86BB4D5E /* ProfileEditViewModelTests.swift */; };
@@ -72,6 +77,7 @@
 		BACA62F836BA72A38BE40BCD /* HeidiServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E008248AFDEAC2681F875CAC /* HeidiServiceProtocol.swift */; };
 		BD07D5DE38064365D51B809E /* PhoneNumberKit in Frameworks */ = {isa = PBXBuildFile; productRef = F0E15FB09FC1C1C017AD9CBA /* PhoneNumberKit */; };
 		C080E7312A110725AA56D5E7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF5A27AAF4F72FCBEB6813C /* SettingsView.swift */; };
+		C17C2BB513BAA01E33A88214 /* GoogleIntegrationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5667C5F215A74F9F9B55762D /* GoogleIntegrationServices.swift */; };
 		C273ECD880E060F8EC505EF5 /* MyReservationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242C9FB6CAC53B1EC4284A84 /* MyReservationDetailView.swift */; };
 		C41F60C860CF1FBFF5A6068B /* HeidiChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64739038397B3AFF9C3F9A08 /* HeidiChatViewModel.swift */; };
 		C88BEDCCB86C02AFA804BBB8 /* Profile.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1F20CB1D0A3A3A7953293DB0 /* Profile.strings */; };
@@ -90,16 +96,10 @@
 		F2F720ECCB601F1499169510 /* PhoneVerifyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A348C7A72860162F5A05B9B /* PhoneVerifyViewModel.swift */; };
 		F30717457C7532B0DB890D8F /* SMSVerifyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09F4E901666727709C945FD /* SMSVerifyServiceTests.swift */; };
 		F3313BC579B71A9EE06D2219 /* MyReservationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B28DA0BC40E755DEFF54CA7 /* MyReservationsViewModel.swift */; };
+		F626F98B3354E2D7CD753734 /* AccountServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D985D93E66EEB11663357A8 /* AccountServiceTests.swift */; };
 		F9DD3114D0FC6D27B90FA45D /* ColombaBilling in Frameworks */ = {isa = PBXBuildFile; productRef = D4D0F5D6BC5827A6ED7A31BA /* ColombaBilling */; };
 		FEF90F5F065A4F2162A728AA /* HeidiChatViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1E850D29C95A2608B27B12 /* HeidiChatViewModelTests.swift */; };
-		AA1600000000000000000002 /* WorkspaceStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1600000000000000000001 /* WorkspaceStoreTests.swift */; };
-		AA1700000000000000000002 /* AccountServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1700000000000000000001 /* AccountServiceProtocol.swift */; };
-		AA1700000000000000000004 /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1700000000000000000003 /* AccountService.swift */; };
-		AA1700000000000000000006 /* HTTPAccountClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1700000000000000000005 /* HTTPAccountClient.swift */; };
-		AA1700000000000000000008 /* AccountDeletionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1700000000000000000007 /* AccountDeletionViewModel.swift */; };
-		AA170000000000000000000A /* AccountDeletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1700000000000000000009 /* AccountDeletionView.swift */; };
-		AA170000000000000000000C /* AccountDeletionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA170000000000000000000B /* AccountDeletionViewModelTests.swift */; };
-		AA170000000000000000000E /* AccountServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA170000000000000000000D /* AccountServiceTests.swift */; };
+		FF48D86CE254A7B52220462A /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = C6E5249DC8B8416F5335D96F /* GoogleSignIn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,8 +113,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		AA0000000000000000000001 /* GoogleIntegrationServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleIntegrationServices.swift; sourceTree = "<group>"; };
-		AA0000000000000000000003 /* GoogleIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleIntegrationTests.swift; sourceTree = "<group>"; };
 		0027DF6ACC24BE3A499F8001 /* PhoneVerifyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerifyViewModelTests.swift; sourceTree = "<group>"; };
 		0686D2C343EF44037655077A /* it-CH */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "it-CH"; path = "it-CH.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		07AEB8CB3AF60AA3F1410ECE /* ColombaCustomer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ColombaCustomer.entitlements; sourceTree = "<group>"; };
@@ -148,11 +146,15 @@
 		51A308E03ACA3993B0FD4297 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		52BF1097506CEE75C1F1855B /* OnboardingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModelTests.swift; sourceTree = "<group>"; };
 		5375F2AA7B3CFDE561CF573A /* OnboardingCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCopy.swift; sourceTree = "<group>"; };
+		5667C5F215A74F9F9B55762D /* GoogleIntegrationServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleIntegrationServices.swift; sourceTree = "<group>"; };
 		567F1B3C05822DC1FF6F681E /* OnboardingStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStep.swift; sourceTree = "<group>"; };
 		59F0575575B4E2F2814BED85 /* ColombaDesign */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ColombaDesign; path = Packages/ColombaDesign; sourceTree = SOURCE_ROOT; };
 		59F12A3E12067212E60B5A8B /* LanguagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguagePickerView.swift; sourceTree = "<group>"; };
 		5A1E850D29C95A2608B27B12 /* HeidiChatViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeidiChatViewModelTests.swift; sourceTree = "<group>"; };
+		5B41C360E9B9BB0BADAEBE15 /* AccountServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountServiceProtocol.swift; sourceTree = "<group>"; };
+		5D9D7F2DE42A736EE620A792 /* AccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.swift; sourceTree = "<group>"; };
 		5F41396385C9E8A96C83C8CB /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		605CEDD283D687F27091E097 /* AccountDeletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletionView.swift; sourceTree = "<group>"; };
 		612C47FD13E865716138DEA1 /* PlansDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansDetailView.swift; sourceTree = "<group>"; };
 		61A54F10E39CEA3D4F26B833 /* UsageFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = UsageFeature; path = Packages/Features/UsageFeature; sourceTree = SOURCE_ROOT; };
 		6261245D60A8DCFB9C16774E /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 		7658B7507DB883CB2C3F0550 /* PortalSessionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalSessionService.swift; sourceTree = "<group>"; };
 		790E47F1CEF1F61A299189AA /* MessageBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubble.swift; sourceTree = "<group>"; };
 		7A0C6BDFDFE8C2C342F02AE5 /* PlansViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansViewModelTests.swift; sourceTree = "<group>"; };
+		7D985D93E66EEB11663357A8 /* AccountServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountServiceTests.swift; sourceTree = "<group>"; };
 		7DF110F29C4067159262A9CA /* ColombaCustomerTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ColombaCustomerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FE5959A2DF501C3992E988C /* ColombaNetworking */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ColombaNetworking; path = Packages/ColombaNetworking; sourceTree = SOURCE_ROOT; };
 		875FCDDD70BEAE3884A1A600 /* InvoicesFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = InvoicesFeature; path = Packages/Features/InvoicesFeature; sourceTree = SOURCE_ROOT; };
@@ -178,12 +181,15 @@
 		A03077D975A760D40153AFBD /* ColombaBilling */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ColombaBilling; path = Packages/ColombaBilling; sourceTree = SOURCE_ROOT; };
 		ABA1C0C5E65FC39EAF665605 /* ReservationConfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationConfirmView.swift; sourceTree = "<group>"; };
 		AC98B8F5890A2B0B3EA105F3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Profile.strings; sourceTree = "<group>"; };
+		B01A463E1904BC76951E24A6 /* WorkspaceStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceStoreTests.swift; sourceTree = "<group>"; };
 		B2BD4ED171816B1EE6A89B09 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B5D7E8D21CCB32E5A56AF62E /* ColombaAuth */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ColombaAuth; path = Packages/ColombaAuth; sourceTree = SOURCE_ROOT; };
 		BB7A341412350F4E7C5AAD53 /* UsageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageViewModelTests.swift; sourceTree = "<group>"; };
 		BD754C973B08B692898892D4 /* AccountFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AccountFeature; path = Packages/Features/AccountFeature; sourceTree = SOURCE_ROOT; };
 		C25819DE27A8B0345505253B /* PaywallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallViewModel.swift; sourceTree = "<group>"; };
+		C3CE849BFFF70C173CDD218D /* GoogleIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleIntegrationTests.swift; sourceTree = "<group>"; };
 		C7CEDC3B58608C93A1799D9E /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		C9F2B8ABE489CFFAFB011B49 /* AccountDeletionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletionViewModelTests.swift; sourceTree = "<group>"; };
 		CAAE65D452BA9FD5EB85CA65 /* RestaurantListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantListView.swift; sourceTree = "<group>"; };
 		CF5C1FBE5E43CF0CE4962F03 /* ColombaCustomerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColombaCustomerApp.swift; sourceTree = "<group>"; };
 		D2AEB4360FF51E9122D7262B /* MockReservationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockReservationClient.swift; sourceTree = "<group>"; };
@@ -191,6 +197,7 @@
 		D725E1A5B7BFADB903F96EAB /* OTPInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPInputView.swift; sourceTree = "<group>"; };
 		D9097DC799895321F8586741 /* ReservationServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationServiceProtocol.swift; sourceTree = "<group>"; };
 		DBAFA86210D4DD668E37A24F /* PlansListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansListView.swift; sourceTree = "<group>"; };
+		DCB0E2F27067501043A26744 /* HTTPAccountClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPAccountClient.swift; sourceTree = "<group>"; };
 		DCD6452571FC87236B0BE272 /* AuthGateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthGateView.swift; sourceTree = "<group>"; };
 		E008248AFDEAC2681F875CAC /* HeidiServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeidiServiceProtocol.swift; sourceTree = "<group>"; };
 		E09F4E901666727709C945FD /* SMSVerifyServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSVerifyServiceTests.swift; sourceTree = "<group>"; };
@@ -209,15 +216,8 @@
 		FAB7D42ACD2E0C58B679FC23 /* MyReservationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyReservationsView.swift; sourceTree = "<group>"; };
 		FB666C951B517966380ACFD3 /* HeidiChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeidiChatView.swift; sourceTree = "<group>"; };
 		FBA4B9AA4DA67D0344C60D05 /* PortalSessionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalSessionServiceTests.swift; sourceTree = "<group>"; };
+		FBBEF25F097DA303F0D13B52 /* AccountDeletionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletionViewModel.swift; sourceTree = "<group>"; };
 		FEB554A480235ADEAB707618 /* UpgradeFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = UpgradeFeature; path = Packages/Features/UpgradeFeature; sourceTree = SOURCE_ROOT; };
-		AA1600000000000000000001 /* WorkspaceStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceStoreTests.swift; sourceTree = "<group>"; };
-		AA1700000000000000000001 /* AccountServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountServiceProtocol.swift; sourceTree = "<group>"; };
-		AA1700000000000000000003 /* AccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.swift; sourceTree = "<group>"; };
-		AA1700000000000000000005 /* HTTPAccountClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPAccountClient.swift; sourceTree = "<group>"; };
-		AA1700000000000000000007 /* AccountDeletionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletionViewModel.swift; sourceTree = "<group>"; };
-		AA1700000000000000000009 /* AccountDeletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletionView.swift; sourceTree = "<group>"; };
-		AA170000000000000000000B /* AccountDeletionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletionViewModelTests.swift; sourceTree = "<group>"; };
-		AA170000000000000000000D /* AccountServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountServiceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,7 +241,7 @@
 				596BB3E32D94EFB3FD72DA25 /* ColombaNetworking in Frameworks */,
 				1141D2EF9FA7571A54A4D7DB /* ColombaBilling in Frameworks */,
 				BD07D5DE38064365D51B809E /* PhoneNumberKit in Frameworks */,
-				AA0000000000000000000007 /* GoogleSignIn in Frameworks */,
+				FF48D86CE254A7B52220462A /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,14 +347,14 @@
 		6EEAB8DAC0B5AC1FF08D8C68 /* ColombaCustomerTests */ = {
 			isa = PBXGroup;
 			children = (
-				AA0000000000000000000003 /* GoogleIntegrationTests.swift */,
+				C3CE849BFFF70C173CDD218D /* GoogleIntegrationTests.swift */,
 				5A1E850D29C95A2608B27B12 /* HeidiChatViewModelTests.swift */,
 				6782E7FA643C38F23D6B009D /* L10nKeysTests.swift */,
 				E67529021DC8EF3E1045CAA0 /* MyReservationsViewModelTests.swift */,
 				654B0FDE5DE0EECC86BB4D5E /* ProfileEditViewModelTests.swift */,
 				67CD85AAD7336C8A837A25CD /* ReservationServiceTests.swift */,
 				43342F23DEA2C4DB6C90A3C8 /* ReservationViewModelTests.swift */,
-				AA1600000000000000000001 /* WorkspaceStoreTests.swift */,
+				B01A463E1904BC76951E24A6 /* WorkspaceStoreTests.swift */,
 			);
 			path = ColombaCustomerTests;
 			sourceTree = "<group>";
@@ -362,9 +362,9 @@
 		7420E9359F0DFBEC530C2EB8 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				605CEDD283D687F27091E097 /* AccountDeletionView.swift */,
+				FBBEF25F097DA303F0D13B52 /* AccountDeletionViewModel.swift */,
 				3EF5A27AAF4F72FCBEB6813C /* SettingsView.swift */,
-				AA1700000000000000000007 /* AccountDeletionViewModel.swift */,
-				AA1700000000000000000009 /* AccountDeletionView.swift */,
 				C42EAC4449E790A102A09571 /* Components */,
 			);
 			path = Settings;
@@ -424,12 +424,12 @@
 		C1749F2CFF8B73597848A6A6 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				AA0000000000000000000001 /* GoogleIntegrationServices.swift */,
-				AA1700000000000000000001 /* AccountServiceProtocol.swift */,
-				AA1700000000000000000003 /* AccountService.swift */,
-				AA1700000000000000000005 /* HTTPAccountClient.swift */,
+				5D9D7F2DE42A736EE620A792 /* AccountService.swift */,
+				5B41C360E9B9BB0BADAEBE15 /* AccountServiceProtocol.swift */,
+				5667C5F215A74F9F9B55762D /* GoogleIntegrationServices.swift */,
 				E7152A267D990B8F6E00E16F /* HeidiService.swift */,
 				E008248AFDEAC2681F875CAC /* HeidiServiceProtocol.swift */,
+				DCB0E2F27067501043A26744 /* HTTPAccountClient.swift */,
 				90B75FD265B78B4AD709F8FD /* HTTPReservationClient.swift */,
 				D2AEB4360FF51E9122D7262B /* MockReservationClient.swift */,
 				2810FBAE4D10652F3CEF39F1 /* ReservationService.swift */,
@@ -452,12 +452,12 @@
 		CED06B04649BDE505214C8D1 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				C9F2B8ABE489CFFAFB011B49 /* AccountDeletionViewModelTests.swift */,
+				7D985D93E66EEB11663357A8 /* AccountServiceTests.swift */,
 				52BF1097506CEE75C1F1855B /* OnboardingViewModelTests.swift */,
 				0027DF6ACC24BE3A499F8001 /* PhoneVerifyViewModelTests.swift */,
 				6917566F50ECFA4832D4C36A /* PlansSnapshotTests.swift */,
 				7A0C6BDFDFE8C2C342F02AE5 /* PlansViewModelTests.swift */,
-				AA170000000000000000000B /* AccountDeletionViewModelTests.swift */,
-				AA170000000000000000000D /* AccountServiceTests.swift */,
 				FBA4B9AA4DA67D0344C60D05 /* PortalSessionServiceTests.swift */,
 				E09F4E901666727709C945FD /* SMSVerifyServiceTests.swift */,
 				30F30CFBB06472E4826E1ED9 /* UsageCacheTests.swift */,
@@ -559,7 +559,7 @@
 				6765EBBDF7953544D2ACD496 /* ColombaNetworking */,
 				89D8608146065A8BF5DFC08A /* ColombaBilling */,
 				F0E15FB09FC1C1C017AD9CBA /* PhoneNumberKit */,
-				AA0000000000000000000006 /* GoogleSignIn */,
+				C6E5249DC8B8416F5335D96F /* GoogleSignIn */,
 			);
 			productName = ColombaCustomer;
 			productReference = 130E0989CAB8544F2CF00003 /* ColombaCustomer.app */;
@@ -589,8 +589,8 @@
 			mainGroup = BEB9E84B52011E05007E31B9;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				A65387F533142DAEC3FA9D68 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				64C119E22417FEAC9562E583 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */,
-				AA0000000000000000000005 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				76F353BB897CDE0D210962A3 /* XCLocalSwiftPackageReference "Packages/Features/AccountFeature" */,
 				5ED18371A15EB383FB6AB8C4 /* XCLocalSwiftPackageReference "Packages/ColombaAuth" */,
 				7821683CA2B30A770A5F940B /* XCLocalSwiftPackageReference "Packages/ColombaBilling" */,
@@ -634,7 +634,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA0000000000000000000004 /* GoogleIntegrationTests.swift in Sources */,
+				2BD00640EED723C5E2744382 /* AccountDeletionViewModelTests.swift in Sources */,
+				F626F98B3354E2D7CD753734 /* AccountServiceTests.swift in Sources */,
+				27010B736FD9875E8BF769D1 /* GoogleIntegrationTests.swift in Sources */,
 				FEF90F5F065A4F2162A728AA /* HeidiChatViewModelTests.swift in Sources */,
 				779D03D2AF6281A113850B3E /* L10nKeysTests.swift in Sources */,
 				F0067856EC0B04AE1D1D9F2E /* MyReservationsViewModelTests.swift in Sources */,
@@ -642,8 +644,6 @@
 				8309229D5383B05AB7132503 /* PhoneVerifyViewModelTests.swift in Sources */,
 				0B0C5B29C0F6109AC85CF10E /* PlansSnapshotTests.swift in Sources */,
 				CAFBC43F3525DABFB1786F8A /* PlansViewModelTests.swift in Sources */,
-				AA170000000000000000000C /* AccountDeletionViewModelTests.swift in Sources */,
-				AA170000000000000000000E /* AccountServiceTests.swift in Sources */,
 				8710BAEABE6A2B19DD772432 /* PortalSessionServiceTests.swift in Sources */,
 				B9AFFE57C21FB35FED3E7369 /* ProfileEditViewModelTests.swift in Sources */,
 				0F7C18E31AA127D58C5FF763 /* ReservationServiceTests.swift in Sources */,
@@ -651,7 +651,7 @@
 				F30717457C7532B0DB890D8F /* SMSVerifyServiceTests.swift in Sources */,
 				AE972C7C744AFE9082AD66B5 /* UsageCacheTests.swift in Sources */,
 				B9FFC3EA638B97A3823F8D0E /* UsageViewModelTests.swift in Sources */,
-				AA1600000000000000000002 /* WorkspaceStoreTests.swift in Sources */,
+				04B3F108D049B5E95553473E /* WorkspaceStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -659,6 +659,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E03DD87D3D4BA7050316D70 /* AccountDeletionView.swift in Sources */,
+				B20B4508B3E0FE60D5F12895 /* AccountDeletionViewModel.swift in Sources */,
+				A322B7649C83DF2D2E288BFD /* AccountService.swift in Sources */,
+				AF6E7286FAD5BF02A9663A81 /* AccountServiceProtocol.swift in Sources */,
 				D6787A5481A31BF135AAC020 /* AppLanguage.swift in Sources */,
 				0D6C75287EBFCBE50C9E4737 /* AppRouter.swift in Sources */,
 				3CD07E4046AE1DFCE250C957 /* AuthGateView.swift in Sources */,
@@ -667,7 +671,8 @@
 				954BA11475379FE1323642A4 /* BookingConfirmationCard.swift in Sources */,
 				46B04B556AE3C67EE092C630 /* ChatInputBar.swift in Sources */,
 				3EB460CEB1FD73DEDFFC4361 /* ColombaCustomerApp.swift in Sources */,
-				AA0000000000000000000002 /* GoogleIntegrationServices.swift in Sources */,
+				C17C2BB513BAA01E33A88214 /* GoogleIntegrationServices.swift in Sources */,
+				0E341FD09CF251CFD080B695 /* HTTPAccountClient.swift in Sources */,
 				38B4AFA2276DFEA2F80B2171 /* HTTPReservationClient.swift in Sources */,
 				24BA40E9F52BBBA6BFD637AC /* HeidiChatView.swift in Sources */,
 				C41F60C860CF1FBFF5A6068B /* HeidiChatViewModel.swift in Sources */,
@@ -707,11 +712,6 @@
 				955C48E02C7F3EAB3EA0D56C /* SMSVerifyService.swift in Sources */,
 				4C0ECAD0E9D24194C036D167 /* SMSVerifyServiceProtocol.swift in Sources */,
 				C080E7312A110725AA56D5E7 /* SettingsView.swift in Sources */,
-				AA1700000000000000000002 /* AccountServiceProtocol.swift in Sources */,
-				AA1700000000000000000004 /* AccountService.swift in Sources */,
-				AA1700000000000000000006 /* HTTPAccountClient.swift in Sources */,
-				AA1700000000000000000008 /* AccountDeletionViewModel.swift in Sources */,
-				AA170000000000000000000A /* AccountDeletionView.swift in Sources */,
 				5ABE53A5213CD86ED62103F9 /* SignedOutAuthView.swift in Sources */,
 				A4BEF2B9265BF80A64B24DFA /* StripePortalCoordinator.swift in Sources */,
 				5609700205D89092D3980FC0 /* TwilioSMSVerifyClient.swift in Sources */,
@@ -1040,14 +1040,6 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		AA0000000000000000000005 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 8.0.0;
-			};
-		};
 		64C119E22417FEAC9562E583 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/marmelroy/PhoneNumberKit.git";
@@ -1056,14 +1048,17 @@
 				minimumVersion = 4.0.0;
 			};
 		};
+		A65387F533142DAEC3FA9D68 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		AA0000000000000000000006 /* GoogleSignIn */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AA0000000000000000000005 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
-			productName = GoogleSignIn;
-		};
 		015730E5242C31325C0EC6F2 /* ColombaAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ColombaAuth;
@@ -1092,6 +1087,11 @@
 		B768EBF2BC474A93E9CDE877 /* ColombaCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ColombaCore;
+		};
+		C6E5249DC8B8416F5335D96F /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A65387F533142DAEC3FA9D68 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
 		};
 		D4D0F5D6BC5827A6ED7A31BA /* ColombaBilling */ = {
 			isa = XCSwiftPackageProductDependency;
