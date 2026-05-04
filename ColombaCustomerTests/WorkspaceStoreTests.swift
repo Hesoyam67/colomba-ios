@@ -15,6 +15,40 @@ final class WorkspaceStoreTests: XCTestCase {
         XCTAssertTrue(restored.workspaces.contains { $0.name == "Papu Bistro" })
     }
 
+
+    func testWorkspaceDecodeKeepsCompatibilityWithSavedPreSheetsJSON() throws {
+        let json = """
+        [{
+          "id":"legacy",
+          "name":"Legacy Bistro",
+          "location":"Basel",
+          "businessKind":"Restaurant workspace",
+          "symbolName":"fork.knife.circle.fill",
+          "reservations":[],
+          "tables":[]
+        }]
+        """.data(using: .utf8)!
+
+        let workspaces = try JSONDecoder().decode([Workspace].self, from: json)
+
+        XCTAssertEqual(workspaces.first?.googleSheetsSpreadsheetID, "")
+        XCTAssertEqual(workspaces.first?.googleSheetsRange, Workspace.defaultGoogleSheetsRange)
+    }
+
+    func testWorkspaceSheetRowFactoryBuildsReservationRows() {
+        var workspace = Workspace.sampleWorkspaces[0]
+        workspace.googleSheetsSpreadsheetID = " sheet-123 "
+        workspace.googleSheetsRange = " Bookings!A:F "
+
+        let rows = WorkspaceSheetRowFactory.rows(for: workspace)
+
+        XCTAssertEqual(rows.count, workspace.reservations.count)
+        XCTAssertEqual(rows.first?.spreadsheetID, "sheet-123")
+        XCTAssertEqual(rows.first?.range, "Bookings!A:F")
+        XCTAssertEqual(rows.first?.values.first, "Osteria Milano Basel")
+        XCTAssertEqual(rows.first?.values[2], workspace.reservations[0].guestName)
+    }
+
     func testSyncFromCloudReplacesLocalWorkspacesWhenRemoteExists() async {
         var remote = Workspace.draft()
         remote.name = "Cloud Workspace"

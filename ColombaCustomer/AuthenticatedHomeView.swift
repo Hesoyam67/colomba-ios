@@ -368,11 +368,52 @@ private struct WorkspaceDashboardView: View {
     }
 }
 
+enum WorkspaceSheetExportError: Error, Equatable {
+    case googleSignInUnavailable
+}
+
+struct WorkspaceSheetRowFactory {
+    static func rows(for workspace: Workspace) -> [SheetRowDraft] {
+        let spreadsheetID = workspace.googleSheetsSpreadsheetID.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard spreadsheetID.isEmpty == false else { return [] }
+
+        let range = workspace.normalizedGoogleSheetsRange
+        return workspace.reservations.map { reservation in
+            SheetRowDraft(
+                spreadsheetID: spreadsheetID,
+                range: range,
+                values: [
+                    workspace.name,
+                    reservation.time,
+                    reservation.guestName,
+                    String(reservation.guests),
+                    reservation.tableName,
+                    reservation.status.title
+                ]
+            )
+        }
+    }
+}
+
 private struct TodayReservationsView: View {
     @Binding var workspace: Workspace
+    @State private var exportMessage = "Add a Google Sheet ID in workspace setup, then export today's sheet."
+    @State private var isExporting = false
 
     var body: some View {
         List {
+            Section("Google Sheets") {
+                Text(exportMessage)
+                    .font(.colomba.caption)
+                    .foregroundStyle(Color.colomba.text.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Button(isExporting ? "Exporting…" : "Export today's sheet") {
+                    Task { await exportTodayToGoogleSheets() }
+                }
+                .disabled(isExporting || WorkspaceSheetRowFactory.rows(for: workspace).isEmpty)
+            }
+
             Section("Open reservations") {
                 if openReservationIDs.isEmpty {
                     Text("No open reservations for today yet.")
@@ -399,6 +440,12 @@ private struct TodayReservationsView: View {
         .onChange(of: workspace.reservations) { _, _ in
             refreshReservedTableStates()
         }
+        .onChange(of: workspace.googleSheetsSpreadsheetID) { _, _ in
+            refreshExportMessage()
+        }
+        .onAppear {
+            refreshExportMessage()
+        }
     }
 
     @ViewBuilder
@@ -411,6 +458,43 @@ private struct TodayReservationsView: View {
                     ReservationSheetRow(reservation: reservation.wrappedValue)
                 }
             }
+        }
+    }
+
+    @MainActor
+    private func exportTodayToGoogleSheets() async {
+        guard !isExporting else { return }
+        let rows = WorkspaceSheetRowFactory.rows(for: workspace)
+        guard rows.isEmpty == false else {
+            refreshExportMessage()
+            return
+        }
+
+        isExporting = true
+        defer { isExporting = false }
+
+        do {
+            #if canImport(GoogleSignIn)
+            let service = GoogleSheetsService(oauth: GoogleSignInOAuthClient(configuration: .from()))
+            for row in rows {
+                _ = try await service.append(row: row)
+            }
+            exportMessage = "Google Sheets export complete: \(rows.count) row(s) appended."
+            #else
+            throw WorkspaceSheetExportError.googleSignInUnavailable
+            #endif
+        } catch {
+            exportMessage = "Google Sheets export failed; check sign-in, sharing, and Sheet ID."
+        }
+    }
+
+    private func refreshExportMessage() {
+        if workspace.googleSheetsSpreadsheetID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            exportMessage = "Add a Google Sheet ID in workspace setup, then export today's sheet."
+        } else if WorkspaceSheetRowFactory.rows(for: workspace).isEmpty {
+            exportMessage = "No reservations are ready to export yet."
+        } else {
+            exportMessage = "Ready to append \(WorkspaceSheetRowFactory.rows(for: workspace).count) row(s)."
         }
     }
 
@@ -623,6 +707,18 @@ struct WorkspaceSetupView: View {
                 Button("Add table") {
                     draft.tables.append(.newTable(number: draft.tables.count + 1))
                 }
+            }
+
+            Section("Google Sheets") {
+                TextField("Spreadsheet ID", text: $draft.googleSheetsSpreadsheetID)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                TextField("Sheet range", text: $draft.googleSheetsRange)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                Text("Use the ID from the Google Sheet URL. Range defaults to Reservations!A:F.")
+                    .font(.colomba.caption)
+                    .foregroundStyle(Color.colomba.text.secondary)
             }
 
             Section("Preview") {
@@ -947,6 +1043,8 @@ struct LocalWorkspaceSyncClient: WorkspaceSyncClientProtocol {
 }
 
 struct Workspace: Identifiable, Codable, Equatable {
+    static let defaultGoogleSheetsRange = "Reservations!A:F"
+
     var id: String
     var name: String
     var location: String
@@ -954,6 +1052,44 @@ struct Workspace: Identifiable, Codable, Equatable {
     var symbolName: String
     var reservations: [WorkspaceReservation]
     var tables: [WorkspaceTable]
+    var googleSheetsSpreadsheetID: String
+    var googleSheetsRange: String
+
+    init(
+        id: String,
+        name: String,
+        location: String,
+        businessKind: String,
+        symbolName: String,
+        reservations: [WorkspaceReservation],
+        tables: [WorkspaceTable],
+        googleSheetsSpreadsheetID: String = "",
+        googleSheetsRange: String = Self.defaultGoogleSheetsRange
+    ) {
+        self.id = id
+        self.name = name
+        self.location = location
+        self.businessKind = businessKind
+        self.symbolName = symbolName
+        self.reservations = reservations
+        self.tables = tables
+        self.googleSheetsSpreadsheetID = googleSheetsSpreadsheetID
+        self.googleSheetsRange = googleSheetsRange
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        location = try container.decode(String.self, forKey: .location)
+        businessKind = try container.decode(String.self, forKey: .businessKind)
+        symbolName = try container.decode(String.self, forKey: .symbolName)
+        reservations = try container.decode([WorkspaceReservation].self, forKey: .reservations)
+        tables = try container.decode([WorkspaceTable].self, forKey: .tables)
+        googleSheetsSpreadsheetID = try container.decodeIfPresent(String.self, forKey: .googleSheetsSpreadsheetID) ?? ""
+        googleSheetsRange = try container.decodeIfPresent(String.self, forKey: .googleSheetsRange)
+            ?? Self.defaultGoogleSheetsRange
+    }
 
     var todayGuestCount: Int {
         reservations.reduce(0) { $0 + $1.guests }
@@ -967,6 +1103,11 @@ struct Workspace: Identifiable, Codable, Equatable {
         reservations.filter(\.status.isPast)
     }
 
+    var normalizedGoogleSheetsRange: String {
+        let trimmed = googleSheetsRange.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? Self.defaultGoogleSheetsRange : trimmed
+    }
+
     var canSave: Bool {
         !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
             !location.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
@@ -978,6 +1119,9 @@ struct Workspace: Identifiable, Codable, Equatable {
         copy.name = copy.name.trimmingCharacters(in: .whitespacesAndNewlines)
         copy.location = copy.location.trimmingCharacters(in: .whitespacesAndNewlines)
         copy.symbolName = Self.symbolName(for: copy.businessKind)
+        copy.googleSheetsSpreadsheetID = copy.googleSheetsSpreadsheetID
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        copy.googleSheetsRange = copy.normalizedGoogleSheetsRange
         if copy.tables.isEmpty {
             copy.tables = [.newTable(number: 1)]
         }
@@ -992,7 +1136,9 @@ struct Workspace: Identifiable, Codable, Equatable {
             businessKind: "Restaurant workspace",
             symbolName: symbolName(for: "Restaurant workspace"),
             reservations: [],
-            tables: WorkspaceTable.sampleRestaurant.map { $0.availableForSetup }
+            tables: WorkspaceTable.sampleRestaurant.map { $0.availableForSetup },
+            googleSheetsSpreadsheetID: "",
+            googleSheetsRange: defaultGoogleSheetsRange
         )
     }
 
@@ -1017,7 +1163,9 @@ struct Workspace: Identifiable, Codable, Equatable {
             businessKind: "Restaurant workspace",
             symbolName: "fork.knife.circle.fill",
             reservations: WorkspaceReservation.sampleToday,
-            tables: WorkspaceTable.sampleRestaurant
+            tables: WorkspaceTable.sampleRestaurant,
+            googleSheetsSpreadsheetID: "",
+            googleSheetsRange: defaultGoogleSheetsRange
         )
     ]
 }
