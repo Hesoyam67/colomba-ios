@@ -19,6 +19,7 @@
 		16D493523C79473E67B361FC /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A308E03ACA3993B0FD4297 /* PaywallView.swift */; };
 		192234616D23A2A3D7CBF0F5 /* PlansListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAFA86210D4DD668E37A24F /* PlansListView.swift */; };
 		1A7E8E7798747B073B7BFCCC /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CEDC3B58608C93A1799D9E /* OnboardingViewModel.swift */; };
+		1BCE395F97191392DD38A92D /* HTTPAuthServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740AAA703A837488F589E7B1 /* HTTPAuthServiceTests.swift */; };
 		1E03DD87D3D4BA7050316D70 /* AccountDeletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605CEDD283D687F27091E097 /* AccountDeletionView.swift */; };
 		21A0A98661B40EFEF8BD04A3 /* UsageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85991E6CD00298AB0B7C0E7 /* UsageCache.swift */; };
 		2487BC440BA568B78379EC33 /* ReservationFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27830F05946E3A6E0EC8F351 /* ReservationFormView.swift */; };
@@ -46,6 +47,7 @@
 		58CBB99D5B3AFF2F0DDCF173 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5F41396385C9E8A96C83C8CB /* PrivacyInfo.xcprivacy */; };
 		596BB3E32D94EFB3FD72DA25 /* ColombaNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 6765EBBDF7953544D2ACD496 /* ColombaNetworking */; };
 		5ABE53A5213CD86ED62103F9 /* SignedOutAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFC833D199608357885074F1 /* SignedOutAuthView.swift */; };
+		5F420A9968A1E81099C04384 /* TwilioSMSVerifyClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F304713A4AE797E7AC91B773 /* TwilioSMSVerifyClientTests.swift */; };
 		64061884188F665F901F07E2 /* AuthenticatedHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0CA16AC3A7BE5397AFA97 /* AuthenticatedHomeView.swift */; };
 		6CB4FE8AAC1057B02DB50671 /* ReservationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D9E44525A8A9D4C502D2BC /* ReservationViewModel.swift */; };
 		6DE43FFA15CE4ECF7372501E /* LanguagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F12A3E12067212E60B5A8B /* LanguagePickerView.swift */; };
@@ -55,6 +57,8 @@
 		8309229D5383B05AB7132503 /* PhoneVerifyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0027DF6ACC24BE3A499F8001 /* PhoneVerifyViewModelTests.swift */; };
 		8710BAEABE6A2B19DD772432 /* PortalSessionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA4B9AA4DA67D0344C60D05 /* PortalSessionServiceTests.swift */; };
 		8A001ED13FAB46AFB24CACF8 /* PaywallStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F08485124F3F7569FFE7B98 /* PaywallStateMachine.swift */; };
+		8D2ABAD029BA1780FFE42EA9 /* HTTPAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0D150D20EBF6ADC8560F57 /* HTTPAuthService.swift */; };
+		9058864EA12A38182D8C1B40 /* AuthController+Production.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E42A5270FA119A6495DBD00 /* AuthController+Production.swift */; };
 		931A14351A4AA2C9424D48A2 /* HeidiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7152A267D990B8F6E00E16F /* HeidiService.swift */; };
 		954BA11475379FE1323642A4 /* BookingConfirmationCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489B8E042FF750D2EC23914E /* BookingConfirmationCard.swift */; };
 		955C48E02C7F3EAB3EA0D56C /* SMSVerifyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F3CF458951EB1974F38B9E /* SMSVerifyService.swift */; };
@@ -165,6 +169,7 @@
 		67CD85AAD7336C8A837A25CD /* ReservationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationServiceTests.swift; sourceTree = "<group>"; };
 		6917566F50ECFA4832D4C36A /* PlansSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansSnapshotTests.swift; sourceTree = "<group>"; };
 		69D9E44525A8A9D4C502D2BC /* ReservationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationViewModel.swift; sourceTree = "<group>"; };
+		740AAA703A837488F589E7B1 /* HTTPAuthServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPAuthServiceTests.swift; sourceTree = "<group>"; };
 		7658B7507DB883CB2C3F0550 /* PortalSessionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalSessionService.swift; sourceTree = "<group>"; };
 		790E47F1CEF1F61A299189AA /* MessageBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubble.swift; sourceTree = "<group>"; };
 		7A0C6BDFDFE8C2C342F02AE5 /* PlansViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansViewModelTests.swift; sourceTree = "<group>"; };
@@ -178,6 +183,7 @@
 		9336D512F92F1F031EBE181C /* de-CH */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "de-CH"; path = "de-CH.lproj/Profile.strings"; sourceTree = "<group>"; };
 		96ED09A41FD3344CEECCD447 /* PlansRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansRepository.swift; sourceTree = "<group>"; };
 		9AD557EB2D06F6EACB96F73E /* NotificationsOptInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsOptInView.swift; sourceTree = "<group>"; };
+		9E42A5270FA119A6495DBD00 /* AuthController+Production.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthController+Production.swift"; sourceTree = "<group>"; };
 		A03077D975A760D40153AFBD /* ColombaBilling */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ColombaBilling; path = Packages/ColombaBilling; sourceTree = SOURCE_ROOT; };
 		ABA1C0C5E65FC39EAF665605 /* ReservationConfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationConfirmView.swift; sourceTree = "<group>"; };
 		AC98B8F5890A2B0B3EA105F3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Profile.strings; sourceTree = "<group>"; };
@@ -185,6 +191,7 @@
 		B2BD4ED171816B1EE6A89B09 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B5D7E8D21CCB32E5A56AF62E /* ColombaAuth */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ColombaAuth; path = Packages/ColombaAuth; sourceTree = SOURCE_ROOT; };
 		BB7A341412350F4E7C5AAD53 /* UsageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageViewModelTests.swift; sourceTree = "<group>"; };
+		BD0D150D20EBF6ADC8560F57 /* HTTPAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPAuthService.swift; sourceTree = "<group>"; };
 		BD754C973B08B692898892D4 /* AccountFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AccountFeature; path = Packages/Features/AccountFeature; sourceTree = SOURCE_ROOT; };
 		C25819DE27A8B0345505253B /* PaywallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallViewModel.swift; sourceTree = "<group>"; };
 		C3CE849BFFF70C173CDD218D /* GoogleIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleIntegrationTests.swift; sourceTree = "<group>"; };
@@ -211,6 +218,7 @@
 		EE736676D915E7F4E9B11E79 /* fr-CH */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-CH"; path = "fr-CH.lproj/Profile.strings"; sourceTree = "<group>"; };
 		EFC833D199608357885074F1 /* SignedOutAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignedOutAuthView.swift; sourceTree = "<group>"; };
 		EFD0CA16AC3A7BE5397AFA97 /* AuthenticatedHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedHomeView.swift; sourceTree = "<group>"; };
+		F304713A4AE797E7AC91B773 /* TwilioSMSVerifyClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwilioSMSVerifyClientTests.swift; sourceTree = "<group>"; };
 		F7118839EED2490DD552C3A4 /* OnboardingContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContainerView.swift; sourceTree = "<group>"; };
 		F85991E6CD00298AB0B7C0E7 /* UsageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageCache.swift; sourceTree = "<group>"; };
 		FAB7D42ACD2E0C58B679FC23 /* MyReservationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyReservationsView.swift; sourceTree = "<group>"; };
@@ -426,10 +434,12 @@
 			children = (
 				5D9D7F2DE42A736EE620A792 /* AccountService.swift */,
 				5B41C360E9B9BB0BADAEBE15 /* AccountServiceProtocol.swift */,
+				9E42A5270FA119A6495DBD00 /* AuthController+Production.swift */,
 				5667C5F215A74F9F9B55762D /* GoogleIntegrationServices.swift */,
 				E7152A267D990B8F6E00E16F /* HeidiService.swift */,
 				E008248AFDEAC2681F875CAC /* HeidiServiceProtocol.swift */,
 				DCB0E2F27067501043A26744 /* HTTPAccountClient.swift */,
+				BD0D150D20EBF6ADC8560F57 /* HTTPAuthService.swift */,
 				90B75FD265B78B4AD709F8FD /* HTTPReservationClient.swift */,
 				D2AEB4360FF51E9122D7262B /* MockReservationClient.swift */,
 				2810FBAE4D10652F3CEF39F1 /* ReservationService.swift */,
@@ -454,12 +464,14 @@
 			children = (
 				C9F2B8ABE489CFFAFB011B49 /* AccountDeletionViewModelTests.swift */,
 				7D985D93E66EEB11663357A8 /* AccountServiceTests.swift */,
+				740AAA703A837488F589E7B1 /* HTTPAuthServiceTests.swift */,
 				52BF1097506CEE75C1F1855B /* OnboardingViewModelTests.swift */,
 				0027DF6ACC24BE3A499F8001 /* PhoneVerifyViewModelTests.swift */,
 				6917566F50ECFA4832D4C36A /* PlansSnapshotTests.swift */,
 				7A0C6BDFDFE8C2C342F02AE5 /* PlansViewModelTests.swift */,
 				FBA4B9AA4DA67D0344C60D05 /* PortalSessionServiceTests.swift */,
 				E09F4E901666727709C945FD /* SMSVerifyServiceTests.swift */,
+				F304713A4AE797E7AC91B773 /* TwilioSMSVerifyClientTests.swift */,
 				30F30CFBB06472E4826E1ED9 /* UsageCacheTests.swift */,
 				BB7A341412350F4E7C5AAD53 /* UsageViewModelTests.swift */,
 			);
@@ -637,6 +649,7 @@
 				2BD00640EED723C5E2744382 /* AccountDeletionViewModelTests.swift in Sources */,
 				F626F98B3354E2D7CD753734 /* AccountServiceTests.swift in Sources */,
 				27010B736FD9875E8BF769D1 /* GoogleIntegrationTests.swift in Sources */,
+				1BCE395F97191392DD38A92D /* HTTPAuthServiceTests.swift in Sources */,
 				FEF90F5F065A4F2162A728AA /* HeidiChatViewModelTests.swift in Sources */,
 				779D03D2AF6281A113850B3E /* L10nKeysTests.swift in Sources */,
 				F0067856EC0B04AE1D1D9F2E /* MyReservationsViewModelTests.swift in Sources */,
@@ -649,6 +662,7 @@
 				0F7C18E31AA127D58C5FF763 /* ReservationServiceTests.swift in Sources */,
 				A9187E85E8D761689958E0EB /* ReservationViewModelTests.swift in Sources */,
 				F30717457C7532B0DB890D8F /* SMSVerifyServiceTests.swift in Sources */,
+				5F420A9968A1E81099C04384 /* TwilioSMSVerifyClientTests.swift in Sources */,
 				AE972C7C744AFE9082AD66B5 /* UsageCacheTests.swift in Sources */,
 				B9FFC3EA638B97A3823F8D0E /* UsageViewModelTests.swift in Sources */,
 				04B3F108D049B5E95553473E /* WorkspaceStoreTests.swift in Sources */,
@@ -665,6 +679,7 @@
 				AF6E7286FAD5BF02A9663A81 /* AccountServiceProtocol.swift in Sources */,
 				D6787A5481A31BF135AAC020 /* AppLanguage.swift in Sources */,
 				0D6C75287EBFCBE50C9E4737 /* AppRouter.swift in Sources */,
+				9058864EA12A38182D8C1B40 /* AuthController+Production.swift in Sources */,
 				3CD07E4046AE1DFCE250C957 /* AuthGateView.swift in Sources */,
 				B6F86DD1FB28FFEDA5E6CF73 /* AuthRootHost.swift in Sources */,
 				64061884188F665F901F07E2 /* AuthenticatedHomeView.swift in Sources */,
@@ -673,6 +688,7 @@
 				3EB460CEB1FD73DEDFFC4361 /* ColombaCustomerApp.swift in Sources */,
 				C17C2BB513BAA01E33A88214 /* GoogleIntegrationServices.swift in Sources */,
 				0E341FD09CF251CFD080B695 /* HTTPAccountClient.swift in Sources */,
+				8D2ABAD029BA1780FFE42EA9 /* HTTPAuthService.swift in Sources */,
 				38B4AFA2276DFEA2F80B2171 /* HTTPReservationClient.swift in Sources */,
 				24BA40E9F52BBBA6BFD637AC /* HeidiChatView.swift in Sources */,
 				C41F60C860CF1FBFF5A6068B /* HeidiChatViewModel.swift in Sources */,

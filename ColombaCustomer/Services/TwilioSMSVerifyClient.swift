@@ -6,6 +6,8 @@ public protocol SMSVerifyClientProtocol: Sendable {
 }
 
 public struct TwilioSMSVerifyClient: SMSVerifyClientProtocol, Sendable {
+    public static let baseURLInfoKey = "ColombaSMSVerifyWebhookBaseURL"
+
     public static let defaultBaseURL: URL = {
         guard let url = URL(string: "https://example.invalid/webhook") else {
             fatalError("invalid Twilio URL literal")
@@ -19,7 +21,7 @@ public struct TwilioSMSVerifyClient: SMSVerifyClientProtocol, Sendable {
     private let decoder: JSONDecoder
 
     public init(
-        baseURL: URL = Self.defaultBaseURL,
+        baseURL: URL = Self.resolvedBaseURL(),
         urlSession: URLSession = .shared
     ) {
         self.baseURL = baseURL
@@ -27,6 +29,21 @@ public struct TwilioSMSVerifyClient: SMSVerifyClientProtocol, Sendable {
         self.encoder = JSONEncoder()
         self.decoder = JSONDecoder()
         self.decoder.dateDecodingStrategy = .iso8601
+    }
+
+    public static func resolvedBaseURL(bundle: Bundle = .main) -> URL {
+        for key in [baseURLInfoKey, HTTPReservationClient.baseURLInfoKey] {
+            guard
+                let rawValue = bundle.object(forInfoDictionaryKey: key) as? String,
+                rawValue.isEmpty == false,
+                rawValue.contains("$(") == false,
+                let url = URL(string: rawValue)
+            else {
+                continue
+            }
+            return url
+        }
+        return defaultBaseURL
     }
 
     public func sendCode(phoneE164: String, locale: AppLanguage) async throws -> SMSChallenge {
