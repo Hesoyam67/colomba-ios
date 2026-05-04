@@ -54,11 +54,13 @@ GitHub Actions CI is defined in `.github/workflows/ios.yml` and runs the iOS val
 ## Local checks
 
 ```bash
-swift build
-for pkg in Packages/* Packages/Features/*; do [ -f "$pkg/Package.swift" ] && (cd "$pkg" && swift build); done
-for pkg in Packages/* Packages/Features/*; do [ -f "$pkg/Package.swift" ] && (cd "$pkg" && swift test); done
+scripts/dev-fast.sh
+scripts/dev-fast.sh --build
+scripts/dev-fast.sh --test
 scripts/measure-cold-start.sh
 ```
+
+`scripts/dev-fast.sh` runs the root Swift package plus every local package under `Packages/*` and `Packages/Features/*`. On non-macOS runners, set `ALLOW_SKIP_NON_DARWIN=1` only when an intentional skip is expected.
 
 `swift test`, `xcodebuild`, and cold-start measurement require a full Xcode install. Command Line Tools alone can build the package sources but cannot provide XCTest or iOS Simulator.
 
