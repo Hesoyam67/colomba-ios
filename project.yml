@@ -65,6 +65,7 @@ targets:
         ColombaGoogleOAuthLocalDevClientID: 603668283017-ue8n490uq608gp9sfa9v89674uahf230.apps.googleusercontent.com
         ColombaGoogleOAuthProductionClientID: 603668283017-gp0r3ks2980c3jrktdjvjeptbe0usa5a.apps.googleusercontent.com
         ColombaReservationWebhookBaseURL: https://api.colomba-swiss.ch/webhook
+        ColombaSMSVerifyWebhookBaseURL: https://api.colomba-swiss.ch/webhook
         NSCalendarsFullAccessUsageDescription: Colomba uses calendar access only when you choose to add a reservation to your calendar.
         NSCalendarsUsageDescription: Colomba uses calendar access only when you choose to add a reservation to your calendar.
         UILaunchScreen: {}

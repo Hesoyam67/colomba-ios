@@ -3,7 +3,7 @@ import ColombaDesign
 import SwiftUI
 
 struct AuthRootHost: View {
-    @State private var authController = AuthController.productionMock()
+    @State private var authController = AuthController.production()
 
     var body: some View {
         AuthGateView(authController: authController)

@@ -3,7 +3,7 @@ import ColombaCore
 import SwiftUI
 
 struct RootView: View {
-    @State private var authController = AuthController.productionMock()
+    @State private var authController = AuthController.production()
 
     var body: some View {
         Group {

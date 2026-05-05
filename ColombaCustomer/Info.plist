@@ -47,6 +47,8 @@
 	<string>603668283017-gp0r3ks2980c3jrktdjvjeptbe0usa5a.apps.googleusercontent.com</string>
 	<key>ColombaReservationWebhookBaseURL</key>
 	<string>https://api.colomba-swiss.ch/webhook</string>
+	<key>ColombaSMSVerifyWebhookBaseURL</key>
+	<string>https://api.colomba-swiss.ch/webhook</string>
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>Colomba uses calendar access only when you choose to add a reservation to your calendar.</string>
 	<key>NSCalendarsUsageDescription</key>
