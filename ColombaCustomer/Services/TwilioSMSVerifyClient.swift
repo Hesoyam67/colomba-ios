@@ -6,12 +6,7 @@ public protocol SMSVerifyClientProtocol: Sendable {
 }
 
 public struct TwilioSMSVerifyClient: SMSVerifyClientProtocol, Sendable {
-    public static let defaultBaseURL: URL = {
-        guard let url = URL(string: "https://example.invalid/webhook") else {
-            fatalError("invalid Twilio URL literal")
-        }
-        return url
-    }()
+    public static let baseURLInfoKey = "ColombaSMSVerifyWebhookBaseURL"
 
     private let baseURL: URL
     private let urlSession: URLSession
@@ -19,7 +14,7 @@ public struct TwilioSMSVerifyClient: SMSVerifyClientProtocol, Sendable {
     private let decoder: JSONDecoder
 
     public init(
-        baseURL: URL = Self.defaultBaseURL,
+        baseURL: URL = Self.resolvedBaseURL(),
         urlSession: URLSession = .shared
     ) {
         self.baseURL = baseURL
@@ -27,6 +22,30 @@ public struct TwilioSMSVerifyClient: SMSVerifyClientProtocol, Sendable {
         self.encoder = JSONEncoder()
         self.decoder = JSONDecoder()
         self.decoder.dateDecodingStrategy = .iso8601
+    }
+
+    public static func resolvedBaseURL(bundle: Bundle = .main) -> URL {
+        for key in [baseURLInfoKey, HTTPReservationClient.baseURLInfoKey] {
+            guard
+                let rawValue = bundle.object(forInfoDictionaryKey: key) as? String,
+                rawValue.isEmpty == false,
+                rawValue.contains("$(") == false
+            else {
+                continue
+            }
+            guard
+                let url = URL(string: rawValue),
+                url.scheme?.isEmpty == false,
+                url.host?.isEmpty == false
+            else {
+                fatalError("Invalid SMS verify webhook base URL for Info.plist key \(key).")
+            }
+            return url
+        }
+        fatalError(
+            "Missing SMS verify webhook base URL. "
+                + "Configure ColombaSMSVerifyWebhookBaseURL or ColombaReservationWebhookBaseURL in Info.plist."
+        )
     }
 
     public func sendCode(phoneE164: String, locale: AppLanguage) async throws -> SMSChallenge {
