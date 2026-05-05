@@ -24,13 +24,23 @@ final class TwilioSMSVerifyClientTests: XCTestCase {
         )
     }
 
-    func testResolvedBaseURLFallsBackToPlaceholderWhenUnset() throws {
-        let bundle = try makeBundle(info: [:])
+    func testConfiguredProductionPathsResolveToExplicitWebhookURLs() throws {
+        let cases = try [
+            makeBundle(info: [
+                TwilioSMSVerifyClient.baseURLInfoKey: "https://sms.colomba-swiss.ch/webhook"
+            ]),
+            makeBundle(info: [
+                HTTPReservationClient.baseURLInfoKey: "https://api.colomba-swiss.ch/webhook"
+            ])
+        ]
 
-        XCTAssertEqual(
-            TwilioSMSVerifyClient.resolvedBaseURL(bundle: bundle),
-            TwilioSMSVerifyClient.defaultBaseURL
-        )
+        for bundle in cases {
+            let url = TwilioSMSVerifyClient.resolvedBaseURL(bundle: bundle)
+
+            XCTAssertEqual(url.scheme, "https")
+            XCTAssertTrue(url.absoluteString.hasSuffix("/webhook"))
+            XCTAssertNotEqual(url.host, "invalid")
+        }
     }
 
     private func makeBundle(info: [String: String]) throws -> Bundle {
