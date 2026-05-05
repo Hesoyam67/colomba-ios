@@ -9,7 +9,8 @@
 ## 2. Heso-Coder
 - owner: OpenClaw main agent
 - model: openai-codex/gpt-5.5
-- fallback: openai-codex/gpt-5
+- reasoning_effort: xhigh
+- fallback: openai-codex/gpt-5.4
 - job: one branch, one PR, scoped code implementation
 - writes code: yes
 - active limit: one Swift coder during STABILIZE
@@ -21,7 +22,9 @@
 - active limit: one xcodebuild/simulator gate at a time
 
 ## 4. Heso-Statekeeper
-- model: openai-codex/gpt-5 or openai-codex/gpt-5.5
+- model: openai-codex/gpt-5.5
+- reasoning_effort: xhigh
+- fallback: openai-codex/gpt-5.4
 - job: update state files
 - allowed files: state/*.md only
 - writes code: no

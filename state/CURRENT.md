@@ -7,6 +7,11 @@
 - Open PRs: None
 - Current main HEAD: c3296ee
 
+## OpenClaw execution model
+- model: openai-codex/gpt-5.5
+- reasoning_effort: xhigh
+- fallback: openai-codex/gpt-5.4
+
 ## Current blockers
 - Production/root app path still uses AuthController.productionMock / MockAuthService.
 - SMS verify still points to example.invalid.
